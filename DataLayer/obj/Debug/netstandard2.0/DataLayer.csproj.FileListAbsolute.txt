@@ -1,0 +1,8 @@
+/home/zargar/Desktop/Mehr/DataLayer/bin/Debug/netstandard2.0/DataLayer.deps.json
+/home/zargar/Desktop/Mehr/DataLayer/bin/Debug/netstandard2.0/DataLayer.dll
+/home/zargar/Desktop/Mehr/DataLayer/bin/Debug/netstandard2.0/DataLayer.pdb
+/home/zargar/Desktop/Mehr/DataLayer/obj/Debug/netstandard2.0/DataLayer.csprojAssemblyReference.cache
+/home/zargar/Desktop/Mehr/DataLayer/obj/Debug/netstandard2.0/DataLayer.AssemblyInfoInputs.cache
+/home/zargar/Desktop/Mehr/DataLayer/obj/Debug/netstandard2.0/DataLayer.AssemblyInfo.cs
+/home/zargar/Desktop/Mehr/DataLayer/obj/Debug/netstandard2.0/DataLayer.dll
+/home/zargar/Desktop/Mehr/DataLayer/obj/Debug/netstandard2.0/DataLayer.pdb
