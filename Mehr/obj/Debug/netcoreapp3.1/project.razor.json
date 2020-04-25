@@ -20611,6 +20611,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Views/Shared/_DefaultLayout.cshtml",
+      "TargetPath": "Views\\Shared\\_DefaultLayout.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Areas/App/Views/Sponsor/Details.cshtml",
       "TargetPath": "Areas\\App\\Views\\Sponsor\\Details.cshtml",
       "FileKind": "mvc"
