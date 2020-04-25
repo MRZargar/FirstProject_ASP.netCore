@@ -18,7 +18,7 @@ namespace DataLayer
         {
             try
             {
-                return await db.Sponsors.ToListAsync(); 
+                return await db.Sponsors.Include(s => s.MyColleague).ToListAsync(); 
             }
             catch (System.Exception)
             {                
@@ -31,6 +31,7 @@ namespace DataLayer
             try
             {
                 return await db.Sponsors
+                    .Include(s => s.MyColleague)
                     .FirstOrDefaultAsync(m => m.SponsorID == sponsorID);   
             }
             catch (System.Exception)
@@ -43,8 +44,7 @@ namespace DataLayer
         {
             try
             {
-                db.Sponsors.Add(sponsor);     
-                await saveAsync();
+                await db.Sponsors.AddAsync(sponsor);     
 
                 return true;
             }
@@ -54,14 +54,13 @@ namespace DataLayer
             }
         }
 
-        public async Task<bool> UpdateAsync(Sponsor sponsor)
+        public bool Update(Sponsor sponsor)
         {
             try
             {
                 db.Sponsors.Update(sponsor);
-                await saveAsync();
 
-                return true;    
+                return true;
             }
             catch (System.Exception)
             {
@@ -69,14 +68,13 @@ namespace DataLayer
             }
         }
 
-        public async Task<bool> DeleteAsync(Sponsor sponsor)
+        public bool Delete(Sponsor sponsor)
         {
             try
             {
                 db.Sponsors.Remove(sponsor);
-                await saveAsync();
 
-                return true;    
+                return true;
             }
             catch (System.Exception)
             {
@@ -89,7 +87,7 @@ namespace DataLayer
             try
             {
                 var sponsor = await GetByIdAsync(sponsorID);
-                return await DeleteAsync(sponsor);
+                return Delete(sponsor);
             }
             catch (System.Exception)
             {

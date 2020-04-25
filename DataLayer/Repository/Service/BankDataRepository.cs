@@ -43,8 +43,7 @@ namespace DataLayer
         {
             try
             {
-                db.BankDatas.Add(bankData);     
-                await saveAsync();
+                await db.BankDatas.AddAsync(bankData);     
 
                 return true;
             }
@@ -54,14 +53,13 @@ namespace DataLayer
             }
         }
 
-        public async Task<bool> UpdateAsync(BankData bankData)
+        public bool Update(BankData bankData)
         {
             try
             {
                 db.BankDatas.Update(bankData);
-                await saveAsync();
 
-                return true;    
+                return true;
             }
             catch (System.Exception)
             {
@@ -69,14 +67,13 @@ namespace DataLayer
             }
         }
 
-        public async Task<bool> DeleteAsync(BankData bankData)
+        public bool Delete(BankData bankData)
         {
             try
             {
                 db.BankDatas.Remove(bankData);
-                await saveAsync();
 
-                return true;    
+                return true;
             }
             catch (System.Exception)
             {
@@ -89,7 +86,7 @@ namespace DataLayer
             try
             {
                 var bankData = await GetByIdAsync(bankDataID);
-                return await DeleteAsync(bankData);
+                return Delete(bankData);
             }
             catch (System.Exception)
             {

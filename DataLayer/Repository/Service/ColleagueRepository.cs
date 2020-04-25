@@ -43,8 +43,7 @@ namespace DataLayer
         {
             try
             {
-                db.Colleagues.Add(colleague);     
-                await saveAsync();
+                await db.Colleagues.AddAsync(colleague);     
 
                 return true;
             }
@@ -54,12 +53,11 @@ namespace DataLayer
             }
         }
 
-        public async Task<bool> UpdateAsync(Colleague colleague)
+        public bool Update(Colleague colleague)
         {
             try
             {
                 db.Colleagues.Update(colleague);
-                await saveAsync();
 
                 return true;    
             }
@@ -69,12 +67,11 @@ namespace DataLayer
             }
         }
 
-        public async Task<bool> DeleteAsync(Colleague colleague)
+        public bool Delete(Colleague colleague)
         {
             try
             {
                 db.Colleagues.Remove(colleague);
-                await saveAsync();
 
                 return true;    
             }
@@ -89,7 +86,7 @@ namespace DataLayer
             try
             {
                 var colleague = await GetByIdAsync(colleagueID);
-                return await DeleteAsync(colleague);
+                return Delete(colleague);
             }
             catch (System.Exception)
             {

@@ -12,17 +12,17 @@ namespace Mehr.Areas.App.Controllers
     [Area("App")]
     public class BankDataController : Controller
     {
-        private readonly MyContext _context;
 
+        private IBankDataRepository bankDatas;
         public BankDataController(MyContext context)
         {
-            _context = context;
+            bankDatas = new BankDataRepository(context);
         }
 
         // GET: App/BankData
         public async Task<IActionResult> Index()
         {
-            return View(await _context.BankDatas.ToListAsync());
+            return View(await bankDatas.GetAllAsync());
         }
 
         // GET: App/BankData/Details/5
@@ -33,8 +33,7 @@ namespace Mehr.Areas.App.Controllers
                 return NotFound();
             }
 
-            var bankData = await _context.BankDatas
-                .FirstOrDefaultAsync(m => m.BankDataID == id);
+            var bankData = await bankDatas.GetByIdAsync(id.Value);
             if (bankData == null)
             {
                 return NotFound();
@@ -58,8 +57,8 @@ namespace Mehr.Areas.App.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(bankData);
-                await _context.SaveChangesAsync();
+                await bankDatas.InsertAsync(bankData);
+                await bankDatas.saveAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(bankData);
@@ -73,7 +72,7 @@ namespace Mehr.Areas.App.Controllers
                 return NotFound();
             }
 
-            var bankData = await _context.BankDatas.FindAsync(id);
+            var bankData = await bankDatas.GetByIdAsync(id.Value);
             if (bankData == null)
             {
                 return NotFound();
@@ -97,8 +96,8 @@ namespace Mehr.Areas.App.Controllers
             {
                 try
                 {
-                    _context.Update(bankData);
-                    await _context.SaveChangesAsync();
+                    bankDatas.Update(bankData);
+                    await bankDatas.saveAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -124,8 +123,7 @@ namespace Mehr.Areas.App.Controllers
                 return NotFound();
             }
 
-            var bankData = await _context.BankDatas
-                .FirstOrDefaultAsync(m => m.BankDataID == id);
+            var bankData = await bankDatas.GetByIdAsync(id.Value);
             if (bankData == null)
             {
                 return NotFound();
@@ -139,15 +137,14 @@ namespace Mehr.Areas.App.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var bankData = await _context.BankDatas.FindAsync(id);
-            _context.BankDatas.Remove(bankData);
-            await _context.SaveChangesAsync();
+            await bankDatas.DeleteAsync(id);
+            await bankDatas.saveAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool BankDataExists(int id)
         {
-            return _context.BankDatas.Any(e => e.BankDataID == id);
+            return bankDatas.GetByIdAsync(id) != null;
         }
     }
 }

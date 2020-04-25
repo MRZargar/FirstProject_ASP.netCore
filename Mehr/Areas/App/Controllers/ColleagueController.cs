@@ -12,17 +12,17 @@ namespace Mehr.Areas.App.Controllers
     [Area("App")]
     public class ColleagueController : Controller
     {
-        private readonly MyContext _context;
+        public IColleageRepository colleagues;
 
         public ColleagueController(MyContext context)
         {
-            _context = context;
+            this.colleagues = new ColleagueRepository(context);
         }
 
         // GET: App/Colleague
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Colleagues.ToListAsync());
+            return View(await colleagues.GetAllAsync());
         }
 
         // GET: App/Colleague/Details/5
@@ -33,8 +33,7 @@ namespace Mehr.Areas.App.Controllers
                 return NotFound();
             }
 
-            var colleague = await _context.Colleagues
-                .FirstOrDefaultAsync(m => m.ColleagueID == id);
+            var colleague = await colleagues.GetByIdAsync(id.Value);
             if (colleague == null)
             {
                 return NotFound();
@@ -58,8 +57,8 @@ namespace Mehr.Areas.App.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(colleague);
-                await _context.SaveChangesAsync();
+                await colleagues.InsertAsync(colleague);
+                await colleagues.saveAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(colleague);
@@ -73,7 +72,7 @@ namespace Mehr.Areas.App.Controllers
                 return NotFound();
             }
 
-            var colleague = await _context.Colleagues.FindAsync(id);
+            var colleague = await colleagues.GetByIdAsync(id.Value);
             if (colleague == null)
             {
                 return NotFound();
@@ -97,8 +96,8 @@ namespace Mehr.Areas.App.Controllers
             {
                 try
                 {
-                    _context.Update(colleague);
-                    await _context.SaveChangesAsync();
+                    colleagues.Update(colleague);
+                    await colleagues.saveAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -124,8 +123,7 @@ namespace Mehr.Areas.App.Controllers
                 return NotFound();
             }
 
-            var colleague = await _context.Colleagues
-                .FirstOrDefaultAsync(m => m.ColleagueID == id);
+            var colleague = await colleagues.GetByIdAsync(id.Value);
             if (colleague == null)
             {
                 return NotFound();
@@ -139,15 +137,14 @@ namespace Mehr.Areas.App.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var colleague = await _context.Colleagues.FindAsync(id);
-            _context.Colleagues.Remove(colleague);
-            await _context.SaveChangesAsync();
+            await colleagues.DeleteAsync(id);
+            await colleagues.saveAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ColleagueExists(int id)
         {
-            return _context.Colleagues.Any(e => e.ColleagueID == id);
+            return colleagues.GetByIdAsync(id) != null;
         }
     }
 }

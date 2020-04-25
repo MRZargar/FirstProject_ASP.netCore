@@ -9,8 +9,8 @@ namespace DataLayer
         Task<IEnumerable<BankData>> GetAllAsync();
         Task<BankData> GetByIdAsync(int bankDataID);
         Task<bool> InsertAsync(BankData bankData);
-        Task<bool> UpdateAsync(BankData bankData);
-        Task<bool> DeleteAsync(BankData bankData);
+        bool Update(BankData bankData);
+        bool Delete(BankData bankData);
         Task<bool> DeleteAsync(int bankDataID);
         Task<bool> saveAsync();
     }

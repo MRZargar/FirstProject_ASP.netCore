@@ -12,18 +12,19 @@ namespace Mehr.Areas.App.Controllers
     [Area("App")]
     public class SponsorController : Controller
     {
-        private readonly MyContext _context;
+        private ISponsorRepository sponsors;
+        private IColleageRepository colleagues;
 
         public SponsorController(MyContext context)
         {
-            _context = context;
+            sponsors = new SponsorRepository(context);
+            colleagues = new ColleagueRepository(context);
         }
 
         // GET: App/Sponsor
         public async Task<IActionResult> Index()
         {
-            var myContext = _context.Sponsors.Include(s => s.MyColleague);
-            return View(await myContext.ToListAsync());
+            return View(await sponsors.GetAllAsync());
         }
 
         // GET: App/Sponsor/Details/5
@@ -34,9 +35,7 @@ namespace Mehr.Areas.App.Controllers
                 return NotFound();
             }
 
-            var sponsor = await _context.Sponsors
-                .Include(s => s.MyColleague)
-                .FirstOrDefaultAsync(m => m.SponsorID == id);
+            var sponsor = await sponsors.GetByIdAsync(id.Value);
             if (sponsor == null)
             {
                 return NotFound();
@@ -46,9 +45,9 @@ namespace Mehr.Areas.App.Controllers
         }
 
         // GET: App/Sponsor/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["ColleagueID"] = new SelectList(_context.Colleagues, "ColleagueID", "Name");
+            ViewData["ColleagueID"] = new SelectList(await colleagues.GetAllAsync(), "ColleagueID", "Name");
             return View();
         }
 
@@ -61,11 +60,11 @@ namespace Mehr.Areas.App.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(sponsor);
-                await _context.SaveChangesAsync();
+                await sponsors.InsertAsync(sponsor);
+                await sponsors.saveAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ColleagueID"] = new SelectList(_context.Colleagues, "ColleagueID", "Name", sponsor.ColleagueID);
+            ViewData["ColleagueID"] = new SelectList(await colleagues.GetAllAsync(), "ColleagueID", "Name", sponsor.ColleagueID);
             return View(sponsor);
         }
 
@@ -77,12 +76,12 @@ namespace Mehr.Areas.App.Controllers
                 return NotFound();
             }
 
-            var sponsor = await _context.Sponsors.FindAsync(id);
+            var sponsor = await sponsors.GetByIdAsync(id.Value);
             if (sponsor == null)
             {
                 return NotFound();
             }
-            ViewData["ColleagueID"] = new SelectList(_context.Colleagues, "ColleagueID", "Name", sponsor.ColleagueID);
+            ViewData["ColleagueID"] = new SelectList(await colleagues.GetAllAsync(), "ColleagueID", "Name", sponsor.ColleagueID);
             return View(sponsor);
         }
 
@@ -102,8 +101,8 @@ namespace Mehr.Areas.App.Controllers
             {
                 try
                 {
-                    _context.Update(sponsor);
-                    await _context.SaveChangesAsync();
+                    sponsors.Update(sponsor);
+                    await sponsors.saveAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -118,7 +117,7 @@ namespace Mehr.Areas.App.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ColleagueID"] = new SelectList(_context.Colleagues, "ColleagueID", "Name", sponsor.ColleagueID);
+            ViewData["ColleagueID"] = new SelectList(await colleagues.GetAllAsync(), "ColleagueID", "Name", sponsor.ColleagueID);
             return View(sponsor);
         }
 
@@ -130,9 +129,7 @@ namespace Mehr.Areas.App.Controllers
                 return NotFound();
             }
 
-            var sponsor = await _context.Sponsors
-                .Include(s => s.MyColleague)
-                .FirstOrDefaultAsync(m => m.SponsorID == id);
+            var sponsor = await sponsors.GetByIdAsync(id.Value);
             if (sponsor == null)
             {
                 return NotFound();
@@ -146,15 +143,15 @@ namespace Mehr.Areas.App.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var sponsor = await _context.Sponsors.FindAsync(id);
-            _context.Sponsors.Remove(sponsor);
-            await _context.SaveChangesAsync();
+            await sponsors.DeleteAsync(id);
+            await sponsors.saveAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
         private bool SponsorExists(int id)
         {
-            return _context.Sponsors.Any(e => e.SponsorID == id);
+            return sponsors.GetByIdAsync(id) != null;
         }
     }
 }

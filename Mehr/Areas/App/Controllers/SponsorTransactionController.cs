@@ -12,18 +12,19 @@ namespace Mehr.Areas.App.Controllers
     [Area("App")]
     public class SponsorTransactionController : Controller
     {
-        private readonly MyContext _context;
+        private ISponsorTransactionRepository transactions;
+        private ISponsorRepository sponsors;
 
         public SponsorTransactionController(MyContext context)
         {
-            _context = context;
+            transactions = new SponsorTransactionRepository(context);
+            sponsors = new SponsorRepository(context);
         }
 
         // GET: App/SponsorTransaction
         public async Task<IActionResult> Index()
         {
-            var myContext = _context.SponsorTransactions.Include(s => s.MySponsor);
-            return View(await myContext.ToListAsync());
+            return View(await transactions.GetAllAsync());
         }
 
         // GET: App/SponsorTransaction/Details/5
@@ -34,9 +35,7 @@ namespace Mehr.Areas.App.Controllers
                 return NotFound();
             }
 
-            var sponsorTransaction = await _context.SponsorTransactions
-                .Include(s => s.MySponsor)
-                .FirstOrDefaultAsync(m => m.SponsorTransactionsID == id);
+            var sponsorTransaction = await transactions.GetByIdAsync(id.Value);
             if (sponsorTransaction == null)
             {
                 return NotFound();
@@ -46,9 +45,9 @@ namespace Mehr.Areas.App.Controllers
         }
 
         // GET: App/SponsorTransaction/Create
-        public IActionResult Create()
+        public async Task<IActionResult> CreateAsync()
         {
-            ViewData["SponsorID"] = new SelectList(_context.Sponsors, "SponsorID", "Name");
+            ViewData["SponsorID"] = new SelectList(await sponsors.GetAllAsync(), "SponsorID", "Name");
             return View();
         }
 
@@ -61,11 +60,11 @@ namespace Mehr.Areas.App.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(sponsorTransaction);
-                await _context.SaveChangesAsync();
+                await transactions.InsertAsync(sponsorTransaction);
+                await transactions.saveAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SponsorID"] = new SelectList(_context.Sponsors, "SponsorID", "Name", sponsorTransaction.SponsorID);
+            ViewData["SponsorID"] = new SelectList(await sponsors.GetAllAsync(), "SponsorID", "Name", sponsorTransaction.SponsorID);
             return View(sponsorTransaction);
         }
 
@@ -77,12 +76,12 @@ namespace Mehr.Areas.App.Controllers
                 return NotFound();
             }
 
-            var sponsorTransaction = await _context.SponsorTransactions.FindAsync(id);
+            var sponsorTransaction = await transactions.GetByIdAsync(id.Value);
             if (sponsorTransaction == null)
             {
                 return NotFound();
             }
-            ViewData["SponsorID"] = new SelectList(_context.Sponsors, "SponsorID", "Name", sponsorTransaction.SponsorID);
+            ViewData["SponsorID"] = new SelectList(await sponsors.GetAllAsync(), "SponsorID", "Name", sponsorTransaction.SponsorID);
             return View(sponsorTransaction);
         }
 
@@ -102,8 +101,8 @@ namespace Mehr.Areas.App.Controllers
             {
                 try
                 {
-                    _context.Update(sponsorTransaction);
-                    await _context.SaveChangesAsync();
+                    transactions.Update(sponsorTransaction);
+                    await transactions.saveAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -118,7 +117,7 @@ namespace Mehr.Areas.App.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SponsorID"] = new SelectList(_context.Sponsors, "SponsorID", "Name", sponsorTransaction.SponsorID);
+            ViewData["SponsorID"] = new SelectList(await sponsors.GetAllAsync(), "SponsorID", "Name", sponsorTransaction.SponsorID);
             return View(sponsorTransaction);
         }
 
@@ -130,9 +129,7 @@ namespace Mehr.Areas.App.Controllers
                 return NotFound();
             }
 
-            var sponsorTransaction = await _context.SponsorTransactions
-                .Include(s => s.MySponsor)
-                .FirstOrDefaultAsync(m => m.SponsorTransactionsID == id);
+            var sponsorTransaction = await transactions.GetByIdAsync(id.Value);
             if (sponsorTransaction == null)
             {
                 return NotFound();
@@ -146,15 +143,14 @@ namespace Mehr.Areas.App.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var sponsorTransaction = await _context.SponsorTransactions.FindAsync(id);
-            _context.SponsorTransactions.Remove(sponsorTransaction);
-            await _context.SaveChangesAsync();
+            await transactions.DeleteAsync(id);
+            await transactions.saveAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool SponsorTransactionExists(int id)
         {
-            return _context.SponsorTransactions.Any(e => e.SponsorTransactionsID == id);
+            return transactions.GetByIdAsync(id) != null;
         }
     }
 }

@@ -9,8 +9,8 @@ namespace DataLayer
         Task<IEnumerable<Sponsor>> GetAllAsync();
         Task<Sponsor> GetByIdAsync(int sponsorID);
         Task<bool> InsertAsync(Sponsor sponsor);
-        Task<bool> UpdateAsync(Sponsor sponsor);
-        Task<bool> DeleteAsync(Sponsor sponsor);
+        bool Update(Sponsor sponsor);
+        bool Delete(Sponsor sponsor);
         Task<bool> DeleteAsync(int sponsorID);
         Task<bool> saveAsync();
     }

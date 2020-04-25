@@ -18,7 +18,7 @@ namespace DataLayer
         {
             try
             {
-                return await db.SponsorTransactions.ToListAsync(); 
+                return await db.SponsorTransactions.Include(s => s.MySponsor).ToListAsync(); 
             }
             catch (System.Exception)
             {                
@@ -31,6 +31,7 @@ namespace DataLayer
             try
             {
                 return await db.SponsorTransactions
+                    .Include(s => s.MySponsor)
                     .FirstOrDefaultAsync(m => m.SponsorTransactionsID == sponsorTransactionID);   
             }
             catch (System.Exception)
@@ -43,8 +44,7 @@ namespace DataLayer
         {
             try
             {
-                db.SponsorTransactions.Add(sponsorTransaction);     
-                await saveAsync();
+                await db.SponsorTransactions.AddAsync(sponsorTransaction);     
 
                 return true;
             }
@@ -54,14 +54,13 @@ namespace DataLayer
             }
         }
 
-        public async Task<bool> UpdateAsync(SponsorTransaction sponsorTransaction)
+        public bool Update(SponsorTransaction sponsorTransaction)
         {
             try
             {
                 db.SponsorTransactions.Update(sponsorTransaction);
-                await saveAsync();
 
-                return true;    
+                return true;
             }
             catch (System.Exception)
             {
@@ -69,14 +68,13 @@ namespace DataLayer
             }
         }
 
-        public async Task<bool> DeleteAsync(SponsorTransaction sponsorTransaction)
+        public bool Delete(SponsorTransaction sponsorTransaction)
         {
             try
             {
                 db.SponsorTransactions.Remove(sponsorTransaction);
-                await saveAsync();
 
-                return true;    
+                return true;
             }
             catch (System.Exception)
             {
@@ -89,7 +87,7 @@ namespace DataLayer
             try
             {
                 var sponsorTransaction = await GetByIdAsync(sponsorTransactionID);
-                return await DeleteAsync(sponsorTransaction);
+                return Delete(sponsorTransaction);
             }
             catch (System.Exception)
             {
