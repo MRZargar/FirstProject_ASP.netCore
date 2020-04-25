@@ -182,3 +182,13 @@
 /home/zargar/Desktop/Mehr/Mehr/obj/Debug/netcoreapp3.1/Razor/Areas/App/Views/SponsorTransaction/Details.cshtml.g.cs
 /home/zargar/Desktop/Mehr/Mehr/obj/Debug/netcoreapp3.1/Razor/Areas/App/Views/SponsorTransaction/Edit.cshtml.g.cs
 /home/zargar/Desktop/Mehr/Mehr/obj/Debug/netcoreapp3.1/Razor/Areas/App/Views/SponsorTransaction/Index.cshtml.g.cs
+/home/zargar/Desktop/Mehr/Mehr/obj/Debug/netcoreapp3.1/Razor/Areas/App/Views/BankData/Create.cshtml.g.cs
+/home/zargar/Desktop/Mehr/Mehr/obj/Debug/netcoreapp3.1/Razor/Areas/App/Views/BankData/Delete.cshtml.g.cs
+/home/zargar/Desktop/Mehr/Mehr/obj/Debug/netcoreapp3.1/Razor/Areas/App/Views/BankData/Details.cshtml.g.cs
+/home/zargar/Desktop/Mehr/Mehr/obj/Debug/netcoreapp3.1/Razor/Areas/App/Views/BankData/Edit.cshtml.g.cs
+/home/zargar/Desktop/Mehr/Mehr/obj/Debug/netcoreapp3.1/Razor/Areas/App/Views/BankData/Index.cshtml.g.cs
+/home/zargar/Desktop/Mehr/Mehr/obj/Debug/netcoreapp3.1/Razor/Areas/App/Views/Shared/Error.cshtml.g.cs
+/home/zargar/Desktop/Mehr/Mehr/obj/Debug/netcoreapp3.1/Razor/Areas/App/Views/Shared/_Layout.cshtml.g.cs
+/home/zargar/Desktop/Mehr/Mehr/obj/Debug/netcoreapp3.1/Razor/Areas/App/Views/Shared/_ValidationScriptsPartial.cshtml.g.cs
+/home/zargar/Desktop/Mehr/Mehr/obj/Debug/netcoreapp3.1/Razor/Areas/App/Views/_ViewImports.cshtml.g.cs
+/home/zargar/Desktop/Mehr/Mehr/obj/Debug/netcoreapp3.1/Razor/Areas/App/Views/_ViewStart.cshtml.g.cs
