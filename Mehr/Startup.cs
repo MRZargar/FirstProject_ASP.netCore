@@ -54,6 +54,11 @@ namespace Mehr
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapAreaControllerRoute(
+                    name: "AppArea",
+                    areaName: "App",
+                    pattern: "App/{controller=Home}/{action=Index}/{id?}");
+                    
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
