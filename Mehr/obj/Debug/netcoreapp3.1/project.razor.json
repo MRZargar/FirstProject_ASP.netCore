@@ -20601,6 +20601,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Views/Shared/_ChartLayout.cshtml",
+      "TargetPath": "Views\\Shared\\_ChartLayout.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Areas/App/Views/Colleague/Create.cshtml",
       "TargetPath": "Areas\\App\\Views\\Colleague\\Create.cshtml",
       "FileKind": "mvc"
