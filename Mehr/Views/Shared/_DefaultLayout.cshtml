@@ -79,13 +79,13 @@
       </div>
       <div class="main-menu-content">
         <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-          <li class=" nav-item"><a href="#"><i class="la la-home"></i><span class="menu-title" data-i18n="">Dashboard</span></a>
+          <li class=" nav-item"><a href="/"><i class="la la-home"></i><span class="menu-title" data-i18n="">Dashboard</span></a>
           </li>
-          <li class=" nav-item"><a href="#"><i class="la la-hand-peace-o"></i><span class="menu-title" data-i18n="">Colleagues</span></a>
+          <li class=" nav-item"><a href="/Colleagues"><i class="la la-hand-peace-o"></i><span class="menu-title" data-i18n="">Colleagues</span></a>
           </li>
-          <li class=" nav-item"><a href="#"><i class="la la-heart-o"></i><span class="menu-title" data-i18n="">Sponsers</span></a>
+          <li class=" nav-item"><a href="/Sponsors"><i class="la la-heart-o"></i><span class="menu-title" data-i18n="">Sponsers</span></a>
           </li>
-          <li class=" nav-item"><a href="#"><i class="la la-bank"></i><span class="menu-title" data-i18n="">Banks</span></a>
+          <li class=" nav-item"><a href="/Banks"><i class="la la-bank"></i><span class="menu-title" data-i18n="">Banks</span></a>
           </li>
         </ul>
       </div>
@@ -96,12 +96,18 @@
       <div class="content-wrapper">
         <div class="content-wrapper-before"></div>
         <div class="content-header row">
-            @if ((bool)ViewData["DefaultStyle"] == true)
+          
+            @try
+            {
+                bool x = (bool)ViewData["DefaultStyle"];
+            }
+            catch (Exception)
             {
                 <div class="content-header-left col-md-4 col-12 mb-2">
                     <h3 class="content-header-title">@ViewData["Title"]</h3>
                 </div>
             }
+
         </div>
         <div class="content-body">
           @RenderBody()
@@ -109,17 +115,6 @@
       </div>
     </div>
     <!-- ////////////////////////////////////////////////////////////////////////////-->
-
-
-    <footer class="footer footer-static footer-light navbar-border navbar-shadow">
-      <div class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2"><span class="float-md-left d-block d-md-inline-block">2018  &copy; Copyright <a class="text-bold-800 grey darken-2" href="https://themeselection.com" target="_blank">ThemeSelection</a></span>
-        <ul class="list-inline float-md-right d-block d-md-inline-blockd-none d-lg-block mb-0">
-          <li class="list-inline-item"><a class="my-1" href="https://themeselection.com/" target="_blank"> More themes</a></li>
-          <li class="list-inline-item"><a class="my-1" href="https://themeselection.com/support" target="_blank"> Support</a></li>
-          <li class="list-inline-item"><a class="my-1" href="https://themeselection.com/products/chameleon-admin-modern-bootstrap-webapp-dashboard-html-template-ui-kit/" target="_blank"> Purchase</a></li>
-        </ul>
-      </div>
-    </footer>
 
     <!-- BEGIN VENDOR JS-->
     <script src="theme-assets/vendors/js/vendors.min.js" type="text/javascript"></script>
@@ -132,6 +127,11 @@
     <!-- END CHAMELEON  JS-->
     <!-- BEGIN PAGE LEVEL JS-->
     <!-- END PAGE LEVEL JS-->
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery-3.5.0.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     @RenderSection("Script", false)
   </body>
 </html>

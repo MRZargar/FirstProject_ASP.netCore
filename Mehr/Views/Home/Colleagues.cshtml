@@ -1,0 +1,10 @@
+@{
+    ViewData["Title"] = "Colleagues";
+}
+
+<section id="content-colleagues">
+	<div class="row match-height">
+		@await Component.InvokeAsync("ListColleague")
+		@await Component.InvokeAsync("NewColleague")
+	</div>
+</section>

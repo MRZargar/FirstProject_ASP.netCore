@@ -7,9 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DataLayer;
 
-namespace Mehr.Areas.App.Controllers
+namespace Mehr.Controllers
 {
-    [Area("App")]
     public class SponsorTransactionController : Controller
     {
         private ISponsorTransactionRepository transactions;

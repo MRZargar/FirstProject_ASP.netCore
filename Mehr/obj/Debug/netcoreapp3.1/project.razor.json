@@ -17868,6 +17868,106 @@
         }
       },
       {
+        "Kind": "MVC.ViewComponent",
+        "Name": "__Generated__ListSponsorViewComponentTagHelper",
+        "AssemblyName": "Mehr",
+        "Documentation": null,
+        "TagOutputHint": null,
+        "CaseSensitive": false,
+        "TagMatchingRules": [
+          {
+            "TagName": "vc:list-sponsor",
+            "ParentTag": null,
+            "TagStructure": 0,
+            "Attributes": [],
+            "Diagnostics": []
+          }
+        ],
+        "BoundAttributes": [],
+        "AllowedChildTags": [],
+        "Diagnostics": [],
+        "Metadata": {
+          "Runtime.Name": "ITagHelper",
+          "Common.TypeName": "__Generated__ListSponsorViewComponentTagHelper",
+          "MVC.ViewComponent.Name": "ListSponsor"
+        }
+      },
+      {
+        "Kind": "MVC.ViewComponent",
+        "Name": "__Generated__ListColleagueViewComponentTagHelper",
+        "AssemblyName": "Mehr",
+        "Documentation": null,
+        "TagOutputHint": null,
+        "CaseSensitive": false,
+        "TagMatchingRules": [
+          {
+            "TagName": "vc:list-colleague",
+            "ParentTag": null,
+            "TagStructure": 0,
+            "Attributes": [],
+            "Diagnostics": []
+          }
+        ],
+        "BoundAttributes": [],
+        "AllowedChildTags": [],
+        "Diagnostics": [],
+        "Metadata": {
+          "Runtime.Name": "ITagHelper",
+          "Common.TypeName": "__Generated__ListColleagueViewComponentTagHelper",
+          "MVC.ViewComponent.Name": "ListColleague"
+        }
+      },
+      {
+        "Kind": "MVC.ViewComponent",
+        "Name": "__Generated__NewColleagueViewComponentTagHelper",
+        "AssemblyName": "Mehr",
+        "Documentation": null,
+        "TagOutputHint": null,
+        "CaseSensitive": false,
+        "TagMatchingRules": [
+          {
+            "TagName": "vc:new-colleague",
+            "ParentTag": null,
+            "TagStructure": 0,
+            "Attributes": [],
+            "Diagnostics": []
+          }
+        ],
+        "BoundAttributes": [],
+        "AllowedChildTags": [],
+        "Diagnostics": [],
+        "Metadata": {
+          "Runtime.Name": "ITagHelper",
+          "Common.TypeName": "__Generated__NewColleagueViewComponentTagHelper",
+          "MVC.ViewComponent.Name": "NewColleague"
+        }
+      },
+      {
+        "Kind": "MVC.ViewComponent",
+        "Name": "__Generated__NewSponsorViewComponentTagHelper",
+        "AssemblyName": "Mehr",
+        "Documentation": null,
+        "TagOutputHint": null,
+        "CaseSensitive": false,
+        "TagMatchingRules": [
+          {
+            "TagName": "vc:new-sponsor",
+            "ParentTag": null,
+            "TagStructure": 0,
+            "Attributes": [],
+            "Diagnostics": []
+          }
+        ],
+        "BoundAttributes": [],
+        "AllowedChildTags": [],
+        "Diagnostics": [],
+        "Metadata": {
+          "Runtime.Name": "ITagHelper",
+          "Common.TypeName": "__Generated__NewSponsorViewComponentTagHelper",
+          "MVC.ViewComponent.Name": "NewSponsor"
+        }
+      },
+      {
         "Kind": "Components.Bind",
         "Name": "Bind",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -20531,6 +20631,21 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Views/Home/Banks.cshtml",
+      "TargetPath": "Views\\Home\\Banks.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Views/Sponsor/Create.cshtml",
+      "TargetPath": "Views\\Sponsor\\Create.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Views/Colleague/Details.cshtml",
+      "TargetPath": "Views\\Colleague\\Details.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Views/Home/Index.cshtml",
       "TargetPath": "Views\\Home\\Index.cshtml",
       "FileKind": "mvc"
@@ -20551,13 +20666,68 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Views/Colleague/Create.cshtml",
+      "TargetPath": "Views\\Colleague\\Create.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Views/Home/Sponsors.cshtml",
+      "TargetPath": "Views\\Home\\Sponsors.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Views/Colleague/Index.cshtml",
+      "TargetPath": "Views\\Colleague\\Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Views/BankData/Create.cshtml",
+      "TargetPath": "Views\\BankData\\Create.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Views/SponsorTransaction/Delete.cshtml",
+      "TargetPath": "Views\\SponsorTransaction\\Delete.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Views/Home/Colleagues.cshtml",
+      "TargetPath": "Views\\Home\\Colleagues.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Views/BankData/Details.cshtml",
+      "TargetPath": "Views\\BankData\\Details.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Views/Home/Components/NewColleague/Default.cshtml",
+      "TargetPath": "Views\\Home\\Components\\NewColleague\\Default.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Views/SponsorTransaction/Details.cshtml",
+      "TargetPath": "Views\\SponsorTransaction\\Details.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Areas/App/Views/SponsorTransaction/Edit.cshtml",
       "TargetPath": "Areas\\App\\Views\\SponsorTransaction\\Edit.cshtml",
       "FileKind": "mvc"
     },
     {
+      "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Views/SponsorTransaction/Edit.cshtml",
+      "TargetPath": "Views\\SponsorTransaction\\Edit.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Areas/App/Views/Sponsor/Delete.cshtml",
       "TargetPath": "Areas\\App\\Views\\Sponsor\\Delete.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Views/SponsorTransaction/Index.cshtml",
+      "TargetPath": "Views\\SponsorTransaction\\Index.cshtml",
       "FileKind": "mvc"
     },
     {
@@ -20568,6 +20738,11 @@
     {
       "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Views/_ViewImports.cshtml",
       "TargetPath": "Views\\_ViewImports.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Views/SponsorTransaction/Create.cshtml",
+      "TargetPath": "Views\\SponsorTransaction\\Create.cshtml",
       "FileKind": "mvc"
     },
     {
@@ -20596,8 +20771,23 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Views/Sponsor/Edit.cshtml",
+      "TargetPath": "Views\\Sponsor\\Edit.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Views/Colleague/Edit.cshtml",
+      "TargetPath": "Views\\Colleague\\Edit.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Areas/App/Views/BankData/Details.cshtml",
       "TargetPath": "Areas\\App\\Views\\BankData\\Details.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Views/BankData/Edit.cshtml",
+      "TargetPath": "Views\\BankData\\Edit.cshtml",
       "FileKind": "mvc"
     },
     {
@@ -20616,6 +20806,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Views/BankData/Delete.cshtml",
+      "TargetPath": "Views\\BankData\\Delete.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Views/Shared/_DefaultLayout.cshtml",
       "TargetPath": "Views\\Shared\\_DefaultLayout.cshtml",
       "FileKind": "mvc"
@@ -20623,6 +20818,16 @@
     {
       "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Areas/App/Views/Sponsor/Details.cshtml",
       "TargetPath": "Areas\\App\\Views\\Sponsor\\Details.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Views/Home/Components/ListColleague/Default.cshtml",
+      "TargetPath": "Views\\Home\\Components\\ListColleague\\Default.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Views/BankData/Index.cshtml",
+      "TargetPath": "Views\\BankData\\Index.cshtml",
       "FileKind": "mvc"
     },
     {
@@ -20636,8 +20841,28 @@
       "FileKind": "mvc"
     },
     {
-      "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Views/Home/Privacy.cshtml",
-      "TargetPath": "Views\\Home\\Privacy.cshtml",
+      "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Views/Colleague/Delete.cshtml",
+      "TargetPath": "Views\\Colleague\\Delete.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Views/Sponsor/Index.cshtml",
+      "TargetPath": "Views\\Sponsor\\Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Views/Sponsor/Details.cshtml",
+      "TargetPath": "Views\\Sponsor\\Details.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Views/Sponsor/Delete.cshtml",
+      "TargetPath": "Views\\Sponsor\\Delete.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Views/Home/Components/NewSponsor/Default.cshtml",
+      "TargetPath": "Views\\Home\\Components\\NewSponsor\\Default.cshtml",
       "FileKind": "mvc"
     },
     {
@@ -20663,6 +20888,11 @@
     {
       "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Areas/App/Views/SponsorTransaction/Details.cshtml",
       "TargetPath": "Areas\\App\\Views\\SponsorTransaction\\Details.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Views/Home/Components/ListSponsor/Default.cshtml",
+      "TargetPath": "Views\\Home\\Components\\ListSponsor\\Default.cshtml",
       "FileKind": "mvc"
     },
     {

@@ -22,8 +22,22 @@ namespace Mehr.Controllers
         {
             return View();
         }
+        
+        [Route("Colleagues")]
+        public IActionResult Colleagues()
+        {
+            return View();
+        }
 
-        public IActionResult Privacy()
+        [Route("Sponsors")]
+        public IActionResult Sponsors()
+        {
+            // ViewBag.alert = "";
+            return View();
+        }
+
+        [Route("Banks")]
+        public IActionResult Banks()
         {
             return View();
         }

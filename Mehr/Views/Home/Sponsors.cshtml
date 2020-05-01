@@ -1,0 +1,27 @@
+@{
+    ViewData["Title"] = "Sponsors";
+}
+
+<section id="content-colleagues">
+	<div class="row match-height">
+		@* <div id="alert-success" class="alert alert-success" role="alert">
+			This is a success alert—check it out!
+		</div>
+		<div id="alert-fail" class="alert alert-danger" role="alert">
+			This is a danger alert—check it out!
+		</div> *@
+		@await Component.InvokeAsync("ListSponsor")
+		@await Component.InvokeAsync("NewSponsor")
+	</div>
+</section>	
+@* 
+@section Script{
+	<script>
+		if (@ViewBag.alert == "Success"){
+			$("#alert-success").alert();
+		}
+		else if (@ViewBag.alert == "Fail"){
+			$("#alert-fail").alert();
+		}
+	</script>
+} *@
