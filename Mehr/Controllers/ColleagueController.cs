@@ -58,9 +58,9 @@ namespace Mehr.Controllers
             {
                 await colleagues.InsertAsync(colleague);
                 await colleagues.saveAsync();
-                return RedirectToAction(nameof(Index));
             }
-            return View(colleague);
+            return RedirectToAction("Colleagues", "Home");
+            // return View(colleague);
         }
 
         // GET: App/Colleague/Edit/5

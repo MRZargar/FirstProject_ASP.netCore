@@ -12,35 +12,40 @@
 			</div>
 			<div id="recent-buyers" class="media-list">
 			@foreach (var item in Model)
-			{			
-				<a href="#" class="media border-0"> @* go to ditail page *@
+			{		
+				<div class="media border-0">	
 					<div class="media-left pr-1">
-						<span class="avatar avatar-md">
-							<img class="media-object rounded-circle" src="theme-assets/images/portrait/small/avatar-s-7.png" alt="Generic placeholder image">
-							<i></i>
-						</span>
+						<a asp-controller="Colleague" asp-action="Details" asp-route-id="@item.ColleagueID">
+							<span class="avatar avatar-md">
+								<img class="media-object rounded-circle" src="theme-assets/images/portrait/small/avatar-s-7.png" alt="Generic placeholder image">
+								<i></i>
+							</span>
+						</a>
 					</div>
 					<div class="media-body w-100">
-						<span class="list-group-item-heading">@item.Name</span>
-						@* <ul class="list-unstyled users-list m-0 float-right">
-							<li data-toggle="tooltip" data-popup="tooltip-custom" data-original-title="Product 1" class="avatar avatar-sm pull-up">
-								<img class="media-object rounded-circle no-border-top-radius no-border-bottom-radius" src="theme-assets/images/portfolio/portfolio-1.jpg"
-									alt="Avatar">
+						<a asp-controller="Colleague" asp-action="Details" asp-route-id="@item.ColleagueID">
+							<span class="list-group-item-heading">@item.Name</span>
+						</a>
+						<ul class="list-unstyled users-list m-0 float-right" style="right: 10px;">
+							<li class="avatar avatar-sm pull-up">
+								@* <a asp-controller="Colleague" asp-action="Delete" asp-route-id="@item.ColleagueID"> *@
+								<a onclick="deleteColleague(@item.ColleagueID)">
+									<i class="la la-trash-o media-object rounded-circle no-border-top-radius no-border-bottom-radius"></i>
+								</a>
 							</li>
-							<li data-toggle="tooltip" data-popup="tooltip-custom" data-original-title="Product 2" class="avatar avatar-sm pull-up">
-								<img class="media-object rounded-circle no-border-top-radius no-border-bottom-radius" src="theme-assets/images/portfolio/portfolio-2.jpg"
-									alt="Avatar">
+							<li class="avatar avatar-sm pull-up">
+								<a asp-controller="Colleague" asp-action="Edit" asp-route-id="@item.ColleagueID">
+									<i class="la la-edit media-object rounded-circle no-border-top-radius no-border-bottom-radius"></i>
+								</a>
 							</li>
-							<li data-toggle="tooltip" data-popup="tooltip-custom" data-original-title="Product 3" class="avatar avatar-sm pull-up">
-								<img class="media-object rounded-circle no-border-top-radius no-border-bottom-radius" src="theme-assets/images/portfolio/portfolio-4.jpg"
-									alt="Avatar">
+							<li class="avatar avatar-sm pull-up">
 							</li>
-						</ul> *@
+						</ul> 
 						<p class="list-group-item-text mb-0">
 							<span class="blue-grey lighten-2 font-small-3">#@item.code</span>
 						</p>
 					</div>
-				</a>
+				</div>
 			}
 			</div>
 		</div>
