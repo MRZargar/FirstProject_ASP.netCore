@@ -18,12 +18,6 @@ namespace Mehr.Controllers
             this.colleagues = new ColleagueRepository(context);
         }
 
-        // GET: App/Colleague
-        public async Task<IActionResult> Index()
-        {
-            return View(await colleagues.GetAllAsync());
-        }
-
         // GET: App/Colleague/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -41,12 +35,6 @@ namespace Mehr.Controllers
             return View(colleague);
         }
 
-        // GET: App/Colleague/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
         // POST: App/Colleague/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -60,7 +48,6 @@ namespace Mehr.Controllers
                 await colleagues.saveAsync();
             }
             return RedirectToAction("Colleagues", "Home");
-            // return View(colleague);
         }
 
         // GET: App/Colleague/Edit/5
@@ -109,7 +96,7 @@ namespace Mehr.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", new {id = colleague.ColleagueID}); //RedirectToAction(nameof(Index));
             }
             return View(colleague);
         }
@@ -138,7 +125,7 @@ namespace Mehr.Controllers
         {
             await colleagues.DeleteAsync(id);
             await colleagues.saveAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Colleagues", "Home");
         }
 
         private bool ColleagueExists(int id)

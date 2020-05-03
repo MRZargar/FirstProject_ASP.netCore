@@ -12,23 +12,17 @@
 						<thead class="thead-dark">
 							<tr>
 								<th scope="col">#</th>
-								<th scope="col">
-                                    @Html.DisplayNameFor(model => model.BankName)
+                                <th scope="col">
+                                    @Html.DisplayNameFor(model => model.MySponsor)
                                 </th>
 								<th scope="col">
-                                    @Html.DisplayNameFor(model => model.TransactionDate)
-                                </th>
-								<th scope="col">
-                                    @Html.DisplayNameFor(model => model.TrackingNumber)
+                                    @Html.DisplayNameFor(model => model.MySponsor.CauseOfSupport)
                                 </th>
                                 <th scope="col">
-                                    @Html.DisplayNameFor(model => model.LateFourNumbersOfBankCard)
+                                    @Html.DisplayNameFor(model => model.TransactionDate)
                                 </th>
                                 <th scope="col">
                                     @Html.DisplayNameFor(model => model.Amount)
-                                </th>
-                                <th scope="col">
-                                    @Html.DisplayNameFor(model => model.MySponsor)
                                 </th>
 							</tr>
 						</thead>
@@ -39,24 +33,20 @@
                             @foreach (var item in Model)
                             {
                                 <tr>
-                                    <th scope="row">@i</th>
+                                    <th scope="row">@(i++)</th>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.BankName)
+                                        <a asp-controller="Sponsor" asp-action="Details" asp-route-id="@item.MySponsor.SponsorID">
+                                            @Html.DisplayFor(modelItem => item.MySponsor.Name)
+                                        </a>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.MySponsor.CauseOfSupport)
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.TransactionDate)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.TrackingNumber)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.LateFourNumbersOfBankCard)
-                                    </td>
-                                    <td>
                                         @Html.DisplayFor(modelItem => item.Amount)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.MySponsor.Name)
                                     </td>
                                 </tr>
                             }

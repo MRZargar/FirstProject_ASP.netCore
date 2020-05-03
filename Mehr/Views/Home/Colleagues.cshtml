@@ -9,9 +9,8 @@
 	</div>
 </section>
 
-@* <button type="button" data-toggle="modal" data-target="#myModal">Launch modal</button> *@
 
-<!-- Modal -->
+@* <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -23,15 +22,10 @@
     </div>
   </div>
 </div>
-<!-- End Model -->
+<!-- End Model --> *@
 
 @section Script{
-    <script src="~/lib/bootstrap/dist/js/modal.js"></script>
-	@* <script>
-		$(document).ready(function(){
-			$('.modal').modal('show');
-		});
-	</script> *@
+    @* <script src="~/lib/bootstrap/dist/js/modal.js"></script> *@
 	<script>
 		function deleteColleague(id){
 			$.get("/Colleague/Delete/"+id, function(result){
@@ -41,11 +35,15 @@
 			});
 		};
 	</script>
-	@* <script>
-		function deleteColleague(id){
-			$(".modal").modal();
-			$(".modal-title").html("Delete Colleague");
-			$(".modal-body").html("zargar"); 
-		};
-	</script> *@
+
+	<script>
+		$(document).ready(function(){
+		$("#input-search").on("keyup", function() {
+			var value = $(this).val().toLowerCase();
+			$("#recent-buyers *").filter(function() {
+				$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+			});
+		});
+		});
+	</script>
 }

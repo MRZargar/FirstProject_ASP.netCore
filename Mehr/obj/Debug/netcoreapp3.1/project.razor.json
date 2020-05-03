@@ -20700,18 +20700,8 @@
       "FileKind": "mvc"
     },
     {
-      "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Views/Colleague/Create.cshtml",
-      "TargetPath": "Views\\Colleague\\Create.cshtml",
-      "FileKind": "mvc"
-    },
-    {
       "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Views/Home/Sponsors.cshtml",
       "TargetPath": "Views\\Home\\Sponsors.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "/home/zargar/Desktop/Mehr/Mehr/Views/Colleague/Index.cshtml",
-      "TargetPath": "Views\\Colleague\\Index.cshtml",
       "FileKind": "mvc"
     },
     {

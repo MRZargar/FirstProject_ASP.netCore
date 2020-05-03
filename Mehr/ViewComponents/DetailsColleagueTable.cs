@@ -22,13 +22,30 @@ namespace Mehr.ViewComponents
             var colleague = await colleages.GetByIdAsync(id);
 
             List<SponsorTransaction> colleagusTransactios = new List<SponsorTransaction>();
+            decimal sumAmounts = 0;
 
-            foreach (var sponsor in colleague.Sponsors)
-            {
-                colleagusTransactios.AddRange(await transactions.GetAllBySponsorIdAsync(sponsor.SponsorID));
+            foreach (Sponsor sponsor in colleague.Sponsors)
+            {   
+                var sponsorTransactions = await transactions.GetAllBySponsorIdAsync(sponsor.SponsorID);
+                colleagusTransactios.AddRange(sponsorTransactions);
+                sumAmounts += sumAmountsTransactions(sponsorTransactions);
             } 
 
+            ViewBag.sumAmounts = sumAmounts;
+
             return View(colleagusTransactios);
+        }
+
+        public decimal sumAmountsTransactions(IEnumerable<SponsorTransaction> transactions)
+        {
+            decimal sum = 0;
+
+            foreach (SponsorTransaction transaction in transactions)
+            {
+                sum += transaction.Amount;
+            }
+
+            return sum;
         }
     }
 }
