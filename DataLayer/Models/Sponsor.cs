@@ -9,6 +9,8 @@ namespace DataLayer
         [Key]
         public int SponsorID { get; set; }
 
+        public bool isMale { get; set; }
+
         [Required]
         public int ColleagueID { get; set; }
 
@@ -25,7 +27,8 @@ namespace DataLayer
         [MaxLength(500)]
         public string OtherSupport { get; set; }
 
-        public bool isValid { get; set; }
+        [MaxLength(500)]
+        public string picName { get; set; }
 
         public virtual Colleague MyColleague { get; set; }
 

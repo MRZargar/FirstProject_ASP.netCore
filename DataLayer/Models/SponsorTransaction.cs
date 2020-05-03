@@ -28,6 +28,8 @@ namespace DataLayer
         [Required]
         public decimal Amount { get; set; }
 
+        public bool isValid { get; set; }
+
         public virtual Sponsor MySponsor { get; set; }
         
         public SponsorTransaction()
