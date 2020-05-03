@@ -9,7 +9,7 @@
 	</div>
 </section>
 
-<div id="zargar"></div>
+@* <button type="button" data-toggle="modal" data-target="#myModal">Launch modal</button> *@
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -27,18 +27,25 @@
 
 @section Script{
     <script src="~/lib/bootstrap/dist/js/modal.js"></script>
-	@* <script type="text/javascript">
+	@* <script>
 		$(document).ready(function(){
 			$('.modal').modal('show');
 		});
 	</script> *@
 	<script>
 		function deleteColleague(id){
-			$.get("/Colleague/Edit/"+id, function(result){
-				$("#myModal").modal({show:true});
-				$("#myModalLabel").html("Delete Colleague");
-				$("#myModalContent").html(result); 
+			$.get("/Colleague/Delete/"+id, function(result){
+				$(".modal").modal();
+				$(".modal-title").html("Delete Colleague");
+				$(".modal-body").html(result); 
 			});
 		};
 	</script>
+	@* <script>
+		function deleteColleague(id){
+			$(".modal").modal();
+			$(".modal-title").html("Delete Colleague");
+			$(".modal-body").html("zargar"); 
+		};
+	</script> *@
 }

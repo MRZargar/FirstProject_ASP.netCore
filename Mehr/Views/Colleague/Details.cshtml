@@ -2,47 +2,63 @@
 
 @{
     ViewData["Title"] = "Details";
+    Layout = "_ChartLayout";
+    ViewBag.ChartData = "[125, 200, 125, 225, 125, 200, 125, 225, 175, 275, 220]";
 }
 
-<h1>Details</h1>
+<section id="basic-buttons">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">@Model.Name</h3>
+                </div>
+                <div class="card-content collapse show">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <img style="left: 50px; height: 150px; width: 150px;" class="media-object rounded-circle" style="height: 100px;" src="~/theme-assets/images/portrait/small/avatar-s-7.png" alt="Generic placeholder image">
+                            </div>
+                            <div class="col">
+                                <dl class="row">
+                                    <dt class = "col-sm-5">
+                                        @Html.DisplayNameFor(model => model.PhoneNumber)
+                                    </dt>
+                                    <dd class = "col-sm-5">
+                                        0@(Html.DisplayFor(model => model.PhoneNumber))
+                                    </dd>
+                                    <dt class = "col-sm-5">
+                                        @Html.DisplayNameFor(model => model.BirthDay)
+                                    </dt>
+                                    <dd class = "col-sm-5">
+                                        @Html.DisplayFor(model => model.BirthDay)
+                                    </dd>
+                                    <dt class = "col-sm-5">
+                                        @Html.DisplayNameFor(model => model.StartActivity)
+                                    </dt>
+                                    <dd class = "col-sm-5">
+                                        @Html.DisplayFor(model => model.StartActivity)
+                                    </dd>
+                                    <dt class = "col-sm-5">
+                                        @Html.DisplayNameFor(model => model.code)
+                                    </dt>
+                                    <dd class = "col-sm-5">
+                                        @Html.DisplayFor(model => model.code)
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div style="position:absolute; right: 30px; bottom: 20px">
+                                <a class="btn btn-warning" asp-controller="Colleague" asp-action="Edit" asp-route-id="@Model.ColleagueID">Edit</a>
+                                <a class="btn btn-danger" asp-controller="Colleague" asp-action="Delete" asp-route-id="@Model.ColleagueID">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-<div>
-    <h4>Colleague</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BirthDay)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BirthDay)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StartActivity)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StartActivity)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.code)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.code)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.ColleagueID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+@await Component.InvokeAsync("DetailsColleagueTable", new {id = Model.ColleagueID})

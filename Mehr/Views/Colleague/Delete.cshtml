@@ -2,16 +2,17 @@
 
 @{
     ViewData["Title"] = "Delete";
+    Layout = null;
 }
 
 
-<section id="content-colleagues">
+@* <section id="content-colleagues"> *@
 	<div class="row match-height">
 		<h3>Are you sure you want to delete this?</h3>
         <form asp-action="Delete">
             <input type="hidden" asp-for="ColleagueID" />
             <input type="submit" value="Delete" /> |
-            <a asp-action="Index">Back to List</a>
+            @* <a asp-action="Index">Back to List</a> *@
         </form>
 	</div>
-</section>
+@* </section> *@

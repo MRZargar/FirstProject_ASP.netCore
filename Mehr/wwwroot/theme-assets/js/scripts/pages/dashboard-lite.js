@@ -16,11 +16,8 @@
     *************************************************/
 
     var lineGradientChart1 = new Chartist.Line('#gradient-line-chart1', {
-        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-        series: [
-            [125, 200, 125, 225, 175, 275, 220],
-            [175, 275, 165, 280, 120, 226, 150]
-        ]
+        labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+        series: ["@ViewBag.ChartData"]
     }, {
             low: 100,
             fullWidth: true,

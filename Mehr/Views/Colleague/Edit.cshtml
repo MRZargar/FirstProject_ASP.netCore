@@ -1,46 +1,58 @@
 @model DataLayer.Colleague
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Colleague";
 }
+<section id="basic-buttons">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                @* <div class="card-header">
+                    <h4 class="card-title">Edit</h4>
+                </div> *@
+                <div class="card-content collapse show">
+                    <div class="card-body">
+                        <form asp-action="Edit">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="ColleagueID" />
+                            <div class="form-group">
+                                <label asp-for="Name" class="control-label"></label>
+                                <input asp-for="Name" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="PhoneNumber" class="control-label"></label>
+                                <input asp-for="PhoneNumber" class="form-control" />
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="BirthDay" class="control-label"></label>
+                                <input asp-for="BirthDay" class="form-control" />
+                                <span asp-validation-for="BirthDay" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="StartActivity" class="control-label"></label>
+                                <input asp-for="StartActivity" class="form-control" />
+                                <span asp-validation-for="StartActivity" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="code" class="control-label"></label>
+                                <input asp-for="code" class="form-control" />
+                                <span asp-validation-for="code" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Save" class="btn btn-primary" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ColleagueID" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PhoneNumber" class="control-label"></label>
-                <input asp-for="PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BirthDay" class="control-label"></label>
-                <input asp-for="BirthDay" class="form-control" />
-                <span asp-validation-for="BirthDay" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StartActivity" class="control-label"></label>
-                <input asp-for="StartActivity" class="form-control" />
-                <span asp-validation-for="StartActivity" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="code" class="control-label"></label>
-                <input asp-for="code" class="form-control" />
-                <span asp-validation-for="code" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
