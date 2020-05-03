@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,6 +20,20 @@ namespace DataLayer
             try
             {
                 return await db.SponsorTransactions.Include(s => s.MySponsor).ToListAsync(); 
+            }
+            catch (System.Exception)
+            {                
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<SponsorTransaction>> GetAllBySponsorIdAsync(int sponsorID)
+        {
+            try
+            {
+                return db.SponsorTransactions
+                    .Include(s => s.MySponsor)
+                    .Where(m => m.SponsorID == sponsorID);
             }
             catch (System.Exception)
             {                

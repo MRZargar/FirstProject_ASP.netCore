@@ -31,6 +31,7 @@ namespace DataLayer
             try
             {
                 return await db.Colleagues
+                    .Include(s => s.Sponsors)
                     .FirstOrDefaultAsync(m => m.ColleagueID == colleagueID);   
             }
             catch (System.Exception)
