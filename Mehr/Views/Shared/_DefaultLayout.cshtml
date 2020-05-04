@@ -1,6 +1,9 @@
-@{
-  if (ViewBag.headerColor == null)
-    ViewBag.headerColor = "bg-gradient-x-purple-purple";
+﻿@{
+    if (ViewBag.headerColor == null)
+        ViewBag.headerColor = "bg-gradient-x-purple-purple";
+
+    if (ViewData["DefaultStyle"] == null)
+        ViewData["DefaultStyle"] = false;
 }
 <!DOCTYPE html>
 <html class="loading" lang="en" data-textdirection="ltr">
@@ -99,18 +102,14 @@
       <div class="content-wrapper">
         <div class="content-wrapper-before"></div>
         <div class="content-header row">
-          
-            @try
-            {
-                bool x = (bool)ViewData["DefaultStyle"];
-            }
-            catch (Exception)
+
+            @if (!(bool)ViewData["DefaultStyle"])
             {
                 <div class="content-header-left col-md-4 col-12 mb-2">
                     <h3 class="content-header-title">@ViewData["Title"]</h3>
                 </div>
             }
-
+            
         </div>
         <div class="content-body">
           @RenderBody()

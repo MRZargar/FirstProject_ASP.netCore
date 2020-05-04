@@ -18,11 +18,9 @@ namespace DataLayer
         public long PhoneNumber { get; set; }
 
         [Required]
-        [DataType(DataType.Date)]
         public DateTime BirthDay { get; set; }
 
         [Required]
-        [DataType(DataType.Date)]
         public virtual DateTime StartActivity { get; set; }
 
         public int code { get; set; }      

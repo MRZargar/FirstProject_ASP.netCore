@@ -6,6 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DataLayer;
+using System.Data;
+using Mehr.Classes;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace Mehr.Controllers
 {
@@ -65,6 +69,60 @@ namespace Mehr.Controllers
             }
             ViewData["SponsorID"] = new SelectList(await sponsors.GetAllAsync(), "SponsorID", "Name", sponsorTransaction.SponsorID);
             return View(sponsorTransaction);
+        }
+
+        [HttpPost("FileUplaod")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Createzar(string BankName, int ColleagueID, IFormFile XLSXfile)
+        {
+            if (XLSXfile == null)
+            {
+                return RedirectToAction("Home", "Index");
+            }
+
+            var filePath = Path.GetTempFileName(); //we are using Temp file name just for the example. Add your own file path.
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await XLSXfile.CopyToAsync(stream);
+            }
+
+            DataTable dt = Excel.Read(filePath);
+            foreach (DataRow row in dt.Rows)
+            {
+                var st = new SponsorTransaction();
+                
+                long phoneNumber = long.Parse(row["Phone"].ToString());
+                Sponsor mySponsor = await sponsors.GetByPhoneNumberAsync(phoneNumber);
+                
+                if (mySponsor == null)
+                {
+                    mySponsor = new Sponsor();
+                    mySponsor.ColleagueID = ColleagueID;
+                    mySponsor.PhoneNumber = phoneNumber;
+                    mySponsor.Name = row["SponsorName"].ToString();
+
+                    await sponsors.InsertAsync(mySponsor);
+                    await sponsors.saveAsync();
+
+                    mySponsor = await sponsors.GetByPhoneNumberAsync(phoneNumber);
+                }
+
+                st.isValid = false;
+                st.BankName = BankName;
+                st.Amount = Convert.ToDecimal(row["Amount"]);
+                st.LateFourNumbersOfBankCard = Convert.ToInt16(row["CardNumber"]);
+                st.TrackingNumber = row["TrackingNumber"].ToString();
+                DateTime date = Convert.ToDateTime(row["Date"]);
+                TimeSpan time = TimeSpan.Parse(row["Time"].ToString());
+                st.TransactionDate = date + time;
+                st.SponsorID = mySponsor.SponsorID;
+                
+                await transactions.InsertAsync(st);
+            }
+
+            await transactions.saveAsync();
+            return RedirectToAction("Colleague", "Details", new {id = ColleagueID});
         }
 
         // GET: App/SponsorTransaction/Edit/5

@@ -108,5 +108,18 @@ namespace DataLayer
             }
         }
 
+        public async Task<Sponsor> GetByPhoneNumberAsync(long phoneNumber)
+        {
+            try
+            {
+                return await db.Sponsors
+                    .Include(s => s.MyColleague)
+                    .FirstOrDefaultAsync(m => m.PhoneNumber == phoneNumber);   
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
     }
 }

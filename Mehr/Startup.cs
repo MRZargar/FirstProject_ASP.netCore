@@ -28,7 +28,7 @@ namespace Mehr
             services.AddControllersWithViews();
 
             services.AddDbContext<MyContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
                 x => x.MigrationsAssembly("DataLayer")));
         }
 

@@ -13,7 +13,6 @@ namespace DataLayer
         public string BankName { get; set; }
 
         [Required]
-        [DataType(DataType.Date)]
         public DateTime TransactionDate { get; set; }
 
         [Required]
