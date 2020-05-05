@@ -7,6 +7,7 @@
 @section StyleSheets{
     <link rel="stylesheet" type="text/css" href="~/theme-assets/vendors/css/charts/chartist.css">
     <link rel="stylesheet" type="text/css" href="~/theme-assets/css/pages/dashboard-ecommerce.css">
+    @RenderSection("StyleSheets", false)
 }
 
 @section Script{
@@ -103,6 +104,8 @@
     });
 
     </script>
+
+    @RenderSection("Script", false)
 }
 
 <!-- Chart -->

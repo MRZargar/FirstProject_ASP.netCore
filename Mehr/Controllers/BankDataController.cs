@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DataLayer;
+using static DataLayer.BankDataRepository;
 
 namespace Mehr.Controllers
 {
@@ -23,6 +24,27 @@ namespace Mehr.Controllers
         {
             return View(await bankDatas.GetAllAsync());
         }
+
+        public async Task<IActionResult> BankDetails(string? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            BankName bank = findBankName(id);
+            if (bank == null)
+            {
+                return NotFound();
+            }
+
+            var bankData = bankDatas.GetAllByBankName(bank);
+
+            ViewBag.BankName = bank;
+            ViewBag.ChartData = "[125, 200, 125, 225, 125, 200, 125, 225, 175, 275, 220]";
+            return View(bankData);
+        }
+
 
         // GET: App/BankData/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -144,6 +166,21 @@ namespace Mehr.Controllers
         private bool BankDataExists(int id)
         {
             return bankDatas.GetByIdAsync(id) != null;
+        }
+
+        private BankName? findBankName(string input)
+        {
+            BankName bankName;
+            if (input.ToLower() == BankName.MELLI.ToString().ToLower())
+                bankName = BankName.MELLI;
+            else if (input.ToLower() == BankName.MELLAT.ToString().ToLower())
+                bankName = BankName.MELLAT;
+            else if (input.ToLower() == BankName.SADERAT.ToString().ToLower())
+                bankName = BankName.SADERAT;
+            else
+                return null;
+
+            return bankName;
         }
     }
 }

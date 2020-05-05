@@ -1,0 +1,129 @@
+﻿@model IEnumerable<DataLayer.BankData>
+
+@{
+    ViewData["Title"] = ViewBag.BankName.ToString() + " Bank";
+    Layout = "_ChartLayout";
+}
+
+@section StyleSheets{ 
+    <style>
+        .row::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+    </style>
+}
+
+<div class="row">
+    <div class="col-lg-12 col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">@ViewBag.BankName.ToString()</h3>
+            </div>
+            <div class="card-content collapse show">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="feather-icons overflow-hidden col-md-4">
+                            <a href="#">
+                                <p>Import Transactions</p>
+                            </a>
+                            <a href="#">
+                                <p>Export Transactions</p>
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                           <p>...</p>
+                           <p>...</p>
+                           <p>...</p>
+                           <p>...</p>
+                           <p>...</p>
+                        </div>
+                        <div class="col-md-4">
+                            <img class="media-object" src="~/images/Banks/@ViewBag.BankName.image()" alt="@ViewBag.BankName.ToString()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Table head options start -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Bills</h4>
+                <div class="heading-elements">
+                    <ul class="list-inline mb-0">
+                        <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                        <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-content collapse show">
+                <div class="card-body">
+                </div>
+                <div class="table-responsive">
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <td>
+                                    dsan    
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody><tr><td></td></tr></tbody>
+                    </table>
+
+
+                    <table class="table">
+                        <thead>
+                            <tr class="thead-dark">
+                                <th scope="col">#</th>
+                                <th scope="col">
+                                    @Html.DisplayNameFor(model => model.TransactionDate)
+                                </th>
+                                <th scope="col">
+                                    @Html.DisplayNameFor(model => model.TrackingNumber)
+                                </th>
+                                <th scope="col">
+                                    @Html.DisplayNameFor(model => model.LateFourNumbersOfBankCard)
+                                </th>
+                                <th scope="col">
+                                    @Html.DisplayNameFor(model => model.Amount)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int i = 1;
+                            }
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <th scope="row">@(i++)</th>
+                                    <td>
+                                        @Html.DisplayFor(model => item.TransactionDate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(model => item.TrackingNumber)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(model => item.LateFourNumbersOfBankCard)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(model => item.Amount)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Table head options end -->

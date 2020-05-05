@@ -32,6 +32,7 @@ namespace Mehr.Controllers
                 return NotFound();
             }
 
+            ViewBag.ChartData = "[125, 200, 125, 225, 125, 200, 125, 225, 175, 275, 220]";
             return View(colleague);
         }
 
