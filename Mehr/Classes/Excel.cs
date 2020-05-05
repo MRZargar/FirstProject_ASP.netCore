@@ -81,10 +81,22 @@ namespace Mehr.Classes
 
         public static DataTable Read(string path, bool header = true, string sheetName = "")
         {
+            //FileInfo existingFile = new FileInfo(path);
+            using (FileStream stream = File.OpenRead(path))
+            {
+                return Read(stream, header, sheetName);
+            }
+        }
+
+        public static DataTable Read(Stream stream, bool header = true, string sheetName = "")
+        {
             DataTable dt = new DataTable();
 
-            FileInfo existingFile = new FileInfo(path);
-            using (ExcelPackage package = new ExcelPackage(existingFile))
+            ExcelPackage.LicenseContext = LicenseContext.Commercial;
+
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            using (ExcelPackage package = new ExcelPackage(stream))
             {
                 //get the first worksheet in the workbook
                 ExcelWorksheet worksheet;
@@ -95,7 +107,7 @@ namespace Mehr.Classes
                 
                 int colCount = worksheet.Dimension.End.Column;  //get Column Count
 
-                dt.TableName = Path.GetFileNameWithoutExtension(path);
+                //dt.TableName = Path.GetFileNameWithoutExtension(stream.);
 
                 for (int colInx = 0; colInx < colCount; colInx++)
                 {

@@ -13,5 +13,6 @@ namespace DataLayer
         bool Delete(BankData bankData);
         Task<bool> DeleteAsync(int bankDataID);
         Task<bool> saveAsync();
+        void Dispose();
     }
 }

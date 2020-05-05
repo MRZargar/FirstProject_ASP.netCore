@@ -13,5 +13,6 @@ namespace DataLayer
         bool Delete(Colleague colleague);
         Task<bool> DeleteAsync(int colleagueID);
         Task<bool> saveAsync();
+        void Dispose();
     }
 }

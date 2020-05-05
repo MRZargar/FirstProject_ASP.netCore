@@ -14,5 +14,6 @@ namespace DataLayer
         bool Delete(Sponsor sponsor);
         Task<bool> DeleteAsync(int sponsorID);
         Task<bool> saveAsync();
+        void Dispose();
     }
 }

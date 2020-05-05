@@ -121,5 +121,10 @@ namespace DataLayer
                 throw;
             }
         }
+
+        public void Dispose()
+        {
+            db.Dispose();
+        }
     }
 }
