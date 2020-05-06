@@ -6,6 +6,7 @@
 }
 
 @section StyleSheets{ 
+    <link rel="stylesheet" href="~/lib/slider/jquery-ui.css">
     <style>
         .row::after {
             content: "";
@@ -19,7 +20,13 @@
     <div class="col-lg-12 col-md-12">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">@ViewBag.BankName.ToString()</h3>
+                <h2 class="card-title">@ViewBag.BankName.ToString()</h2>
+                <div class="heading-elements">
+                    <ul class="list-inline mb-0">
+                        <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                        <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                    </ul>
+                </div>
             </div>
             <div class="card-content collapse show">
                 <div class="card-body">
@@ -63,15 +70,45 @@
                 </div>
             </div>
             <div class="card-content collapse show">
-                <div class="card-body">
-                </div>
                 <div class="table-responsive">
 
                     <table class="table table-striped">
                         <thead>
-                            <tr>
-                                <td>
-                                    dsan    
+                            <tr class="thead-light">
+                                <td class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="TrackingNumber" class="control-label">Seaech By Tracking Number:</label>
+                                            <input id="TrackingNumber" type="text" class="form-control" placeholder="Enter Tracking Number">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="LateFourNumbersOfBankCard" class="control-label">Search Bt Last Four Number Of Card Number:</label>
+                                            <input id="LateFourNumbersOfBankCard" type="text" class="form-control" placeholder="Enter Card Number">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <form action="#" method="post">
+                                            <div class="form-group"
+                                                <label for="buttomGroup" class="control-label">Filter By Date:</label>
+                                                <div class="btn-group" id="buttomGroup" role="group" aria-label="Basic example" style="padding: 2px;">
+                                                    <button type="button" class="btn btn-secondary">From</button>
+                                                    <input type="date" name="FromDate" class="form-control btn-sm" style="border-radius: 0;" />
+                                                    <button type="button" class="btn btn-secondary">To</button>
+                                                    <input type="date" name="ToDate" class="form-control btn-sm" style="border-radius: 0;" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="amount" class="control-label">Filter By Amount:</label>
+                                                <input type="text" id="amount" readonly style="border:0; color:#000; font-weight:bold;">
+                                                <div id="slider-range"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-light btn-sm" style="position:relative; float: right;">
+                                                    <i class="la la-filter"></i>Filter
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         </thead>
@@ -127,3 +164,24 @@
     </div>
 </div>
 <!-- Table head options end -->
+
+
+@section Script{
+    <script src="~/lib/slider/jquery-1.12.4.js"></script>
+    <script src="~/lib/slider/jquery-ui.js"></script> 
+    <script>
+	$( function() {
+		$( "#slider-range" ).slider({
+			range: true,
+			min: 0,
+			max: 1000000000,
+            values: [0, 1000000000],
+			slide: function( event, ui ) {
+				$( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+			}
+		});
+		$( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+			" - $" + $( "#slider-range" ).slider( "values", 1 ) );
+	} );
+    </script>
+}
