@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DataLayer;
+using DataLayer.Exceptions;
 
 namespace Mehr.Controllers
 {
@@ -23,13 +24,19 @@ namespace Mehr.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                ViewBag.err = new NotFoundException();
+                return View("Error");
             }
 
-            var colleague = await colleagues.GetByIdAsync(id.Value);
-            if (colleague == null)
+            Colleague colleague;
+            try
             {
-                return NotFound();
+                colleague = await colleagues.GetByIdAsync(id.Value);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.err = ex;
+                return View("Error");
             }
 
             ViewBag.ChartData = "[125, 200, 125, 225, 125, 200, 125, 225, 175, 275, 220]";
@@ -41,12 +48,21 @@ namespace Mehr.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ColleagueID,Name,PhoneNumber,BirthDay,StartActivity,code")] Colleague colleague)
+        public async Task<IActionResult> Create([Bind("ColleagueID,Name,PhoneNumber,BirthDay,StartActivity,code,color")] Colleague colleague)
         {
             if (ModelState.IsValid)
             {
-                await colleagues.InsertAsync(colleague);
-                await colleagues.saveAsync();
+                try
+                {
+                    await colleagues.InsertAsync(colleague);
+                    await colleagues.saveAsync();
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.err = ex;
+                    return View("Error");
+                }
+                
             }
             return RedirectToAction("Colleagues", "Home");
         }
@@ -56,14 +72,21 @@ namespace Mehr.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                ViewBag.err = new NotFoundException();
+                return View("Error");
             }
 
-            var colleague = await colleagues.GetByIdAsync(id.Value);
-            if (colleague == null)
+            Colleague colleague;
+            try
             {
-                return NotFound();
+                colleague = await colleagues.GetByIdAsync(id.Value);
             }
+            catch (Exception ex)
+            {
+                ViewBag.err = ex;
+                return View("Error");
+            }
+            
             return View(colleague);
         }
 
@@ -76,26 +99,21 @@ namespace Mehr.Controllers
         {
             if (id != colleague.ColleagueID)
             {
-                return NotFound();
+                ViewBag.err = new NotFoundException();
+                return View("Error");
             }
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    colleagues.Update(colleague);
+                    await colleagues.UpdateAsync(colleague);
                     await colleagues.saveAsync();
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (Exception ex)
                 {
-                    if (!ColleagueExists(colleague.ColleagueID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    ViewBag.err = ex;
+                    return View("Error");
                 }
                 return RedirectToAction("Details", new {id = colleague.ColleagueID}); //RedirectToAction(nameof(Index));
             }
@@ -107,13 +125,19 @@ namespace Mehr.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                ViewBag.err = new NotFoundException();
+                return View("Error");
             }
 
-            var colleague = await colleagues.GetByIdAsync(id.Value);
-            if (colleague == null)
+            Colleague colleague;
+            try
             {
-                return NotFound();
+                colleague = await colleagues.GetByIdAsync(id.Value);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.err = ex;
+                return View("Error");
             }
 
             return View(colleague);
@@ -124,14 +148,17 @@ namespace Mehr.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await colleagues.DeleteAsync(id);
-            await colleagues.saveAsync();
+            try
+            {
+                await colleagues.DeleteAsync(id);
+                await colleagues.saveAsync();
+            }
+            catch (Exception ex)
+            {
+                ViewBag.err = ex;
+                return View("Error");
+            }
             return RedirectToAction("Colleagues", "Home");
-        }
-
-        private bool ColleagueExists(int id)
-        {
-            return colleagues.GetByIdAsync(id) != null;
         }
     }
 }

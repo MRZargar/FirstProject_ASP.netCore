@@ -17,10 +17,11 @@ namespace DataLayer
         [MaxLength(50)]
         public string Name { get; set; }
 
-        [Phone]
+        //[Phone]
         [Required]
         //[Index(IsUnique = true)]
         [Display(Name = "Phone")]
+        [RegularExpression(@"^(\d{10})$", ErrorMessage = "Not a valid phone number")]
         public long PhoneNumber { get; set; }
 
         [Required]
@@ -28,12 +29,14 @@ namespace DataLayer
         public DateTime BirthDay { get; set; }
 
         [Required]
-        [Display(Name = "Start activity date")]
+        [Display(Name = "Start Activity Date")]
         public virtual DateTime StartActivity { get; set; }
 
+        [Display(Name = "Code")]
         public int code { get; set; }      
 
         [MaxLength(7)]
+        [Display(Name = "Color")]
         public String color { get; set; }
 
         [MaxLength(500)]
