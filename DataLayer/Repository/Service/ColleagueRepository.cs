@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using DataLayer.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataLayer
@@ -21,7 +22,7 @@ namespace DataLayer
                 return await db.Colleagues.ToListAsync(); 
             }
             catch (System.Exception)
-            {                
+            {
                 throw;
             }
         }
@@ -32,53 +33,79 @@ namespace DataLayer
             {
                 return await db.Colleagues
                     .Include(s => s.Sponsors)
-                    .FirstOrDefaultAsync(m => m.ColleagueID == colleagueID);   
+                    .FirstAsync(m => m.ColleagueID == colleagueID);
             }
             catch (System.Exception)
             {
-                throw;
+                throw new NotFoundException();
+            }
+        }
+
+        public async Task<Colleague> GetByPhoneNumberAsync(long phoneNmber)
+        {
+            try
+            {
+                return await db.Colleagues
+                    .Include(s => s.Sponsors)
+                    .FirstAsync(m => m.PhoneNumber == phoneNmber);
+            }
+            catch (System.Exception)
+            {
+                throw new NotFoundException();
             }
         }
 
         public async Task<bool> InsertAsync(Colleague colleague)
         {
+            if (await IsExistAsync(colleague))
+            {
+                throw new DuplicatePhoneNumberException();
+            }
+
             try
             {
                 await db.Colleagues.AddAsync(colleague);     
-
                 return true;
             }
             catch (Exception)
             {
-                return false;
+                throw;   
             }
         }
 
-        public bool Update(Colleague colleague)
+        public async Task<bool> UpdateAsync(Colleague colleague)
         {
+            if (!(await IsExistAsync(colleague)))
+            {
+                throw new NotFoundException();
+            }
+
             try
             {
                 db.Colleagues.Update(colleague);
-
                 return true;    
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 throw;
             }
         }
 
-        public bool Delete(Colleague colleague)
+        public async Task<bool> DeleteAsync(Colleague colleague)
         {
+            if (!(await IsExistAsync(colleague)))
+            {
+                throw new NotFoundException();
+            }
+
             try
             {
                 db.Colleagues.Remove(colleague);
-
                 return true;    
             }
-            catch (System.Exception)
+            catch (Exception)
             {
-                return false;
+                throw;
             }
         }
 
@@ -87,11 +114,11 @@ namespace DataLayer
             try
             {
                 var colleague = await GetByIdAsync(colleagueID);
-                return Delete(colleague);
+                return await DeleteAsync(colleague);
             }
-            catch (System.Exception)
+            catch (Exception)
             {
-                return false;
+                throw;
             }
         }
 
@@ -102,15 +129,46 @@ namespace DataLayer
                 await db.SaveChangesAsync();
                 return true;
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-                return false;
+                throw;
             }
         }
 
         public void Dispose()
         {
             db.Dispose();
+        }
+
+        public async Task<bool> IsExistAsync(int ColleageID)
+        {
+            try
+            {
+                Colleague c = await GetByIdAsync(ColleageID);
+            }
+            catch (NotFoundException)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public async Task<bool> IsExistAsync(Colleague colleague)
+        {
+            return await IsExistAsync(colleague.PhoneNumber) || await IsExistAsync(colleague.ColleagueID);
+        }
+
+        public async Task<bool> IsExistAsync(long phoneNumber)
+        {
+            try
+            {
+                Colleague c = await GetByPhoneNumberAsync(phoneNumber);
+            }
+            catch (NotFoundException)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }
