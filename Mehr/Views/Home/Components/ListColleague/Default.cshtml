@@ -29,9 +29,9 @@
 						<ul class="list-unstyled users-list m-0 float-right" style="right: 10px;">
 							<li class="avatar avatar-sm pull-up">
 								@* <a onclick="deleteColleague(@item.ColleagueID)"> *@
-								<a asp-controller="Colleague" asp-action="Delete" asp-route-id="@item.ColleagueID">
+								<div onclick="deleteColleague(@item.ColleagueID)">
 									<i class="la la-trash-o media-object rounded-circle no-border-top-radius no-border-bottom-radius"></i>
-								</a>
+								</div>
 							</li>
 							<li class="avatar avatar-sm pull-up">
 								<a asp-controller="Colleague" asp-action="Edit" asp-route-id="@item.ColleagueID">

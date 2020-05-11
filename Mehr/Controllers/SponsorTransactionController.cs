@@ -106,6 +106,10 @@ namespace Mehr.Controllers
                         await sponsors.saveAsync();
 
                         mySponsor = await sponsors.GetByPhoneNumberAsync(phoneNumber);
+                        if (mySponsor == null)
+                        {
+                            continue;
+                        }
                     }
                     
                     st.isValid = false;
@@ -117,12 +121,12 @@ namespace Mehr.Controllers
                     TimeSpan time = TimeSpan.Parse(row["Time"].ToString());
                     st.TransactionDate = date + time;
                     st.SponsorID = mySponsor.SponsorID;
-
+                    st.BankName = "NoBank"; //----------------
                     await transactions.InsertAsync(st);
                 }
             }
             await transactions.saveAsync();
-            return RedirectToAction("Colleague", "Details", new {id = ColleagueID});
+            return RedirectToAction( "Details","Colleague", new {id = ColleagueID});
         }
 
         // GET: App/SponsorTransaction/Edit/5

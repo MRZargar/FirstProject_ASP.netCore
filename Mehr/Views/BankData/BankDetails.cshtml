@@ -31,23 +31,37 @@
             <div class="card-content collapse show">
                 <div class="card-body">
                     <div class="row">
-                        <div class="feather-icons overflow-hidden col-md-4">
-                            <a href="#">
-                                <p>Import Transactions</p>
-                            </a>
-                            <a href="#">
-                                <p>Export Transactions</p>
-                            </a>
+                        <div class="feather-icons overflow-hidden col-md-8">
+                            <div class="form-group" style="margin-left: 20px">
+                                <dt>
+                                    Owner:
+                                </dt>
+                                <dd>
+                                    خیریه مأوای همدلی و روشنی ایتام
+                                </dd>
+                                <dt>
+                                    Account number:
+                                </dt>
+                                <dd>
+                                    1234567890
+                                </dd>
+                                <dt>
+                                    Card number:
+                                </dt>
+                                <dd>
+                                    6037997594152025
+                                </dd>
+                                <dt>
+                                    Sheba number:
+                                </dt>
+                                <dd>
+                                    IR41 0223 0223 0223 0223 0223 23
+                                </dd>
+                            </div>
+                           
                         </div>
                         <div class="col-md-4">
-                           <p>...</p>
-                           <p>...</p>
-                           <p>...</p>
-                           <p>...</p>
-                           <p>...</p>
-                        </div>
-                        <div class="col-md-4">
-                            <img class="media-object" src="~/images/Banks/@ViewBag.BankName.image()" alt="@ViewBag.BankName.ToString()">
+                            <img class="media-object height-200" src="~/images/Banks/@ViewBag.BankName.image()" alt="@ViewBag.BankName.ToString()">
                         </div>
                     </div>
                 </div>
@@ -164,6 +178,15 @@
     </div>
 </div>
 <!-- Table head options end -->
+
+<div class="form-group" style="float: right; right:25px; position:relative;">
+    <a href="#">
+        <p class="btn btn-light btn-sm"><i class="la la-cloud-upload"></i> Import</p>
+    </a>
+    <a href="#">
+        <p class="btn btn-light btn-sm"><i class="la la-cloud-download"></i> Export</p>
+    </a>
+</div>
 
 
 @section Script{

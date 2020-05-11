@@ -111,13 +111,13 @@ namespace DataLayer
         }
 
         public async Task<bool> saveAsync()
-        {
+        { 
             try
             {
                 await db.SaveChangesAsync();
                 return true;
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
                 return false;
             }
