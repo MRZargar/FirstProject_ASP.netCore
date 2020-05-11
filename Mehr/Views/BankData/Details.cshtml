@@ -1,48 +1,206 @@
-@model DataLayer.BankData
+﻿@model IEnumerable<DataLayer.BankData>
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = ViewBag.BankName.ToString() + " Bank";
+    Layout = "_ChartLayout";
 }
 
-<h1>Details</h1>
+@section StyleSheets{
+    <link rel="stylesheet" href="~/lib/slider/jquery-ui.css">
+    <style>
+        .row::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+    </style>
+}
 
-<div>
-    <h4>BankData</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BankName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BankName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TransactionDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TransactionDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TrackingNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TrackingNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LastFourNumbersOfBankCard)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LastFourNumbersOfBankCard)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Amount)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Amount)
-        </dd>
-    </dl>
+<div class="row">
+    <div class="col-lg-12 col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">@ViewBag.BankName.ToString()</h2>
+                <div class="heading-elements">
+                    <ul class="list-inline mb-0">
+                        <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                        <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-content collapse show">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="feather-icons overflow-hidden col-md-8">
+                            <div class="form-group" style="margin-left: 20px">
+                                <dt>
+                                    Owner:
+                                </dt>
+                                <dd>
+                                    خیریه مأوای همدلی و روشنی ایتام
+                                </dd>
+                                <dt>
+                                    Account number:
+                                </dt>
+                                <dd>
+                                    1234567890
+                                </dd>
+                                <dt>
+                                    Card number:
+                                </dt>
+                                <dd>
+                                    6037997594152025
+                                </dd>
+                                <dt>
+                                    Sheba number:
+                                </dt>
+                                <dd>
+                                    IR41 0223 0223 0223 0223 0223 23
+                                </dd>
+                            </div>
+
+                        </div>
+                        <div class="col-md-4">
+                            <img class="media-object height-200" src="~/images/Banks/@ViewBag.BankName.image()" alt="@ViewBag.BankName.ToString()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.BankDataID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+<!-- Table head options start -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Bills</h4>
+                <div class="heading-elements">
+                    <ul class="list-inline mb-0">
+                        <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                        <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-content collapse show">
+                <div class="table-responsive">
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr class="thead-light">
+                                <td class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="TrackingNumber" class="control-label">Seaech By Tracking Number:</label>
+                                            <input id="TrackingNumber" type="text" class="form-control" placeholder="Enter Tracking Number">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="LateFourNumbersOfBankCard" class="control-label">Search Bt Last Four Number Of Card Number:</label>
+                                            <input id="LateFourNumbersOfBankCard" type="text" class="form-control" placeholder="Enter Card Number">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <form action="#" method="post">
+                                            <div class="form-group"
+                                                <label for="buttomGroup" class="control-label">Filter By Date:</label>
+                                                <div class="btn-group" id="buttomGroup" role="group" aria-label="Basic example" style="padding: 2px;">
+                                                    <button type="button" class="btn btn-secondary">From</button>
+                                                    <input type="date" name="FromDate" class="form-control btn-sm" style="border-radius: 0;" />
+                                                    <button type="button" class="btn btn-secondary">To</button>
+                                                    <input type="date" name="ToDate" class="form-control btn-sm" style="border-radius: 0;" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="amount" class="control-label">Filter By Amount:</label>
+                                                <input type="text" id="amount" readonly style="border:0; color:#000; font-weight:bold;">
+                                                <div id="slider-range"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-light btn-sm" style="position:relative; float: right;">
+                                                    <i class="la la-filter"></i>Filter
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody><tr><td></td></tr></tbody>
+                    </table>
+
+                    <table class="table">
+                        <thead>
+                            <tr class="thead-dark">
+                                <th scope="col">#</th>
+                                <th scope="col">
+                                    @Html.DisplayNameFor(model => model.TransactionDate)
+                                </th>
+                                <th scope="col">
+                                    @Html.DisplayNameFor(model => model.TrackingNumber)
+                                </th>
+                                <th scope="col">
+                                    @Html.DisplayNameFor(model => model.LastFourNumbersOfBankCard)
+                                </th>
+                                <th scope="col">
+                                    @Html.DisplayNameFor(model => model.Amount)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int i = 1;
+                            }
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <th scope="row">@(i++)</th>
+                                    <td>
+                                        @Html.DisplayFor(model => item.TransactionDate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(model => item.TrackingNumber)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(model => item.LastFourNumbersOfBankCard)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(model => item.Amount)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+<!-- Table head options end -->
+
+<div class="form-group" style="float: right; right:25px; position:relative;">
+    <p class="btn btn-light btn-sm"><i class="la la-cloud-upload"></i> Import</p>
+    <p class="btn btn-light btn-sm"><i class="la la-cloud-download"></i> Export</p>
+</div>
+
+
+@section Script{
+    <script src="~/lib/slider/jquery-1.12.4.js"></script>
+    <script src="~/lib/slider/jquery-ui.js"></script>
+    <script>
+	$( function() {
+		$( "#slider-range" ).slider({
+			range: true,
+			min: 0,
+			max: 1000000000,
+            values: [0, 1000000000],
+			slide: function( event, ui ) {
+				$( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+			}
+		});
+		$( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+			" - $" + $( "#slider-range" ).slider( "values", 1 ) );
+	} );
+    </script>
+}

@@ -12,36 +12,51 @@
                 <div class="card-header">
                     <h3 class="card-title">@Model.Name</h3>
                 </div>
+                @{
+                    string profile = Model.picName;
+
+                    if (profile == "" || profile == null)
+                    {
+                        profile = Model.isMale ? "Male.jpg" : "Female.jpg";
+                    }
+
+                    string color = Model.color;
+
+                    if (color == "" || color == null)
+                    {
+                        color = "#fff";
+                    }
+                }
                 <div class="card-content collapse show">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-3">
-                                <img style="left: 50px; height: 150px; width: 150px;" class="media-object rounded-circle" style="height: 100px;" src="~/theme-assets/images/portrait/small/avatar-s-7.png" alt="Generic placeholder image">
+                                <img style="left: 50px; height: 150px; width: 150px; border: solid @color 10px;" class="media-object rounded-circle" style="height: 100px;" src="~/images/Profiles/@profile" alt="Generic placeholder image">
                             </div>
                             <div class="col">
                                 <dl class="row">
-                                    <dt class = "col-sm-5">
+                                    <dt class="col-sm-5">
                                         @Html.DisplayNameFor(model => model.PhoneNumber)
                                     </dt>
-                                    <dd class = "col-sm-5">
+                                    <dd class="col-sm-5">
                                         0@(Html.DisplayFor(model => model.PhoneNumber))
                                     </dd>
-                                    <dt class = "col-sm-5">
+                                    <dt class="col-sm-5">
                                         @Html.DisplayNameFor(model => model.BirthDay)
                                     </dt>
-                                    <dd class = "col-sm-5">
+                                    <dd class="col-sm-5">
                                         @Html.DisplayFor(model => model.BirthDay)
                                     </dd>
-                                    <dt class = "col-sm-5">
+                                    <dt class="col-sm-5">
                                         @Html.DisplayNameFor(model => model.StartActivity)
                                     </dt>
-                                    <dd class = "col-sm-5">
+                                    <dd class="col-sm-5">
                                         @Html.DisplayFor(model => model.StartActivity)
                                     </dd>
-                                    <dt class = "col-sm-5">
+                                    <dt class="col-sm-5">
                                         @Html.DisplayNameFor(model => model.code)
                                     </dt>
-                                    <dd class = "col-sm-5">
+                                    <dd class="col-sm-5">
                                         @Html.DisplayFor(model => model.code)
                                     </dd>
                                 </dl>
@@ -60,13 +75,24 @@
     </div>
 </section>
 
-<form asp-controller="SponsorTransaction" asp-action="Createzar" method="POST" enctype="multipart/form-data">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input type="hidden" name="BankName" value="Melli">
-    <input type="hidden" name="ColleagueID" value="@Model.ColleagueID">
+@await Component.InvokeAsync("DetailsColleagueTable", new { id = Model.ColleagueID })
 
-    <input type="file" accept="Excel/xlsx" name="XLSXfile">
-    <input type="submit" value="Import" class="btn btn-success" />
-</form>
-
-@await Component.InvokeAsync("DetailsColleagueTable", new {id = Model.ColleagueID})
+@section Script{
+    <script src="~/lib/slider/jquery-1.12.4.js"></script>
+    <script src="~/lib/slider/jquery-ui.js"></script>
+    <script>
+	$( function() {
+		$( "#slider-range" ).slider({
+			range: true,
+			min: 0,
+			max: 90000000,
+            values: [0, 90000000],
+			slide: function( event, ui ) {
+				$( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+			}
+		});
+		$( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+			" - $" + $( "#slider-range" ).slider( "values", 1 ) );
+	} );
+    </script>
+}

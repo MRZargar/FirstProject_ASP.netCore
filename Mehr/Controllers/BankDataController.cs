@@ -25,7 +25,8 @@ namespace Mehr.Controllers
             return View(await bankDatas.GetAllAsync());
         }
 
-        public async Task<IActionResult> BankDetails(string? id)
+        // GET: App/BankData/Details/5
+        public async Task<IActionResult> Details(string? id)
         {
             if (id == null)
             {
@@ -42,24 +43,6 @@ namespace Mehr.Controllers
 
             ViewBag.BankName = bank;
             ViewBag.ChartData = "[125, 200, 125, 225, 125, 200, 125, 225, 175, 275, 220]";
-            return View(bankData);
-        }
-
-
-        // GET: App/BankData/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var bankData = await bankDatas.GetByIdAsync(id.Value);
-            if (bankData == null)
-            {
-                return NotFound();
-            }
-
             return View(bankData);
         }
 
