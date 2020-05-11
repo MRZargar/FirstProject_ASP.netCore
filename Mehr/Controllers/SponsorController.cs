@@ -100,7 +100,7 @@ namespace Mehr.Controllers
             {
                 try
                 {
-                    sponsors.Update(sponsor);
+                    await sponsors.UpdateAsync(sponsor);
                     await sponsors.saveAsync();
                 }
                 catch (DbUpdateConcurrencyException)

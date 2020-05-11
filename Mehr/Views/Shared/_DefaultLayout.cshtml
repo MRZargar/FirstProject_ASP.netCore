@@ -3,7 +3,7 @@
         ViewBag.headerColor = "bg-gradient-x-purple-purple";
 
     if (ViewData["DefaultStyle"] == null)
-        ViewData["DefaultStyle"] = false;
+        ViewData["DefaultStyle"] = true;
 }
 <!DOCTYPE html>
 <html class="loading" lang="en" data-textdirection="ltr">
@@ -107,16 +107,22 @@
     <div class="app-content content">
         <div class="content-wrapper">
             <div class="content-wrapper-before"></div>
-            <div class="content-header row">
-
-                @if (!(bool)ViewData["DefaultStyle"])
-                {
+            @if ((bool)ViewData["DefaultStyle"])
+            {
+                <div class="content-header row">
                     <div class="content-header-left col-md-4 col-12 mb-2">
                         <h3 class="content-header-title">@ViewData["Title"]</h3>
                     </div>
-                }
-
-            </div>
+                </div>
+                <div class="alert alert-success" id="SuccessAlert" role="alert">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <div id="SuccessAlert-body"></div>
+                </div>
+                <div class="alert alert-danger" id="DangerAlert" role="alert">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <div id="DangerAlert-body"></div>
+                </div>
+            }
             <div class="content-body">
                 @RenderBody()
             </div>
@@ -155,5 +161,35 @@
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
     @RenderSection("Script", false)
+
+<script>
+		$(document).ready(function () {
+            $("#SuccessAlert").hide();
+            $("#DangerAlert").hide();
+
+            @if (ViewBag.alert != null)
+            {
+				<text>
+			$("#SuccessAlert-body").html(@ViewBag.alert.Message);
+				</text>
+                if (ViewBag.alert.Type)
+                {
+					<text>
+						$("#SuccessAlert").fadeTo(2000, 500).slideUp(500, function () {
+                            $("#SuccessAlert").slideUp(500);
+						});
+					</text>
+                }
+                else
+                {
+					<text>
+						$("#DangerAlert").fadeTo(2000, 500).slideUp(500, function() {
+                            $("#DangerAlert").slideUp(500);
+						});
+					</text>
+                }
+            }
+        });
+</script>
 </body>
 </html>

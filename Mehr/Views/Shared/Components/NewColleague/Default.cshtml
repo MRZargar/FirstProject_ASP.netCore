@@ -6,7 +6,7 @@
             <div class="card-body">
                 <h4 class="card-title">New Colleague</h4>
             </div>
-            <form asp-controller="Colleague" asp-action="Create" method="post">
+            <form asp-controller="Colleague" asp-action="Create" method="post" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="card-body">
                     <div class="form-group">
@@ -32,8 +32,26 @@
                     <div class="form-group">
                         <label asp-for="code" class="control-label"></label>
                         <input asp-for="code" class="form-control" />
-                        <span asp-validation-for="code" class="text-danger" ></span>
+                        <span asp-validation-for="code" class="text-danger"></span>
                     </div>
+                    <div class="form-group">
+                        <label asp-for="color" class="control-label"></label>
+                        <input asp-for="color" type="color" />
+                        <span asp-validation-for="color" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="picName" class="control-label"></label>
+                        <input name="profile" type="file" onchange="readURL(this)" />
+                    </div>
+                    <span class="avatar avatar-md">
+                        <img id="blah" style="width: 40px; height: 40px;" class="media-object rounded-circle" src="~/images/Profiles/Male.jpg">
+                        <i></i>
+                    </span>
+                    <div class="form-group">
+                        <input asp-for="isMale" class="form-check-input" checked />
+                        <label asp-for="isMale" class="control-label"></label>
+                    </div>
+                    @*<div onclick="zargar()">zargar</div>*@
                 </div>
                 <div class="card-body">
                     <button type="button" class="btn btn-light btn-min-width mr-1 mb-1">Clear</button>

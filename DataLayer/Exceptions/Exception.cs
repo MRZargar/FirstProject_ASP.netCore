@@ -18,6 +18,6 @@ namespace DataLayer.Exceptions
     [Serializable]
     public class DuplicateTransactionException : Exception
     {
-        public DuplicateTransaction() : base("The Transaction entered is duplicate...") { }
+        public DuplicateTransactionException() : base("The Transaction entered is duplicate...") { }
     }
 }

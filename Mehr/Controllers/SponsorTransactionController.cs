@@ -160,7 +160,7 @@ namespace Mehr.Controllers
             {
                 try
                 {
-                    transactions.Update(sponsorTransaction);
+                    await transactions.UpdateAsync(sponsorTransaction);
                     await transactions.saveAsync();
                 }
                 catch (DbUpdateConcurrencyException)

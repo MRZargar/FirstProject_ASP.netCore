@@ -117,7 +117,7 @@ namespace Mehr.Controllers
             {
                 try
                 {
-                    bankDatas.Update(bankData);
+                    await bankDatas.UpdateAsync(bankData);
                     await bankDatas.saveAsync();
                 }
                 catch (DbUpdateConcurrencyException)

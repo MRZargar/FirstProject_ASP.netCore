@@ -40,6 +40,7 @@ namespace DataLayer
         public String color { get; set; }
 
         [MaxLength(500)]
+        [Display(Name = "Profile Picture")]
         public string picName { get; set; }
 
         public List<Sponsor> Sponsors { get; set; }

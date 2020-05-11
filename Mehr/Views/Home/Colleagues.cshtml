@@ -3,32 +3,52 @@
 }
 
 <section id="content-colleagues">
-	<div class="row match-height">
-		@await Component.InvokeAsync("ListColleague")
-		@await Component.InvokeAsync("NewColleague")
-	</div>
+    <div class="row match-height">
+        @await Component.InvokeAsync("ListColleague")
+        @await Component.InvokeAsync("NewColleague")
+    </div>
 </section>
 
-
 @section Script{
-	<script>
-		function deleteColleague(id){
-			$.get("/Colleague/Delete/"+id, function(result){
-				$(".modal").modal('show');
-				$(".modal-title").html("Delete Colleague");
-				$(".modal-body").html(result); 
-			});
-		};
-	</script>
+    <script>
+        function deleteColleague(id) {
+            $.get("/Colleague/Delete/" + id, function (result) {
+                $(".modal").modal('show');
+                $(".modal-title").html("Delete Colleague");
+                $(".modal-body").html(result);
+            });
+        };
 
-	<script>
-		$(document).ready(function(){
-		$("#input-search").on("keyup", function() {
-			var value = $(this).val().toLowerCase();
-			$("#recent-buyers *").filter(function() {
-				$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-			});
-		});
-		});
-	</script>
+
+        $(document).ready(function () {
+            $("#input-search").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#recent-buyers *").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+
+
+        //function zargar() {
+        //    $(".modal").modal('show');
+        //    $(".modal-title").html("");
+        //    $(".modal-body").html("<vs:ColorPicker></vs:ColorPicker>");
+        //};
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#blah')
+                        .attr('src', e.target.result)
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        };
+
+    </script>
+
 }

@@ -20,6 +20,7 @@ namespace Mehr.Controllers
 
         public IActionResult Index()
         {
+            ViewBag.ChartData = "[125, 200, 125, 225, 125, 200, 125, 225, 175, 275, 220]";
             return View();
         }
         
@@ -32,7 +33,6 @@ namespace Mehr.Controllers
         [Route("Sponsors")]
         public IActionResult Sponsors()
         {
-            // ViewBag.alert = "";
             return View();
         }
 

@@ -7,15 +7,21 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DataLayer;
 using DataLayer.Exceptions;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
+using Mehr.Classes;
 
 namespace Mehr.Controllers
 {
     public class ColleagueController : Controller
     {
         public IColleageRepository colleagues;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
-        public ColleagueController(MyContext context)
+        public ColleagueController(IHostingEnvironment hostingEnvironment, MyContext context)
         {
+            _hostingEnvironment = hostingEnvironment;
             this.colleagues = new ColleagueRepository(context);
         }
 
@@ -48,10 +54,23 @@ namespace Mehr.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ColleagueID,Name,PhoneNumber,BirthDay,StartActivity,code,color")] Colleague colleague)
+        public async Task<IActionResult> Create([Bind("ColleagueID,Name,PhoneNumber,BirthDay,StartActivity,code,color,isMale")] Colleague colleague, IFormFile profile)
         {
             if (ModelState.IsValid)
             {
+                if (profile != null)
+                {
+                    colleague.picName = Guid.NewGuid() + Path.GetExtension(profile.FileName);
+                    string picPath = _hostingEnvironment.WebRootPath 
+                                    + @"\images\Profiles\" 
+                                    + colleague.picName;
+
+                    using (var stream = new FileStream(picPath, FileMode.Create))
+                    {
+                        await profile.CopyToAsync(stream);
+                    }
+                }
+
                 try
                 {
                     await colleagues.InsertAsync(colleague);
@@ -59,10 +78,13 @@ namespace Mehr.Controllers
                 }
                 catch (Exception ex)
                 {
-                    ViewBag.err = ex;
-                    return View("Error");
+                    ViewBag.alert = new Alert(false, ex.Message);
                 }
-                
+                ViewBag.alert = new Alert(true, "New Colleague Created successfully.");
+            }
+            else
+            {
+                ViewBag.alert = new Alert(false, "Please Complete fields ...");
             }
             return RedirectToAction("Colleagues", "Home");
         }
