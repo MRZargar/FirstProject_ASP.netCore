@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using DataLayer.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataLayer
@@ -32,53 +33,65 @@ namespace DataLayer
             {
                 return await db.Sponsors
                     .Include(s => s.MyColleague)
-                    .FirstOrDefaultAsync(m => m.SponsorID == sponsorID);   
+                    .FirstAsync(m => m.SponsorID == sponsorID);   
             }
             catch (System.Exception)
             {
-                throw;
+                throw new NotFoundException();
             }
         }
 
         public async Task<bool> InsertAsync(Sponsor sponsor)
         {
+            if (await IsExistAsync(sponsor))
+            {
+                throw new DuplicatePhoneNumberException();
+            }
+
             try
             {
-                await db.Sponsors.AddAsync(sponsor);     
-
+                await db.Sponsors.AddAsync(sponsor);
                 return true;
             }
             catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        public bool Update(Sponsor sponsor)
-        {
-            try
-            {
-                db.Sponsors.Update(sponsor);
-
-                return true;
-            }
-            catch (System.Exception)
             {
                 throw;
             }
         }
 
-        public bool Delete(Sponsor sponsor)
+        public async Task<bool> UpdateAsync(Sponsor sponsor)
         {
+            if (!(await IsExistAsync(sponsor)))
+            {
+                throw new NotFoundException();
+            }
+
+            try
+            {
+                db.Sponsors.Update(sponsor);
+                return true;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<bool> DeleteAsync(Sponsor sponsor)
+        {
+            if (!(await IsExistAsync(sponsor)))
+            {
+                throw new NotFoundException();
+            }
+
             try
             {
                 db.Sponsors.Remove(sponsor);
-
                 return true;
             }
-            catch (System.Exception)
+            catch (Exception)
             {
-                return false;
+                throw;
             }
         }
 
@@ -87,7 +100,7 @@ namespace DataLayer
             try
             {
                 var sponsor = await GetByIdAsync(sponsorID);
-                return Delete(sponsor);
+                return await DeleteAsync(sponsor);
             }
             catch (System.Exception)
             {
@@ -104,7 +117,7 @@ namespace DataLayer
             }
             catch (System.Exception)
             {
-                return false;
+                throw;
             }
         }
 
@@ -114,17 +127,48 @@ namespace DataLayer
             {
                 return await db.Sponsors
                     .Include(s => s.MyColleague)
-                    .FirstOrDefaultAsync(m => m.PhoneNumber == phoneNumber);   
+                    .FirstAsync(m => m.PhoneNumber == phoneNumber);   
             }
             catch (System.Exception)
             {
-                throw;
+                throw new NotFoundException();
             }
         }
 
         public void Dispose()
         {
             db.Dispose();
+        }
+
+        public async Task<bool> IsExistAsync(int sponsorID)
+        {
+            try
+            {
+                Sponsor s = await GetByIdAsync(sponsorID);
+            }
+            catch (NotFoundException)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public async Task<bool> IsExistAsync(Sponsor sponsor)
+        {
+            return await IsExistAsync(sponsor.PhoneNumber) || await IsExistAsync(sponsor.ColleagueID);
+        }
+
+        public async Task<bool> IsExistAsync(long phoneNumber)
+        {
+            try
+            {
+                Sponsor s = await GetByPhoneNumberAsync(phoneNumber);
+            }
+            catch (NotFoundException)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

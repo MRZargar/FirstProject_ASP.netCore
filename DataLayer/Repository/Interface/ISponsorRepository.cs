@@ -10,10 +10,13 @@ namespace DataLayer
         Task<Sponsor> GetByIdAsync(int sponsorID);
         Task<Sponsor> GetByPhoneNumberAsync(long phoneNumber);
         Task<bool> InsertAsync(Sponsor sponsor);
-        bool Update(Sponsor sponsor);
-        bool Delete(Sponsor sponsor);
+        Task<bool> UpdateAsync(Sponsor sponsor);
+        Task<bool> DeleteAsync(Sponsor sponsor);
         Task<bool> DeleteAsync(int sponsorID);
         Task<bool> saveAsync();
         void Dispose();
+        Task<bool> IsExistAsync(int sponsorID);
+        Task<bool> IsExistAsync(Sponsor sponsor);
+        Task<bool> IsExistAsync(long phoneNumber);
     }
 }

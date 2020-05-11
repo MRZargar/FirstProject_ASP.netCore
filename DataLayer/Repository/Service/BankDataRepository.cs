@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DataLayer.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
@@ -39,7 +40,7 @@ namespace DataLayer
 
         public BankDataRepository(MyContext context)
         {
-            this.db = context;
+            db = context;
         }
 
         public async Task<IEnumerable<BankData>> GetAllAsync()
@@ -59,11 +60,26 @@ namespace DataLayer
             try
             {
                 return await db.BankDatas
-                    .FirstOrDefaultAsync(m => m.BankDataID == bankDataID);   
+                    .FirstAsync(m => m.BankDataID == bankDataID);   
             }
             catch (System.Exception)
             {
-                throw;
+                throw new NotFoundException();
+            }
+        }
+
+        public async Task<BankData> GetAsync(BankData bankData)
+        {
+            try
+            {
+                return await db.BankDatas
+                    .FirstAsync(x => x.BankName == bankData.BankName
+                                  && x.TransactionDate == bankData.TransactionDate
+                                  && x.TrackingNumber == bankData.TrackingNumber);
+            }
+            catch (System.Exception)
+            {
+                throw new NotFoundException();
             }
         }
 
@@ -82,24 +98,32 @@ namespace DataLayer
 
         public async Task<bool> InsertAsync(BankData bankData)
         {
+            if (await IsExistAsync(bankData))
+            {
+                throw new DuplicateTransactionException();
+            }
+
             try
             {
-                await db.BankDatas.AddAsync(bankData);     
-
+                await db.BankDatas.AddAsync(bankData);
                 return true;
             }
             catch (Exception)
             {
-                return false;
+                throw;
             }
         }
 
-        public bool Update(BankData bankData)
+        public async Task<bool> UpdateAsync(BankData bankData)
         {
+            if (!(await IsExistAsync(bankData)))
+            {
+                throw new NotFoundException();
+            }
+
             try
             {
                 db.BankDatas.Update(bankData);
-
                 return true;
             }
             catch (System.Exception)
@@ -108,17 +132,21 @@ namespace DataLayer
             }
         }
 
-        public bool Delete(BankData bankData)
+        public async Task<bool> DeleteAsync(BankData bankData)
         {
+            if (!(await IsExistAsync(bankData)))
+            {
+                throw new NotFoundException();
+            }
+
             try
             {
                 db.BankDatas.Remove(bankData);
-
                 return true;
             }
             catch (System.Exception)
             {
-                return false;
+                throw;
             }
         }
 
@@ -127,11 +155,11 @@ namespace DataLayer
             try
             {
                 var bankData = await GetByIdAsync(bankDataID);
-                return Delete(bankData);
+                return await DeleteAsync(bankData);
             }
             catch (System.Exception)
             {
-                return false;
+                throw;
             }
         }
 
@@ -144,7 +172,7 @@ namespace DataLayer
             }
             catch (System.Exception)
             {
-                return false;
+                throw;
             }
         }
 
@@ -153,5 +181,17 @@ namespace DataLayer
             db.Dispose();
         }
 
+        public async Task<bool> IsExistAsync(BankData bankData)
+        {
+            try
+            {
+                BankData b = await GetAsync(bankData);
+            }
+            catch (NotFoundException)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

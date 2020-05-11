@@ -8,11 +8,13 @@ namespace DataLayer
     {
         Task<IEnumerable<SponsorTransaction>> GetAllAsync();
         Task<SponsorTransaction> GetByIdAsync(int sponsorTransactionsID);
+        Task<SponsorTransaction> GetAsync(SponsorTransaction sponsorTransaction);
         Task<IEnumerable<SponsorTransaction>> GetAllBySponsorIdAsync(int sponsorID);
         Task<bool> InsertAsync(SponsorTransaction sponsorTransaction);
-        bool Update(SponsorTransaction sponsorTransaction);
-        bool Delete(SponsorTransaction sponsorTransaction);
+        Task<bool> UpdateAsync(SponsorTransaction sponsorTransaction);
+        Task<bool> DeleteAsync(SponsorTransaction sponsorTransaction);
         Task<bool> DeleteAsync(int sponsorTransactionsID);
+        Task<bool> IsExistAsync(SponsorTransaction sponsorTransaction);
         Task<bool> saveAsync();
         void Dispose();
     }

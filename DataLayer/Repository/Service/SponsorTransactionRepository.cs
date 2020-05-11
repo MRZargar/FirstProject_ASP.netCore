@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DataLayer.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataLayer
@@ -47,34 +48,57 @@ namespace DataLayer
             {
                 return await db.SponsorTransactions
                     .Include(s => s.MySponsor)
-                    .FirstOrDefaultAsync(m => m.SponsorTransactionsID == sponsorTransactionID);   
+                    .FirstAsync(m => m.SponsorTransactionsID == sponsorTransactionID);   
             }
             catch (System.Exception)
             {
-                throw;
+                throw new NotFoundException();
+            }
+        }
+
+        public async Task<SponsorTransaction> GetAsync(SponsorTransaction sponsorTransaction)
+        {
+            try
+            {
+                return await db.SponsorTransactions
+                    .FirstAsync(x => x.TransactionDate == sponsorTransaction.TransactionDate
+                                  && x.TrackingNumber == sponsorTransaction.TrackingNumber
+                                  && x.MySponsor == sponsorTransaction.MySponsor);
+            }
+            catch (System.Exception)
+            {
+                throw new NotFoundException();
             }
         }
 
         public async Task<bool> InsertAsync(SponsorTransaction sponsorTransaction)
         {
+            if (await IsExistAsync(sponsorTransaction))
+            {
+                throw new DuplicateTransactionException();
+            }
+
             try
             {
                 await db.SponsorTransactions.AddAsync(sponsorTransaction);     
-
                 return true;
             }
             catch (Exception)
             {
-                return false;
+                throw;
             }
         }
 
-        public bool Update(SponsorTransaction sponsorTransaction)
+        public async Task<bool> UpdateAsync(SponsorTransaction sponsorTransaction)
         {
+            if (!(await IsExistAsync(sponsorTransaction)))
+            {
+                throw new NotFoundException();
+            }
+
             try
             {
                 db.SponsorTransactions.Update(sponsorTransaction);
-
                 return true;
             }
             catch (System.Exception)
@@ -83,8 +107,13 @@ namespace DataLayer
             }
         }
 
-        public bool Delete(SponsorTransaction sponsorTransaction)
+        public async Task<bool> DeleteAsync(SponsorTransaction sponsorTransaction)
         {
+            if (!(await IsExistAsync(sponsorTransaction)))
+            {
+                throw new NotFoundException();
+            }
+
             try
             {
                 db.SponsorTransactions.Remove(sponsorTransaction);
@@ -93,7 +122,7 @@ namespace DataLayer
             }
             catch (System.Exception)
             {
-                return false;
+                throw;
             }
         }
 
@@ -102,11 +131,11 @@ namespace DataLayer
             try
             {
                 var sponsorTransaction = await GetByIdAsync(sponsorTransactionID);
-                return Delete(sponsorTransaction);
+                return await DeleteAsync(sponsorTransaction);
             }
             catch (System.Exception)
             {
-                return false;
+                throw;
             }
         }
 
@@ -119,13 +148,26 @@ namespace DataLayer
             }
             catch (System.Exception ex)
             {
-                return false;
+                throw;
             }
         }
 
         public void Dispose()
         {
             db.Dispose();
+        }
+
+        public async Task<bool> IsExistAsync(SponsorTransaction sponsorTransaction)
+        {
+            try
+            {
+                SponsorTransaction b = await GetAsync(sponsorTransaction);
+            }
+            catch (NotFoundException)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }
