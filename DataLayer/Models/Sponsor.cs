@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+//using Toolbelt.ComponentModel.DataAnnotations.Schema;
 
 namespace DataLayer
 {
@@ -9,6 +11,7 @@ namespace DataLayer
         [Key]
         public int SponsorID { get; set; }
 
+        [Display(Name = "Gender")]
         public bool isMale { get; set; }
 
         [Required]
@@ -18,13 +21,18 @@ namespace DataLayer
         [MaxLength(50)]
         public string Name { get; set; }
 
+        [Phone]
         [Required]
+        //[Index(IsUnique = true)]
+        [Display(Name = "Phone")]
         public long PhoneNumber { get; set; }
  
         [MaxLength(500)]
+        [Display(Name = "Cause of support")]
         public string CauseOfSupport { get; set; }
 
         [MaxLength(500)]
+        [Display(Name = "Other support")]
         public string OtherSupport { get; set; }
 
         [MaxLength(500)]

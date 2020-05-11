@@ -4,14 +4,16 @@ using DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(MyContext))]
-    partial class MyContextModelSnapshot : ModelSnapshot
+    [Migration("20200511024259_addIndex")]
+    partial class addIndex
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,8 +48,6 @@ namespace DataLayer.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("BankDataID");
-
-                    b.HasIndex("TransactionDate");
 
                     b.ToTable("BankDatas");
                 });
@@ -89,9 +89,6 @@ namespace DataLayer.Migrations
 
                     b.HasKey("ColleagueID");
 
-                    b.HasIndex("PhoneNumber")
-                        .IsUnique();
-
                     b.ToTable("Colleagues");
                 });
 
@@ -132,9 +129,6 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("ColleagueID");
 
-                    b.HasIndex("PhoneNumber")
-                        .IsUnique();
-
                     b.ToTable("Sponsors");
                 });
 
@@ -167,8 +161,6 @@ namespace DataLayer.Migrations
                     b.HasKey("SponsorTransactionsID");
 
                     b.HasIndex("SponsorID");
-
-                    b.HasIndex("TransactionDate");
 
                     b.ToTable("SponsorTransactions");
                 });

@@ -113,15 +113,13 @@ namespace Mehr.Controllers
                     }
                     
                     st.isValid = false;
-                    st.BankName = BankName;
                     st.Amount = Convert.ToDecimal(row["Amount"]);
-                    st.LateFourNumbersOfBankCard = Convert.ToInt16(row["CardNumber"]);
+                    st.LastFourNumbersOfBankCard = Convert.ToInt16(row["CardNumber"]);
                     st.TrackingNumber = row["TrackingNumber"].ToString();
                     DateTime date = Convert.ToDateTime(row["Date"].ToString());
                     TimeSpan time = TimeSpan.Parse(row["Time"].ToString());
                     st.TransactionDate = date + time;
                     st.SponsorID = mySponsor.SponsorID;
-                    st.BankName = "NoBank"; //----------------
                     await transactions.InsertAsync(st);
                 }
             }

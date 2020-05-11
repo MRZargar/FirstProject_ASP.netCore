@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataLayer
 {
@@ -13,20 +14,21 @@ namespace DataLayer
         public int SponsorID { get; set; }
 
         [Required]
-        [MaxLength(50)]
-        public string BankName { get; set; }
-
-        [Required]
+        [Display(Name = "Date")]
         public DateTime TransactionDate { get; set; }
 
         [Required]
+        [Display(Name = "Tracking Naumber")]
         public string TrackingNumber { get; set; }
 
-        public int LateFourNumbersOfBankCard { get; set; }
+        [Display(Name = "Caed Number")]
+        public int LastFourNumbersOfBankCard { get; set; }
 
         [Required]
+        [Display(Name = "Amount")]
         public decimal Amount { get; set; }
 
+        [Display(Name = "Is Valid?")]
         public bool isValid { get; set; }
 
         public virtual Sponsor MySponsor { get; set; }

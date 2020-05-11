@@ -13,16 +13,13 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.BankName)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.TransactionDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.TrackingNumber)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LateFourNumbersOfBankCard)
+                @Html.DisplayNameFor(model => model.LastFourNumbersOfBankCard)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Amount)
@@ -37,16 +34,13 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.BankName)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.TransactionDate)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TrackingNumber)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LateFourNumbersOfBankCard)
+                @Html.DisplayFor(modelItem => item.LastFourNumbersOfBankCard)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Amount)
