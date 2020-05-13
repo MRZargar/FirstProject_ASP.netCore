@@ -1,0 +1,38 @@
+@model IEnumerable<DataLayer.Sponsor>
+
+@{ 
+    int i = 0;
+}
+
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title info">Top Sponsors</h4>
+        </div>
+        <div class="card-content">
+            <div id="recent-buyers" class="media-list">
+                @foreach (var item in Model)
+                {
+                    <a href="#" class="media border-0">
+                        <div class="media-left pr-1">
+                            <span class="avatar avatar-md">
+                                <img class="media-object rounded-circle" src="theme-assets/images/portrait/small/avatar-s-7.png" alt="Generic placeholder image">
+                                <i></i>
+                            </span>
+                        </div>
+                        <div class="media-body w-100">
+                            <span class="list-group-item-heading">@item.Name</span>
+                            <ul class="list-unstyled users-list m-0 float-right" style="right: 10px;">
+                                <li class="pull-up" style="border-radius: 8px">
+                                    <b><p class="Info">@ViewBag.Amounts[i++]</p></b>
+                                </li>
+                            </ul>
+                            <p class="list-group-item-text mb-0">
+                                <span class="blue-grey lighten-2 font-small-3">#@item.MyColleague.Name</span>
+                            </p>
+                        </div>
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+

@@ -8,7 +8,10 @@ namespace DataLayer
     {
         Task<IEnumerable<Colleague>> GetAllAsync();
         Task<Colleague> GetByIdAsync(int colleagueID);
+        int Count();
         Task<Colleague> GetByPhoneNumberAsync(long phoneNmber);
+        Task<decimal> GetSumOfAmountsAsync(int colleagueID);
+        Task<decimal> GetSumOfAmountsAsync(Colleague colleague);
         Task<bool> InsertAsync(Colleague colleague);
         Task<bool> UpdateAsync(Colleague colleague);
         Task<bool> DeleteAsync(Colleague colleague);

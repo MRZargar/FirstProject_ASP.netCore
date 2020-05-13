@@ -4,8 +4,12 @@
 
 <section id="content-colleagues">
     <div class="row match-height">
-        @await Component.InvokeAsync("ListColleague")
-        @await Component.InvokeAsync("NewColleague")
+        <div class="col-xl-6 col-md-6 col-sm-12">
+            @await Component.InvokeAsync("ListColleague")
+        </div>
+        <div class="col-xl-6 col-md-6 col-sm-12">
+            @await Component.InvokeAsync("NewColleague")
+        </div>
     </div>
 </section>
 

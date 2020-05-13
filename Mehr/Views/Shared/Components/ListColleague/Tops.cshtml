@@ -1,0 +1,56 @@
+@model IEnumerable<DataLayer.Colleague>
+
+@{ 
+    int i = 0;
+}
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title danger">Top Colleagues</h4>
+        </div>
+        <div class="card-content">
+            <div id="recent-buyers" class="media-list">
+                @foreach (var item in Model)
+                {
+                    <div class="media border-0">
+                        @{
+                            string profile = item.picName;
+
+                            if (profile == "" || profile == null)
+                            {
+                                profile = item.isMale ? "Male.jpg" : "Female.jpg";
+                            }
+
+                            string color = item.color;
+
+                            if (color == "" || color == null)
+                            {
+                                color = "#fff";
+                            }
+                        }
+                        <div class="media-left pr-1">
+                            <a asp-controller="Colleague" asp-action="Details" asp-route-id="@item.ColleagueID">
+                                <span class="avatar avatar-md">
+                                    <img style="width: 40px; height: 40px;" class="media-object rounded-circle" src="~/images/Profiles/@profile" alt="Generic placeholder image">
+                                    <i></i>
+                                </span>
+                            </a>
+                        </div>
+                        <div style="width: 5px; height:40px; border-radius: 3px; background-color: @color; margin-right: 10px"></div>
+                        <div class="media-body w-100">
+                            <a asp-controller="Colleague" asp-action="Details" asp-route-id="@item.ColleagueID">
+                                <span class="list-group-item-heading">@item.Name</span>
+                            </a>
+                            <ul class="list-unstyled users-list m-0 float-right" style="right: 10px;">
+                                <li class="pull-up" style="border-radius: 8px">
+                                    <b><p class="Info">@ViewBag.Amounts[i++]</p></b>
+                                </li>
+                            </ul>
+                            <p class="list-group-item-text mb-0">
+                                <span class="blue-grey lighten-2 font-small-3">#@item.code</span>
+                            </p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>

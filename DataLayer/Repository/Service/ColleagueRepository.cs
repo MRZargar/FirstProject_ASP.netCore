@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using DataLayer.Exceptions;
 using Microsoft.EntityFrameworkCore;
@@ -169,6 +171,48 @@ namespace DataLayer
                 return false;
             }
             return true;
+        }
+
+        public int Count()
+        {
+            return db.Colleagues.Count();
+        }
+
+        public async Task<decimal> GetSumOfAmountsAsync(int colleagueID)
+        {
+            try
+            {
+                Colleague c = await GetByIdAsync(colleagueID);
+                return await GetSumOfAmountsAsync(c);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<decimal> GetSumOfAmountsAsync(Colleague colleague)
+        {
+            if (!await IsExistAsync(colleague))
+            {
+                throw new NotFoundException();
+            }
+
+            if (colleague.Sponsors == null)
+            {
+                colleague = await GetByIdAsync(colleague.ColleagueID);
+            }
+
+            try
+            {
+                return await db.SponsorTransactions
+                    .Where(x => colleague.Sponsors.Contains(x.MySponsor))
+                    .SumAsync(x => x.Amount);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }
