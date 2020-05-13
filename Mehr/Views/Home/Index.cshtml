@@ -3,6 +3,7 @@
     Layout = "_ChartLayout";
 }
 
+
 <!-- eCommerce statistic -->
 <div class="row">
     <div class="col-xl-4 col-lg-6 col-md-12">
@@ -13,7 +14,7 @@
                     <i class="la la-hand-peace-o danger font-large-1 float-right p-1"></i>
                 </div>
                 <div class="progress-stats-container ct-golden-section height-75 position-relative pt-3  ">
-                    <h2 class="display-2 danger" style="text-align: center; padding: 20px">@ViewBag.ColleaguesCount</h2>
+                    <h2 class="count display-2 danger" style="text-align: center; padding: 20px">@ViewBag.ColleaguesCount</h2>
                 </div>
             </div>
         </div>
@@ -26,7 +27,7 @@
                     <i class="la la-heart-o info font-large-1 float-right p-1"></i>
                 </div>
                 <div class="progress-stats-container ct-golden-section height-75 position-relative pt-3">
-                    <h2 class="display-2 info" style="text-align: center; padding: 20px;">@ViewBag.SponsorsCount</h2>
+                    <h2 class="count display-2 info" style="text-align: center; padding: 20px;">@ViewBag.SponsorsCount</h2>
                 </div>
             </div>
         </div>
@@ -46,8 +47,6 @@
     </div>
 </div>
 <!--/ eCommerce statistic -->
-
-
 <!-- Statistics -->
 <div class="row match-height">
     <div class="col-xl-4 col-lg-12">
@@ -55,7 +54,7 @@
     </div>
     <div class="col-xl-4 col-lg-12">
         @await Component.InvokeAsync("ListSponsor", new { Mode = "Tops" })
-</div>
+    </div>
     <div class="col-xl-4 col-lg-12">
         <div class="card">
             <div class="card-content">
@@ -105,3 +104,19 @@
     </div>
 </div>
 <!--/ Statistics -->
+
+@section Script{ 
+<script>
+    $('.count').each(function () {
+        $(this).prop('Counter', 0).animate({
+            Counter: $(this).text()
+        }, {
+            duration: 2000,
+            easing: 'swing',
+            step: function (now) {
+                $(this).text(Math.ceil(now));
+            }
+        });
+    });
+</script>
+}
