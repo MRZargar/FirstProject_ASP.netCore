@@ -6,10 +6,13 @@
 }
 
 
-<div class="row match-height">
-    <strong>Are you sure you want to delete @Model.Name?</strong>
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="ColleagueID" />
-        <input type="submit" class="btn btn-danger" value="Delete" />
-    </form>
-</div>
+<p><strong>Are you sure you want to delete @Model.Name?</strong></p>
+<p class="text-danger">Note that by deleting each colleague, <strong>all</strong> dependent sponsors and related transactions will be deleted.</p>
+<p class="text-warning">It is recommended that you refer sponsors to another partner before doing so...</p>
+<form asp-action="Delete">
+    <input type="checkbox" onchange="document.getElementById('btn-delete').disabled = !this.checked;" />
+    <label>I'm sure</label>
+    
+    <input type="hidden" asp-for="ColleagueID" />
+    <input type="submit" id="btn-delete" class="btn btn-danger" value="Delete" style="position: relative; float: right;" disabled />
+</form>

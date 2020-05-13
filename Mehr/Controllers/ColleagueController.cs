@@ -117,7 +117,7 @@ namespace Mehr.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ColleagueID,Name,PhoneNumber,BirthDay,StartActivity,code")] Colleague colleague)
+        public async Task<IActionResult> Edit(int id, [Bind("ColleagueID,Name,PhoneNumber,BirthDay,StartActivity,code,color,isMale")] Colleague colleague, IFormFile profile)
         {
             if (id != colleague.ColleagueID)
             {
@@ -129,7 +129,16 @@ namespace Mehr.Controllers
             {
                 try
                 {
-                    await colleagues.UpdateAsync(colleague);
+                    Colleague Edited = await colleagues.GetByIdAsync(id);
+                    Edited.BirthDay = colleague.BirthDay;
+                    Edited.code = colleague.code;
+                    Edited.color = colleague.color;
+                    Edited.isMale = colleague.isMale;
+                    //Edited.picName = colleague.picName;
+                    Edited.StartActivity = colleague.StartActivity;
+                    Edited.Name = colleague.Name;
+
+                    await colleagues.UpdateAsync(Edited);
                     await colleagues.saveAsync();
                 }
                 catch (Exception ex)

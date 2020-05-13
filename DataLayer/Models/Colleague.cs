@@ -17,9 +17,7 @@ namespace DataLayer
         [MaxLength(50)]
         public string Name { get; set; }
 
-        //[Phone]
         [Required]
-        //[Index(IsUnique = true)]
         [Display(Name = "Phone")]
         [RegularExpression(@"^(\d{10})$", ErrorMessage = "Not a valid phone number")]
         public long PhoneNumber { get; set; }

@@ -65,7 +65,7 @@
                         <div class="row">
                             <div style="position:absolute; right: 30px; bottom: 20px">
                                 <a class="btn btn-warning" asp-controller="Colleague" asp-action="Edit" asp-route-id="@Model.ColleagueID">Edit</a>
-                                <a class="btn btn-danger" asp-controller="Colleague" asp-action="Delete" asp-route-id="@Model.ColleagueID">Delete</a>
+                                <a onclick="deleteColleague(@Model.ColleagueID)">Delete</a>
                             </div>
                         </div>
                     </div>
@@ -78,6 +78,16 @@
 @await Component.InvokeAsync("DetailsColleagueTable", new { id = Model.ColleagueID })
 
 @section Script{
+    <script>
+        function deleteColleague(id) {
+            $.get("/Colleague/Delete/" + id, function (result) {
+                $(".modal").modal('show');
+                $(".modal-title").html("Delete Colleague");
+                $(".modal-body").html(result);
+            });
+        };
+    </script>
+    
     <script src="~/lib/slider/jquery-1.12.4.js"></script>
     <script src="~/lib/slider/jquery-ui.js"></script>
     <script>
