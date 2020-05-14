@@ -1,7 +1,6 @@
 @model IEnumerable<DataLayer.SponsorTransaction>
 <!-- Table head options start -->
-<div class="row">
-    <div class="col-12">
+
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title">Transactions</h4>
@@ -21,7 +20,7 @@
                                     <div class="row">
                                         <div class="form-group col-sm-6">
                                             <label for="MySponsor" class="control-label">Seaech By Sponsor Name:</label>
-                                            <input id="MySponsor" type="text" class="form-control" placeholder="Enter Sponsor Name">
+                                            <input id="SponsorSearch" onkeyup="SeaechBySponsorName()" type="text" class="form-control" placeholder="Enter Sponsor Name">
                                         </div>
                                         <div class="form-group col-sm-6">
                                             <label for="buttomGroup" class="control-label">Filter By Date:</label>
@@ -51,7 +50,7 @@
                         <tbody><tr><td></td></tr></tbody>
                     </table>
 
-                    <table class="table">
+                    <table class="table" id="MyTable">
                         <thead class="thead-dark">
                             <tr>
                                 <th scope="col">#</th>
@@ -77,7 +76,7 @@
                             {
                                 <tr>
                                     <th scope="row">@(i++)</th>
-                                    <td>
+                                    <td class="sponsor">
                                         <a asp-controller="Sponsor" asp-action="Details" asp-route-id="@item.MySponsor.SponsorID">
                                             @Html.DisplayFor(modelItem => item.MySponsor.Name)
                                         </a>
@@ -99,8 +98,6 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
 <!-- Table head options end -->
 
 <div class="form-group" style="float: right; right:25px; position:relative;">

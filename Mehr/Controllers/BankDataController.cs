@@ -33,7 +33,7 @@ namespace Mehr.Controllers
                 return NotFound();
             }
 
-            BankName bank = findBankName(id);
+            BankName bank = BankName.FindBankName(id);
             if (bank == null)
             {
                 return NotFound();
@@ -41,6 +41,14 @@ namespace Mehr.Controllers
 
             var bankData = bankDatas.GetAllByBankName(bank);
 
+            ViewBag.maxAmount = 50000;
+            if (bankData.Count() > 0)
+            {
+                double max = bankData.Select(x => x.Amount).Max();
+                double div = Math.Pow(10, max.ToString().Count() - 1);
+                double round = Math.Ceiling(max / div) * div;
+                ViewBag.maxAmount = round;
+            }
             ViewBag.BankName = bank;
             ViewBag.ChartData = "[125, 200, 125, 225, 125, 200, 125, 225, 175, 275, 220]";
             return View(bankData);
@@ -151,19 +159,6 @@ namespace Mehr.Controllers
             return bankDatas.GetByIdAsync(id) != null;
         }
 
-        private BankName? findBankName(string input)
-        {
-            BankName bankName;
-            if (input.ToLower() == BankName.MELLI.ToString().ToLower())
-                bankName = BankName.MELLI;
-            else if (input.ToLower() == BankName.MELLAT.ToString().ToLower())
-                bankName = BankName.MELLAT;
-            else if (input.ToLower() == BankName.SADERAT.ToString().ToLower())
-                bankName = BankName.SADERAT;
-            else
-                return null;
-
-            return bankName;
-        }
+        
     }
 }

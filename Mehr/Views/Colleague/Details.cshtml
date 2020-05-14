@@ -5,77 +5,75 @@
     Layout = "_ChartLayout";
 }
 
-<section id="basic-buttons">
-    <div class="row">
-        <div class="col-lg-12 col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">@Model.Name</h3>
+<div class="col-lg-12 col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">@Model.Name</h3>
+        </div>
+        @{
+            string profile = Model.picName;
+
+            if (profile == "" || profile == null)
+            {
+                profile = Model.isMale ? "Male.jpg" : "Female.jpg";
+            }
+
+            string color = Model.color;
+
+            if (color == "" || color == null)
+            {
+                color = "#fff";
+            }
+        }
+        <div class="card-content collapse show">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <img style="left: 50px; height: 150px; width: 150px; border: solid @color 10px;" class="media-object rounded-circle" style="height: 100px;" src="~/images/Profiles/@profile" alt="Generic placeholder image">
+                    </div>
+                    <div class="col">
+                        <dl class="row">
+                            <dt class="col-sm-5">
+                                @Html.DisplayNameFor(model => model.PhoneNumber)
+                            </dt>
+                            <dd class="col-sm-5">
+                                0@(Html.DisplayFor(model => model.PhoneNumber))
+                            </dd>
+                            <dt class="col-sm-5">
+                                @Html.DisplayNameFor(model => model.BirthDay)
+                            </dt>
+                            <dd class="col-sm-5">
+                                @Html.DisplayFor(model => model.BirthDay)
+                            </dd>
+                            <dt class="col-sm-5">
+                                @Html.DisplayNameFor(model => model.StartActivity)
+                            </dt>
+                            <dd class="col-sm-5">
+                                @Html.DisplayFor(model => model.StartActivity)
+                            </dd>
+                            <dt class="col-sm-5">
+                                @Html.DisplayNameFor(model => model.code)
+                            </dt>
+                            <dd class="col-sm-5">
+                                @Html.DisplayFor(model => model.code)
+                            </dd>
+                        </dl>
+                    </div>
                 </div>
-                @{
-                    string profile = Model.picName;
-
-                    if (profile == "" || profile == null)
-                    {
-                        profile = Model.isMale ? "Male.jpg" : "Female.jpg";
-                    }
-
-                    string color = Model.color;
-
-                    if (color == "" || color == null)
-                    {
-                        color = "#fff";
-                    }
-                }
-                <div class="card-content collapse show">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <img style="left: 50px; height: 150px; width: 150px; border: solid @color 10px;" class="media-object rounded-circle" style="height: 100px;" src="~/images/Profiles/@profile" alt="Generic placeholder image">
-                            </div>
-                            <div class="col">
-                                <dl class="row">
-                                    <dt class="col-sm-5">
-                                        @Html.DisplayNameFor(model => model.PhoneNumber)
-                                    </dt>
-                                    <dd class="col-sm-5">
-                                        0@(Html.DisplayFor(model => model.PhoneNumber))
-                                    </dd>
-                                    <dt class="col-sm-5">
-                                        @Html.DisplayNameFor(model => model.BirthDay)
-                                    </dt>
-                                    <dd class="col-sm-5">
-                                        @Html.DisplayFor(model => model.BirthDay)
-                                    </dd>
-                                    <dt class="col-sm-5">
-                                        @Html.DisplayNameFor(model => model.StartActivity)
-                                    </dt>
-                                    <dd class="col-sm-5">
-                                        @Html.DisplayFor(model => model.StartActivity)
-                                    </dd>
-                                    <dt class="col-sm-5">
-                                        @Html.DisplayNameFor(model => model.code)
-                                    </dt>
-                                    <dd class="col-sm-5">
-                                        @Html.DisplayFor(model => model.code)
-                                    </dd>
-                                </dl>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div style="position:absolute; right: 30px; bottom: 20px">
-                                <a class="btn btn-warning" asp-controller="Colleague" asp-action="Edit" asp-route-id="@Model.ColleagueID">Edit</a>
-                                <a onclick="deleteColleague(@Model.ColleagueID)">Delete</a>
-                            </div>
-                        </div>
+                <div class="row">
+                    <div style="position:absolute; right: 30px; bottom: 20px">
+                        <a class="btn btn-warning" asp-controller="Colleague" asp-action="Edit" asp-route-id="@Model.ColleagueID">Edit</a>
+                        <div class="btn btn-danger" onclick="deleteColleague(@Model.ColleagueID)">Delete</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</section>
+</div>
 
-@await Component.InvokeAsync("DetailsColleagueTable", new { id = Model.ColleagueID })
+<div class="col-12">
+    @await Component.InvokeAsync("DetailsColleagueTable", new { id = Model.ColleagueID })
+</div>
 
 @section Script{
     <script>
@@ -87,22 +85,51 @@
             });
         };
     </script>
-    
+
     <script src="~/lib/slider/jquery-1.12.4.js"></script>
     <script src="~/lib/slider/jquery-ui.js"></script>
     <script>
-	$( function() {
-		$( "#slider-range" ).slider({
-			range: true,
-			min: 0,
-			max: 90000000,
-            values: [0, 90000000],
-			slide: function( event, ui ) {
-				$( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
-			}
-		});
-		$( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
-			" - $" + $( "#slider-range" ).slider( "values", 1 ) );
-	} );
+        $(function () {
+            $("#slider-range").slider({
+                range: true,
+                min: 0,
+                max: 90000000,
+                values: [0, 90000000],
+                slide: function (event, ui) {
+                    $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
+                }
+            });
+            $("#amount").val("$" + $("#slider-range").slider("values", 0) +
+                " - $" + $("#slider-range").slider("values", 1));
+        });
+
+
+        function SeaechBySponsorName() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("SponsorSearch");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("MyTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByClassName("sponsor")[0];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
     </script>
+
+
+    @*<script language="javascript" type="text/javascript" src="~/lib/TableFilter/actb.js"></script>
+    <script language="javascript" type="text/javascript" src="~/lib/TableFilter/tablefilter.js"></script>
+    <script language="javascript" type="text/javascript">
+        setFilterGrid("MyTable");
+    </script>*@
+
 }

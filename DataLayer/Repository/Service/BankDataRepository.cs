@@ -12,8 +12,8 @@ namespace DataLayer
     {
         public class BankName
         {
-            private readonly string Name;
-            private readonly string Image;
+            public string Name { get ; }
+            public string Image { get; }
 
             public static readonly BankName MELLI = new BankName("Melli", "Melli.png");
             public static readonly BankName MELLAT = new BankName("Mellat", "Mellat.png");
@@ -25,14 +25,18 @@ namespace DataLayer
                 Image = image;
             }
 
-            public override string ToString()
+            public static BankName FindBankName(string input)
             {
-                return Name;
-            }
+                BankName bankName = null;
 
-            public string image()
-            {
-                return Image;
+                if (input.ToLower() == MELLI.Name.ToLower())
+                    bankName = MELLI;
+                else if (input.ToLower() == MELLAT.Name.ToLower())
+                    bankName = MELLAT;
+                else if (input.ToLower() == SADERAT.Name.ToLower())
+                    bankName = SADERAT;
+
+                return bankName;
             }
         }
 
@@ -88,7 +92,7 @@ namespace DataLayer
             try
             {
                 return db.BankDatas
-                       .Where(x => x.BankName == bankname.ToString());
+                       .Where(x => x.BankName == bankname.Name);
             }
             catch (System.Exception)
             {
