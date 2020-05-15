@@ -14,6 +14,7 @@
 </section>
 
 @section Script{
+    <script src="~/lib/colorPicker/dist/iro.js"></script>
     <script>
         function deleteColleague(id) {
             $.get("/Colleague/Delete/" + id, function (result) {
@@ -22,7 +23,6 @@
                 $(".modal-body").html(result);
             });
         };
-
 
         $(document).ready(function () {
             $("#input-search").on("keyup", function () {
@@ -34,11 +34,28 @@
         });
 
 
-        //function zargar() {
-        //    $(".modal").modal('show');
-        //    $(".modal-title").html("");
-        //    $(".modal-body").html("<vs:ColorPicker></vs:ColorPicker>");
-        //};
+        function zargar() {
+            $(".modal").modal('show');
+            $(".modal-title").html("Select Color");
+            $(".modal-body").html(`@await Component.InvokeAsync("ColorPicker")`);
+
+            var colorInput = document.getElementById("color");
+            var colorBtn = document.getElementById("btnColor");
+            document.getElementById("newColor").style.backgroundColor = colorInput.value;
+            document.getElementById("oldColor").style.backgroundColor = colorInput.value;
+
+            var colorWheel = new iro.ColorPicker("#colorWheel", {
+                width: 150,
+                color: colorInput.value
+            });
+
+            colorWheel.on('color:change', function (color, changes) {
+                var myColor = colorWheel.color.hexString;
+                colorInput.value = String(myColor);
+                colorBtn.style.backgroundColor = String(myColor);
+                document.getElementById("newColor").style.backgroundColor = String(myColor);
+            })
+        };
 
         function readURL(input) {
             if (input.files && input.files[0]) {

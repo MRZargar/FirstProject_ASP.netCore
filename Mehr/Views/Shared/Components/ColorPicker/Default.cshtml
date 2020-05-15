@@ -1,24 +1,16 @@
-﻿@{
+﻿
+@{
     ViewData["Title"] = "ColorPicker";
     Layout = null;
 }
 
-<div class="row match-height">
-    <div class="wheel" id="colorWheel"></div>
-    <form>
-        <input type="hidden" name="color" value="" />
-        <input type="submit" class="btn btn-danger" value="Delete" />
-    </form>
-</div>
+    <div class="row" style="padding-left: 30px;">
+        <div class="col-sm-4">
+            <div class="wheel" id="colorWheel"></div>
+        </div>
+        <div class="col-sm-1"></div>
+        <div class="col-sm-3" id="newColor" style="border-radius: 20px 0 0 20px;"></div>
+        <div class="col-sm-3" id="oldColor" style="border-radius: 0 20px 20px 0;"></div>
+        <div class="col-sm-1"></div>
+    </div>
 
-<script src="~/lib/colorPicker/dist/iro.js"></script>
-<script>
-        var colorWheel = new iro.ColorPicker("#colorWheel", {
-            width: 150
-        });
-
-        colorWheel.on('color:change', function (color, changes) {
-            var myColor = colorWheel.color.hexString;
-            console.log(myColor);
-        })
-</script>

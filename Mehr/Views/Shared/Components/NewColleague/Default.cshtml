@@ -35,8 +35,8 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="color" class="control-label"></label>
-                        <input asp-for="color" type="color" />
-                        <span asp-validation-for="color" class="text-danger"></span>
+                        <input asp-for="color" type="hidden" value="#34e5eb"/>
+                        <button id="btnColor" onclick="zargar()" class="btn" style="background-color: #34e5eb;"></button>
                     </div>
                     <div class="form-group">
                         <label asp-for="picName" class="control-label"></label>
@@ -50,7 +50,7 @@
                         <input asp-for="isMale" class="form-check-input" checked />
                         <label asp-for="isMale" class="control-label"></label>
                     </div>
-                    @*<div onclick="zargar()">zargar</div>*@
+                    <a onclick="">zargar</a>
                 </div>
                 <div class="card-body">
                     <button type="button" class="btn btn-light btn-min-width mr-1 mb-1">Clear</button>
