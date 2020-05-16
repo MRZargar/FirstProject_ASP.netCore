@@ -119,8 +119,6 @@ namespace Mehr.Controllers
             {
                 try
                 {
-                    saveProfile(ref colleague, profile);
-
                     Colleague Edited = await colleagues.GetByIdAsync(id);
                     Edited.BirthDay = colleague.BirthDay;
                     Edited.code = colleague.code;
@@ -128,7 +126,12 @@ namespace Mehr.Controllers
                     Edited.isMale = colleague.isMale;
                     Edited.StartActivity = colleague.StartActivity;
                     Edited.Name = colleague.Name;
-                    Edited.picName = colleague.picName;
+
+                    if (profile != null)
+                    {
+                        saveProfile(ref colleague, profile);
+                        Edited.picName = colleague.picName;
+                    }
 
                     await colleagues.UpdateAsync(Edited);
                     await colleagues.saveAsync();
