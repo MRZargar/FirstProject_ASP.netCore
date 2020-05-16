@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -58,18 +59,7 @@ namespace Mehr.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (profile != null)
-                {
-                    colleague.picName = Guid.NewGuid() + Path.GetExtension(profile.FileName);
-                    string picPath = _hostingEnvironment.WebRootPath 
-                                    + @"\images\Profiles\" 
-                                    + colleague.picName;
-
-                    using (var stream = new FileStream(picPath, FileMode.Create))
-                    {
-                        await profile.CopyToAsync(stream);
-                    }
-                }
+                saveProfile(ref colleague, profile);
 
                 try
                 {
@@ -129,12 +119,13 @@ namespace Mehr.Controllers
             {
                 try
                 {
+                    saveProfile(ref colleague, profile);
+
                     Colleague Edited = await colleagues.GetByIdAsync(id);
                     Edited.BirthDay = colleague.BirthDay;
                     Edited.code = colleague.code;
                     Edited.color = colleague.color;
                     Edited.isMale = colleague.isMale;
-                    //Edited.picName = colleague.picName;
                     Edited.StartActivity = colleague.StartActivity;
                     Edited.Name = colleague.Name;
 
@@ -181,6 +172,7 @@ namespace Mehr.Controllers
         {
             try
             {
+                deleteProfile(id);
                 await colleagues.DeleteAsync(id);
                 await colleagues.saveAsync();
             }
@@ -190,6 +182,37 @@ namespace Mehr.Controllers
                 return View("Error");
             }
             return RedirectToAction("Colleagues", "Home");
+        }
+
+        private void saveProfile(ref Colleague colleague, IFormFile profile)
+        {
+            if (profile != null)
+            {
+                colleague.picName = Guid.NewGuid() + Path.GetExtension(profile.FileName);
+                string picPath = _hostingEnvironment.WebRootPath
+                                + @"\images\Profiles\"
+                                + colleague.picName;
+
+                using (var stream = new FileStream(picPath, FileMode.Create))
+                {
+                    profile.CopyTo(stream);
+                }
+
+            }
+        }
+
+        private async void deleteProfile(int id)
+        {
+            var colleague = await colleagues.GetByIdAsync(id);
+
+            if (colleague.picName != null)
+            {
+                string picPath = _hostingEnvironment.WebRootPath
+                                + @"\images\Profiles\"
+                                + colleague.picName;
+
+                //
+            }
         }
     }
 }
