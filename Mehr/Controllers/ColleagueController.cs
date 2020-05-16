@@ -128,6 +128,7 @@ namespace Mehr.Controllers
                     Edited.isMale = colleague.isMale;
                     Edited.StartActivity = colleague.StartActivity;
                     Edited.Name = colleague.Name;
+                    Edited.picName = colleague.picName;
 
                     await colleagues.UpdateAsync(Edited);
                     await colleagues.saveAsync();
