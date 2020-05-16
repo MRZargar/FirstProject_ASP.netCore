@@ -9,6 +9,12 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">@Model.Name</h3>
+            <div class="heading-elements">
+                <ul class="list-inline mb-0">
+                    <li><a class="btn btn-warning" asp-controller="Colleague" asp-action="Edit" asp-route-id="@Model.ColleagueID">Edit</a></li>
+                    <li><a class="btn btn-danger" onclick="deleteColleague(@Model.ColleagueID)">Delete</a></li>
+                </ul>
+            </div>
         </div>
         @{
             string profile = Model.picName;
@@ -24,14 +30,12 @@
             {
                 color = "#fff";
             }
+            string gender = Model.isMale ? "Male" : "Female";
         }
         <div class="card-content collapse show">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-3">
-                        <img style="left: 50px; height: 150px; width: 150px; border: solid @color 10px;" class="media-object rounded-circle" style="height: 100px;" src="~/images/Profiles/@profile" alt="Generic placeholder image">
-                    </div>
-                    <div class="col">
+                    <div class="col-9">
                         <dl class="row">
                             <dt class="col-sm-5">
                                 @Html.DisplayNameFor(model => model.PhoneNumber)
@@ -57,13 +61,22 @@
                             <dd class="col-sm-5">
                                 @Html.DisplayFor(model => model.code)
                             </dd>
+                            <dt class="col-sm-5">
+                                @Html.DisplayNameFor(model => model.isMale)
+                            </dt>
+                            <dd class="col-sm-5">
+                                @gender
+                            </dd>
+                            <dt class="col-sm-5">
+                                @Html.DisplayNameFor(model => model.color)
+                            </dt>
+                            <dd class="col-sm-5">
+                                @color
+                            </dd>
                         </dl>
                     </div>
-                </div>
-                <div class="row">
-                    <div style="position:absolute; right: 30px; bottom: 20px">
-                        <a class="btn btn-warning" asp-controller="Colleague" asp-action="Edit" asp-route-id="@Model.ColleagueID">Edit</a>
-                        <div class="btn btn-danger" onclick="deleteColleague(@Model.ColleagueID)">Delete</div>
+                    <div class="col-3">
+                        <img style="height: 180px; width: 180px; border: solid @color 10px;" class="media-object rounded-circle" style="height: 100px;" src="~/images/Profiles/@profile" alt="Generic placeholder image">
                     </div>
                 </div>
             </div>
