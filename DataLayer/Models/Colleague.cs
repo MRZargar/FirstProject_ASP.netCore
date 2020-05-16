@@ -31,6 +31,7 @@ namespace DataLayer
         public virtual DateTime StartActivity { get; set; }
 
         [Display(Name = "Code")]
+        [RegularExpression(@"^[0-9]+$", ErrorMessage = "Just use numbers")]
         public int code { get; set; }      
 
         [MaxLength(7)]

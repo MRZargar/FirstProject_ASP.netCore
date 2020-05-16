@@ -8,49 +8,83 @@
             <form asp-controller="Colleague" asp-action="Create" method="post" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="card-body">
-                    <div class="form-group">
-                        <label asp-for="Name" class="control-label"></label>
-                        <input asp-for="Name" class="form-control" />
-                        <span asp-validation-for="Name" class="text-danger"></span>
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="form-group">
+                                <label asp-for="Name" class="control-label"></label>
+                                <input asp-for="Name" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="PhoneNumber" class="control-label"></label>
+                                <input asp-for="PhoneNumber" type="text" class="form-control" />
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <input id="FileUpload" name="profile" type="file" style="display: none;" />
+                                <span class="avatar avatar-lg">
+                                    <img id="ImgUpload" style="border: solid #69245f 1px; display:block; margin:auto; width: 150px; height: 150px; cursor: pointer;" class="media-object rounded-circle" src="~/images/Profiles/Female.jpg">
+                                    <i></i>
+                                </span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="PhoneNumber" class="control-label"></label>
-                        <input asp-for="PhoneNumber" class="form-control" />
-                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="form-group">
+                                <label asp-for="BirthDay" class="control-label"></label>
+                                <input asp-for="BirthDay" id="Date1" class="form-control" />
+                                <span asp-validation-for="BirthDay" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label asp-for="code" class="control-label"></label>
+                                <input asp-for="code" type="text" class="form-control" />
+                                <span asp-validation-for="code" class="text-danger"></span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="BirthDay" class="control-label"></label>
-                        <input asp-for="BirthDay" class="form-control" />
-                        <span asp-validation-for="BirthDay" class="text-danger"></span>
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="form-group">
+                                <label asp-for="StartActivity" class="control-label"></label>
+                                <input asp-for="StartActivity" id="Date2" type="text" class="form-control" />
+                                <span asp-validation-for="StartActivity" class="text-danger"></span>
+                            </div>
+                            </div>
+                        <div class="col-4">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label asp-for="color" class="control-label"></label>
+                                        <input asp-for="color" type="hidden" value="#34e5eb" />
+                                        <button id="btnColor" onclick="GetColor()" class="btn" style="  border-radius: 50%; height:43px; width: 50%; background-color: #34e5eb;"></button>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label asp-for="isMale" class="control-label"></label>
+                                        <div class="pretty p-icon p-toggle">
+                                            <input name="isMale" id="Gender" type="checkbox" />
+                                            <div class="state p-on fonticon-container">
+                                                <div class="fonticon-wrap icon-shadow">
+                                                    <i class="la la-male"></i>
+                                                </div>
+                                            </div>
+                                            <div class="state p-off fonticon-container">
+                                                <div class="fonticon-wrap icon-shadow">
+                                                    <i class="la la-female"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="StartActivity" class="control-label"></label>
-                        <input asp-for="StartActivity" class="form-control" />
-                        <span asp-validation-for="StartActivity" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="code" class="control-label"></label>
-                        <input asp-for="code" class="form-control" />
-                        <span asp-validation-for="code" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="color" class="control-label"></label>
-                        <input asp-for="color" type="hidden" value="#34e5eb"/>
-                        <button id="btnColor" onclick="zargar()" class="btn" style="background-color: #34e5eb;"></button>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="picName" class="control-label"></label>
-                        <input name="profile" type="file" onchange="readURL(this)" />
-                    </div>
-                    <span class="avatar avatar-md">
-                        <img id="blah" style="width: 40px; height: 40px;" class="media-object rounded-circle" src="~/images/Profiles/Male.jpg">
-                        <i></i>
-                    </span>
-                    <div class="form-group">
-                        <input asp-for="isMale" class="form-check-input" checked />
-                        <label asp-for="isMale" class="control-label"></label>
-                    </div>
-                    <a onclick="">zargar</a>
                 </div>
                 <div class="card-body">
                     <button type="button" class="btn btn-light btn-min-width mr-1 mb-1">Clear</button>

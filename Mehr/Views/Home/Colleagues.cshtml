@@ -2,6 +2,11 @@
     ViewData["Title"] = "Colleagues";
 }
 
+@section StyleSheets{
+    <link rel="stylesheet" type="text/css" href="~/lib/prettyCheck/pretty-checkbox.min.css">
+    <link rel="stylesheet" type="text/css" href="~/lib/calendar/dist/jquery.md.bootstrap.datetimepicker.style.css">
+}
+
 <section id="content-colleagues">
     <div class="row match-height">
         <div class="col-xl-6 col-md-6 col-sm-12">
@@ -33,8 +38,9 @@
             });
         });
 
+        /////////////////////// Change Color
 
-        function zargar() {
+        function GetColor() {
             $(".modal").modal('show');
             $(".modal-title").html("Select Color");
             $(".modal-body").html(`@await Component.InvokeAsync("ColorPicker")`);
@@ -57,12 +63,14 @@
             })
         };
 
-        function readURL(input) {
+        ////////////////////////// Upload Image
+
+        function changeImg(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
 
                 reader.onload = function (e) {
-                    $('#blah')
+                    $('#ImgUpload')
                         .attr('src', e.target.result)
                 };
 
@@ -70,6 +78,29 @@
             }
         };
 
+        $(document).ready(function () {
+            var fileupload = document.getElementById("FileUpload");
+            var image = document.getElementById("ImgUpload");
+            image.onclick = function () {
+                fileupload.click();
+            };
+            fileupload.onchange = function () {
+                changeImg(fileupload);
+            };
+        });
+
+        ////////////////////////// Gender
+
+        $("#Gender").change( function () {
+            var fileupload = document.getElementById("FileUpload");
+            if (!fileupload.files || !fileupload.files[0]) {
+                document.getElementById("ImgUpload").src = this.checked ? "/images/Profiles/Male.jpg" : "/images/Profiles/Female.jpg";
+            }
+        });
+
+        ////////////////////////// Date Picker
+        //
+ 
     </script>
 
 }
