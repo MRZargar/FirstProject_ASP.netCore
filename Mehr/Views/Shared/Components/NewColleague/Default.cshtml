@@ -51,7 +51,7 @@
                         <div class="col-8">
                             <div class="form-group">
                                 <label asp-for="StartActivity" class="control-label"></label>
-                                <input asp-for="StartActivity" id="Date2" type="text" class="form-control" />
+                                <input asp-for="StartActivity" id="Date2" class="form-control" />
                                 <span asp-validation-for="StartActivity" class="text-danger"></span>
                             </div>
                             </div>
@@ -67,8 +67,9 @@
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label asp-for="isMale" class="control-label"></label>
+                                        <input type="hidden" id="hideIsMale" name="isMale" value="false"/>
                                         <div class="pretty p-icon p-toggle">
-                                            <input name="isMale" id="Gender" type="checkbox" />
+                                            <input id="Gender" type="checkbox" />
                                             <div class="state p-on fonticon-container">
                                                 <div class="fonticon-wrap icon-shadow">
                                                     <i class="la la-male"></i>

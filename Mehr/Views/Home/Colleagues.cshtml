@@ -91,7 +91,9 @@
 
         ////////////////////////// Gender
 
-        $("#Gender").change( function () {
+        $("#Gender").change(function () {
+            document.getElementById("hideIsMale").value = this.checked ? "true" : "false";
+
             var fileupload = document.getElementById("FileUpload");
             if (!fileupload.files || !fileupload.files[0]) {
                 document.getElementById("ImgUpload").src = this.checked ? "/images/Profiles/Male.jpg" : "/images/Profiles/Female.jpg";
