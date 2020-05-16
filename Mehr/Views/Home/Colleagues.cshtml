@@ -4,7 +4,6 @@
 
 @section StyleSheets{
     <link rel="stylesheet" type="text/css" href="~/lib/prettyCheck/pretty-checkbox.min.css">
-    <link rel="stylesheet" type="text/css" href="~/lib/calendar/dist/jquery.md.bootstrap.datetimepicker.style.css">
 }
 
 <section id="content-colleagues">
@@ -75,6 +74,9 @@
                 };
 
                 reader.readAsDataURL(input.files[0]);
+            }
+            else {
+                document.getElementById("ImgUpload").src = this.checked ? "/images/Profiles/Male.jpg" : "/images/Profiles/Female.jpg";
             }
         };
 

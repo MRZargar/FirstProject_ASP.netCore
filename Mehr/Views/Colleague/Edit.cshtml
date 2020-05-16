@@ -1,5 +1,9 @@
 @model DataLayer.Colleague
 
+@section StyleSheets{
+    <link rel="stylesheet" type="text/css" href="~/lib/prettyCheck/pretty-checkbox.min.css">
+}
+
 @{
     ViewData["Title"] = "Edit Colleague";
 
@@ -29,47 +33,125 @@
                         <form asp-action="Edit">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <input type="hidden" asp-for="ColleagueID" />
-                            <div class="form-group">
-                                <label asp-for="Name" class="control-label"></label>
-                                <input asp-for="Name" class="form-control" />
-                                <span asp-validation-for="Name" class="text-danger"></span>
+                            @*<div class="form-group">
+                                    <label asp-for="Name" class="control-label"></label>
+                                    <input asp-for="Name" class="form-control" />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="PhoneNumber" class="control-label"></label>
+                                    <input asp-for="PhoneNumber" class="form-control" />
+                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="BirthDay" class="control-label"></label>
+                                    <input asp-for="BirthDay" class="form-control" />
+                                    <span asp-validation-for="BirthDay" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="StartActivity" class="control-label"></label>
+                                    <input asp-for="StartActivity" class="form-control" />
+                                    <span asp-validation-for="StartActivity" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="code" class="control-label"></label>
+                                    <input asp-for="code" class="form-control" />
+                                    <span asp-validation-for="code" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="color" class="control-label"></label>
+                                    <input asp-for="color" type="color" value="@color" />
+                                    <span asp-validation-for="color" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="picName" class="control-label"></label>
+                                    <input name="profile" type="file" onchange="readURL(this)" />
+                                </div>
+                                <span class="avatar avatar-md">
+                                    <img id="blah" style="width: 40px; height: 40px;" class="media-object rounded-circle" src="~/images/Profiles/@profile">
+                                    <i></i>
+                                </span>
+                                <div class="form-group">
+                                    <input asp-for="isMale" class="form-check-input" checked />
+                                    <label asp-for="isMale" class="control-label"></label>
+                                </div>*@
+                            <div class="row">
+                                <div class="col-10">
+                                    <div class="form-group">
+                                        <label asp-for="Name" class="control-label"></label>
+                                        <input asp-for="Name" class="form-control" />
+                                        <span asp-validation-for="Name" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="PhoneNumber" class="control-label"></label>
+                                        <input asp-for="PhoneNumber" type="text" class="form-control" />
+                                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="form-group">
+                                        <input id="FileUpload" name="profile" type="file" style="display: none;" />
+                                        <span class="avatar avatar-lg">
+                                            <img id="ImgUpload" style="border: solid #69245f 1px; display:block; margin:auto; width: 150px; height: 150px; cursor: pointer;" class="media-object rounded-circle" src="~/images/Profiles/Female.jpg">
+                                            <i></i>
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label asp-for="PhoneNumber" class="control-label"></label>
-                                <input asp-for="PhoneNumber" class="form-control" />
-                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            <div class="row">
+                                <div class="col-10">
+                                    <div class="form-group">
+                                        <label asp-for="BirthDay" class="control-label"></label>
+                                        <input asp-for="BirthDay" id="Date1" class="form-control" />
+                                        <span asp-validation-for="BirthDay" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="form-group">
+                                        <label asp-for="code" class="control-label"></label>
+                                        <input asp-for="code" type="text" class="form-control" />
+                                        <span asp-validation-for="code" class="text-danger"></span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label asp-for="BirthDay" class="control-label"></label>
-                                <input asp-for="BirthDay" class="form-control" />
-                                <span asp-validation-for="BirthDay" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="StartActivity" class="control-label"></label>
-                                <input asp-for="StartActivity" class="form-control" />
-                                <span asp-validation-for="StartActivity" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="code" class="control-label"></label>
-                                <input asp-for="code" class="form-control" />
-                                <span asp-validation-for="code" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="color" class="control-label"></label>
-                                <input asp-for="color" type="color" value="@color" />
-                                <span asp-validation-for="color" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="picName" class="control-label"></label>
-                                <input name="profile" type="file" onchange="readURL(this)" />
-                            </div>
-                            <span class="avatar avatar-md">
-                                <img id="blah" style="width: 40px; height: 40px;" class="media-object rounded-circle" src="~/images/Profiles/@profile">
-                                <i></i>
-                            </span>
-                            <div class="form-group">
-                                <input asp-for="isMale" class="form-check-input" checked />
-                                <label asp-for="isMale" class="control-label"></label>
+                            <div class="row">
+                                <div class="col-10">
+                                    <div class="form-group">
+                                        <label asp-for="StartActivity" class="control-label"></label>
+                                        <input asp-for="StartActivity" id="Date2" class="form-control" />
+                                        <span asp-validation-for="StartActivity" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label asp-for="color" class="control-label"></label>
+                                                <input asp-for="color" type="hidden" value="#34e5eb" />
+                                                <button type="button" id="btnColor" onclick="GetColor()" class="btn" style="border-radius: 50%; height:43px; width: 50%; background-color: #34e5eb;"></button>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label asp-for="isMale" class="control-label"></label>
+                                                <input type="hidden" id="hideIsMale" name="isMale" value="false" />
+                                                <div class="pretty p-icon p-toggle">
+                                                    <input id="Gender" type="checkbox" />
+                                                    <div class="state p-on fonticon-container">
+                                                        <div class="fonticon-wrap icon-shadow">
+                                                            <i class="la la-male"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="state p-off fonticon-container">
+                                                        <div class="fonticon-wrap icon-shadow">
+                                                            <i class="la la-female"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -84,18 +166,73 @@
 
 
 @section Script{
+    <script src="~/lib/colorPicker/dist/iro.js"></script>
+
     <script>
-        function readURL(input) {
+        /////////////////////// Change Color
+
+        function GetColor() {
+            $(".modal").modal('show');
+            $(".modal-title").html("Select Color");
+            $(".modal-body").html(`@await Component.InvokeAsync("ColorPicker")`);
+
+            var colorInput = document.getElementById("color");
+            var colorBtn = document.getElementById("btnColor");
+            document.getElementById("newColor").style.backgroundColor = colorInput.value;
+            document.getElementById("oldColor").style.backgroundColor = colorInput.value;
+
+            var colorWheel = new iro.ColorPicker("#colorWheel", {
+                width: 150,
+                color: colorInput.value
+            });
+
+            colorWheel.on('color:change', function (color, changes) {
+                var myColor = colorWheel.color.hexString;
+                colorInput.value = String(myColor);
+                colorBtn.style.backgroundColor = String(myColor);
+                document.getElementById("newColor").style.backgroundColor = String(myColor);
+            })
+        };
+
+        ////////////////////////// Upload Image
+
+        function changeImg(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
 
                 reader.onload = function (e) {
-                    $('#blah')
+                    $('#ImgUpload')
                         .attr('src', e.target.result)
                 };
 
                 reader.readAsDataURL(input.files[0]);
             }
+            else {
+                document.getElementById("ImgUpload").src = this.checked ? "/images/Profiles/Male.jpg" : "/images/Profiles/Female.jpg";
+            }
         };
+
+        $(document).ready(function () {
+            var fileupload = document.getElementById("FileUpload");
+            var image = document.getElementById("ImgUpload");
+            image.onclick = function () {
+                fileupload.click();
+            };
+            fileupload.onchange = function () {
+                changeImg(fileupload);
+            };
+        });
+
+        ////////////////////////// Gender
+
+        $("#Gender").change(function () {
+            document.getElementById("hideIsMale").value = this.checked ? "true" : "false";
+
+            var fileupload = document.getElementById("FileUpload");
+            if (!fileupload.files || !fileupload.files[0]) {
+                document.getElementById("ImgUpload").src = this.checked ? "/images/Profiles/Male.jpg" : "/images/Profiles/Female.jpg";
+            }
+        });
+
     </script>
 }
