@@ -10,6 +10,8 @@ using System.Data;
 using Mehr.Classes;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using Microsoft.AspNetCore.Hosting;
+using DataLayer.Exceptions;
 
 namespace Mehr.Controllers
 {
@@ -18,12 +20,15 @@ namespace Mehr.Controllers
         private ISponsorTransactionRepository transactions;
         private ISponsorRepository sponsors;
         private IColleageRepository colleages;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
-        public SponsorTransactionController(MyContext context)
+
+        public SponsorTransactionController(IHostingEnvironment hostingEnvironment, MyContext context)
         {
             transactions = new SponsorTransactionRepository(context);
             sponsors = new SponsorRepository(context);
             colleages = new ColleagueRepository(context);
+            _hostingEnvironment = hostingEnvironment;
         }
 
         // GET: App/SponsorTransaction
@@ -75,31 +80,44 @@ namespace Mehr.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Createzar(string BankName, int ColleagueID, IFormFile XLSXfile)
+        public async Task<IActionResult> Import(int ColleagueID, IFormFile XLSXfile)
         {
             if (XLSXfile == null)
             {
-                return RedirectToAction("Home", "Index");
+                return RedirectToAction("Details", "Colleague", new { id = ColleagueID });
             }
 
-            using (var stream = new MemoryStream())
-            {
-                await XLSXfile.CopyToAsync(stream);
+            string path = saveFile(XLSXfile);
 
-                DataTable dt = Excel.Read(stream);
+            using (DataTable dt = Excel.Read(path))
+            {
+
                 foreach (DataRow row in dt.Rows)
                 {
+                    if (row["Phone"].ToString() == string.Empty)
+                    {
+                        continue;
+                    }
+
                     var st = new SponsorTransaction();
 
                     long phoneNumber = long.Parse(row["Phone"].ToString());
-                    Sponsor? mySponsor = await sponsors.GetByPhoneNumberAsync(phoneNumber);
 
-                    if (mySponsor == null)
+                    Sponsor mySponsor;
+                    try
+                    {
+                        mySponsor = await sponsors.GetByPhoneNumberAsync(phoneNumber);
+                    }
+                    catch (NotFoundException)
                     {
                         mySponsor = new Sponsor();
                         mySponsor.ColleagueID = ColleagueID;
                         mySponsor.PhoneNumber = phoneNumber;
                         mySponsor.Name = row["SponsorName"].ToString();
+                        if (mySponsor.Name == string.Empty)
+                        {
+                            mySponsor.Name = "Undefine";
+                        }
                         mySponsor.MyColleague = await colleages.GetByIdAsync(ColleagueID);
 
                         await sponsors.InsertAsync(mySponsor);
@@ -111,21 +129,47 @@ namespace Mehr.Controllers
                             continue;
                         }
                     }
+
+                    try
+                    {
+                        st.isValid = false;
+                        st.Amount = Convert.ToDecimal(row["Amount"]);
+                        st.LastFourNumbersOfBankCard = Convert.ToInt16(row["CardNumber"]);
+                        st.TrackingNumber = row["TrackingNumber"].ToString();
+                        DateTime date = Convert.ToDateTime(row["Date"].ToString()).Date;
+                        TimeSpan time;
+                        try
+                        {
+                            time = TimeSpan.Parse(row["Time"].ToString());
+                        }
+                        catch (Exception)
+                        {
+                            time = Convert.ToDateTime(row["Time"].ToString()).TimeOfDay;
+                        }
+                        st.TransactionDate = date + time;
+                        st.SponsorID = mySponsor.SponsorID;
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
                     
-                    st.isValid = false;
-                    st.Amount = Convert.ToDecimal(row["Amount"]);
-                    st.LastFourNumbersOfBankCard = Convert.ToInt16(row["CardNumber"]);
-                    st.TrackingNumber = row["TrackingNumber"].ToString();
-                    DateTime date = Convert.ToDateTime(row["Date"].ToString());
-                    TimeSpan time = TimeSpan.Parse(row["Time"].ToString());
-                    st.TransactionDate = date + time;
-                    st.SponsorID = mySponsor.SponsorID;
                     await transactions.InsertAsync(st);
                 }
+
+                await transactions.saveAsync();
             }
-            await transactions.saveAsync();
+            deleteFile(path);
+
             return RedirectToAction( "Details","Colleague", new {id = ColleagueID});
         }
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Export()
+        //{
+        //    return;
+        //}
 
         // GET: App/SponsorTransaction/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -210,6 +254,32 @@ namespace Mehr.Controllers
         private bool SponsorTransactionExists(int id)
         {
             return transactions.GetByIdAsync(id) != null;
+        }
+
+        private string saveFile(IFormFile file)
+        {
+            string path = string.Empty;
+            if (file!= null)
+            {
+                string fileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
+                path = _hostingEnvironment.WebRootPath
+                                + @"\Catch\"
+                                + fileName;
+
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                }
+            }
+            return path;
+        }
+
+        private void deleteFile(string path)
+        {
+            if (System.IO.File.Exists(path))
+            {
+                System.IO.File.Delete(path);
+            }
         }
     }
 }

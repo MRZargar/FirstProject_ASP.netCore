@@ -201,7 +201,6 @@ namespace Mehr.Controllers
                 {
                     profile.CopyTo(stream);
                 }
-
             }
         }
 
@@ -215,7 +214,10 @@ namespace Mehr.Controllers
                                 + @"\images\Profiles\"
                                 + colleague.picName;
 
-                //
+                if (System.IO.File.Exists(picPath))
+                {
+                    System.IO.File.Delete(picPath);
+                }
             }
         }
     }

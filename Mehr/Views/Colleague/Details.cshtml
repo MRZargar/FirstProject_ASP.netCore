@@ -88,6 +88,25 @@
     @await Component.InvokeAsync("DetailsColleagueTable", new { id = Model.ColleagueID })
 </div>
 
+<!--  hidden form   -->
+<form id="ImportForm" asp-controller="SponsorTransaction" asp-action="Import" method="POST" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" name="ColleagueID" value="@Model.ColleagueID">
+    
+    <input id="btnImportForm" type="file" name="XLSXfile" >
+
+    <input type="submit" value="Import" class="btn btn-success"  />
+</form>
+
+<!--  hidden form   -->
+<form id="ExportForm" asp-controller="SponsorTransaction" asp-action="Export" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" name="ColleagueID" value="@Model.ColleagueID">
+</form>
+
+
+
+
 @section Script{
     <script>
         function deleteColleague(id) {
@@ -134,15 +153,25 @@
                     }
                 }
             }
-        }
+        };
 
+        //$(document).ready(function () {
+        //    var btnImport = document.getElementById("btnImport");
+        //    var btnImportForm = document.getElementById("btnImportForm");
+        //    var ImportForm = document.getElementById("submitForm");
+        //    btnImport.onclick = function () {
+        //        btnImportForm.click();
+        //        ImportForm.click();
+        //    };
+        //});
     </script>
 
 
+
     @*<script language="javascript" type="text/javascript" src="~/lib/TableFilter/actb.js"></script>
-    <script language="javascript" type="text/javascript" src="~/lib/TableFilter/tablefilter.js"></script>
-    <script language="javascript" type="text/javascript">
-        setFilterGrid("MyTable");
-    </script>*@
+        <script language="javascript" type="text/javascript" src="~/lib/TableFilter/tablefilter.js"></script>
+        <script language="javascript" type="text/javascript">
+            setFilterGrid("MyTable");
+        </script>*@
 
 }

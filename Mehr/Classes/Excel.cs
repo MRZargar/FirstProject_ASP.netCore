@@ -1,7 +1,10 @@
 using System;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Threading;
 using OfficeOpenXml; 
 using OfficeOpenXml.Style; 
 
@@ -81,7 +84,11 @@ namespace Mehr.Classes
 
         public static DataTable Read(string path, bool header = true, string sheetName = "")
         {
-            //FileInfo existingFile = new FileInfo(path);
+            if (Path.GetExtension(path) == ".csv" || Path.GetExtension(path) == ".txt")
+            {
+                return readCSV(path);
+            }
+
             using (FileStream stream = File.OpenRead(path))
             {
                 return Read(stream, header, sheetName);
@@ -105,36 +112,13 @@ namespace Mehr.Classes
                 else
                     worksheet = package.Workbook.Worksheets[sheetName];
                 
-                int colCount = worksheet.Dimension.End.Column;  //get Column Count
-
-                //dt.TableName = Path.GetFileNameWithoutExtension(stream.);
-
-                for (int colInx = 0; colInx < colCount; colInx++)
-                {
-                    if (header)
-                    {
-                        dt.Columns.Add(worksheet.Cells[1, colInx + 1].Value.ToString().Trim());
-                    }
-                    else
-                    {
-                        dt.Columns.Add();
-                    }
-                }
-
-                if (header)
-                {
-                    dt = readXLS(ref worksheet, dt, 2);
-                }
-                else
-                {
-                    dt = readXLS(ref worksheet, dt);
-                }
+                readXLS(ref worksheet, ref dt, header);
             }
             
             return dt;
         }
 
-        private static DataTable readXLS(ref ExcelWorksheet worksheet, DataTable dt, int startRow = 1)
+        private static void FilldataTable(ref ExcelWorksheet worksheet, ref DataTable dt, int startRow = 1)
         {
             int rowCount = worksheet.Dimension.End.Row;     //get row count
             int colCount = dt.Columns.Count;
@@ -144,12 +128,61 @@ namespace Mehr.Classes
                 DataRow row = dt.NewRow();
                 for (int colInx = 1; colInx <= colCount; colInx++)
                 {
-                    row[colInx - 1] = worksheet.Cells[rowInx, colInx].Value.ToString().Trim();
+                    row[colInx - 1] = worksheet.Cells[rowInx, colInx].Value?.ToString().Trim();
                 }
                 dt.Rows.Add(row.ItemArray);
             }
+        }
 
+        private static DataTable readCSV(string path, bool header = true, char delimiter = ',')
+        {
+            DataTable dt = new DataTable();
+
+            ExcelPackage.LicenseContext = LicenseContext.Commercial;
+
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            //set the formatting options
+            ExcelTextFormat format = new ExcelTextFormat();
+            format.Delimiter = delimiter;
+            format.Culture = new CultureInfo(Thread.CurrentThread.CurrentCulture.ToString());
+            format.Culture.DateTimeFormat.ShortDatePattern = "dd-mm-yyyy";
+            format.Encoding = new UTF8Encoding();
+
+            //read the CSV file from disk
+            FileInfo file = new FileInfo(path);
+            
+            //create a new Excel package
+            using (ExcelPackage excelPackage = new ExcelPackage())
+            {
+                //create a WorkSheet
+                ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("Sheet 1");
+
+                //load the CSV data into cell A1
+                worksheet.Cells["A1"].LoadFromText(file, format);
+
+                readXLS(ref worksheet, ref dt, header);
+            }
             return dt;
+        }
+
+        private static void readXLS(ref ExcelWorksheet worksheet, ref DataTable dt, bool header)
+        {
+            int colCount = worksheet.Dimension.End.Column;  //get Column Count
+
+            for (int colInx = 0; colInx < colCount; colInx++)
+            {
+                if (header)
+                {
+                    dt.Columns.Add(worksheet.Cells[1, colInx + 1].Value.ToString().Trim());
+                }
+                else
+                {
+                    dt.Columns.Add();
+                }
+            }
+
+            FilldataTable(ref worksheet, ref dt, header ? 2 : 1);
         }
     }
 }

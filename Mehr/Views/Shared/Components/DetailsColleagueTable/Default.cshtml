@@ -1,117 +1,106 @@
 @model IEnumerable<DataLayer.SponsorTransaction>
 <!-- Table head options start -->
 
-        <div class="card">
-            <div class="card-header">
-                <h4 class="card-title">Transactions</h4>
-                <div class="heading-elements">
-                    <ul class="list-inline mb-0">
-                        <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
-                        <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="card-content collapse show">
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr class="thead-light">
-                                <td>
-                                    <div class="row">
-                                        <div class="form-group col-sm-6">
-                                            <label for="MySponsor" class="control-label">Seaech By Sponsor Name:</label>
-                                            <input id="SponsorSearch" onkeyup="SeaechBySponsorName()" type="text" class="form-control" placeholder="Enter Sponsor Name">
-                                        </div>
-                                        <div class="form-group col-sm-6">
-                                            <label for="buttomGroup" class="control-label">Filter By Date:</label>
-                                            <div class="btn-group" id="buttomGroup" role="group" aria-label="Basic example" style="padding: 2px;">
-                                                <button type="button" class="btn btn-secondary">From</button>
-                                                <input type="date" name="FromDate" class="form-control btn-sm" style="border-radius: 0;" />
-                                                <button type="button" class="btn btn-secondary">To</button>
-                                                <input type="date" name="ToDate" class="form-control btn-sm" style="border-radius: 0;" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group col-sm-10">
-                                            <label for="amount" class="control-label">Filter By Amount:</label>
-                                            <input type="text" id="amount" readonly style="border:0; color:#000; font-weight:bold;">
-                                            <div id="slider-range"></div>
-                                        </div>
-                                        <div class="form-group col-sm-2">
-                                            <button type="submit" class="btn btn-light btn-sm" style="position:relative; float: right;">
-                                                <i class="la la-filter"></i>Filter
-                                            </button>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </thead>
-                        <tbody><tr><td></td></tr></tbody>
-                    </table>
-
-                    <table class="table" id="MyTable">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">
-                                    @Html.DisplayNameFor(model => model.MySponsor)
-                                </th>
-                                <th scope="col">
-                                    @Html.DisplayNameFor(model => model.MySponsor.CauseOfSupport)
-                                </th>
-                                <th scope="col">
-                                    @Html.DisplayNameFor(model => model.TransactionDate)
-                                </th>
-                                <th scope="col">
-                                    @Html.DisplayNameFor(model => model.Amount)
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @{
-                                int i = 1;
-                            }
-                            @foreach (var item in Model)
-                            {
-                                <tr>
-                                    <th scope="row">@(i++)</th>
-                                    <td class="sponsor">
-                                        <a asp-controller="Sponsor" asp-action="Details" asp-route-id="@item.MySponsor.SponsorID">
-                                            @Html.DisplayFor(modelItem => item.MySponsor.Name)
-                                        </a>
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.MySponsor.CauseOfSupport)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.TransactionDate)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Amount)
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-
-                </div>
-            </div>
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Transactions</h4>
+        <div class="heading-elements">
+            <ul class="list-inline mb-0">
+                <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+            </ul>
         </div>
+    </div>
+    <div class="card-content collapse show">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr class="thead-light">
+                        <td>
+                            <div class="row">
+                                <div class="form-group col-sm-6">
+                                    <label for="MySponsor" class="control-label">Seaech By Sponsor Name:</label>
+                                    <input id="SponsorSearch" onkeyup="SeaechBySponsorName()" type="text" class="form-control" placeholder="Enter Sponsor Name">
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label for="buttomGroup" class="control-label">Filter By Date:</label>
+                                    <div class="btn-group" id="buttomGroup" role="group" aria-label="Basic example" style="padding: 2px;">
+                                        <button type="button" class="btn btn-secondary">From</button>
+                                        <input type="date" name="FromDate" class="form-control btn-sm" style="border-radius: 0;" />
+                                        <button type="button" class="btn btn-secondary">To</button>
+                                        <input type="date" name="ToDate" class="form-control btn-sm" style="border-radius: 0;" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-sm-10">
+                                    <label for="amount" class="control-label">Filter By Amount:</label>
+                                    <input type="text" id="amount" readonly style="border:0; color:#000; font-weight:bold;">
+                                    <div id="slider-range"></div>
+                                </div>
+                                <div class="form-group col-sm-2">
+                                    <button type="submit" class="btn btn-light btn-sm" style="position:relative; float: right;">
+                                        <i class="la la-filter"></i>Filter
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody><tr><td></td></tr></tbody>
+            </table>
+
+            <table class="table" id="MyTable">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.MySponsor)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.MySponsor.CauseOfSupport)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.TransactionDate)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.Amount)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int i = 1;
+                    }
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <th scope="row">@(i++)</th>
+                            <td class="sponsor">
+                                <a asp-controller="Sponsor" asp-action="Details" asp-route-id="@item.MySponsor.SponsorID">
+                                    @Html.DisplayFor(modelItem => item.MySponsor.Name)
+                                </a>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MySponsor.CauseOfSupport)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TransactionDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Amount)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
 <!-- Table head options end -->
 
 <div class="form-group" style="float: right; right:25px; position:relative;">
-    <p class="btn btn-light btn-sm"><i class="la la-cloud-upload"></i> Import</p>
-    <p class="btn btn-light btn-sm"><i class="la la-cloud-download"></i> Export</p>
+    <p id="btnImport" class="btn btn-light btn-sm"><i class="la la-cloud-upload"></i> Import</p>
+    <p id="btnExport" class="btn btn-light btn-sm"><i class="la la-cloud-download"></i> Export</p>
 </div>
-
-@*
-<form asp-controller="SponsorTransaction" asp-action="Createzar" method="POST" enctype="multipart/form-data">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input type="hidden" name="BankName" value="Melli">
-    <input type="hidden" name="ColleagueID" value="@Model.ColleagueID">
-
-    <input type="file" accept="Excel/xlsx" name="XLSXfile">
-    <input type="submit" value="Import" class="btn btn-success" />
-</form>
-*@
