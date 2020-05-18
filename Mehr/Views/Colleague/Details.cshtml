@@ -92,10 +92,7 @@
 <form id="ImportForm" asp-controller="SponsorTransaction" asp-action="Import" method="POST" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" name="ColleagueID" value="@Model.ColleagueID">
-
-    <input id="btnImportForm" type="file" name="XLSXfile">
-
-    <input type="submit" value="Import" class="btn btn-success" />
+    <input onchange="changefileExcel()" id="btnImportForm" type="file" accept=".xlsx,.xls,.txt,.csv" name="XLSXfile" style="display:none;">
 </form>
 
 <!--  hidden form   -->
@@ -111,7 +108,6 @@
     <script src="~/lib/slider/jquery-1.12.4.js"></script>
     <script src="~/lib/slider/jquery-ui.js"></script>
     <script src="~/js/pages/app.js"></script>
-
     <script>
         $(function () {
             $("#slider-range").slider({

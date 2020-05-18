@@ -36,19 +36,20 @@ function SeaechBySponsorName() {
     }
 };
 
-//$(document).ready(function () {
-//    var btnImport = document.getElementById("btnImport");
-//    var btnImportForm = document.getElementById("btnImportForm");
-//    var ImportForm = document.getElementById("submitForm");
-//    btnImport.onclick = function () {
-//        btnImportForm.click();
-//        ImportForm.click();
-//    };
-//});
+function btnImportClick() {
+    var btnImportForm = document.getElementById("btnImportForm");
+    btnImportForm.click();
+};
 
+function changefileExcel() {
+    var input = document.getElementById("btnImportForm");
+    if (input.files && input.files[0]) {
+        var ImportForm = document.getElementById("ImportForm");
+        ImportForm.submit();
+    }
+};
 
 // Upload Image
-
 function changeImg(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
