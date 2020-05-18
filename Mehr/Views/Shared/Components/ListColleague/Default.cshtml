@@ -31,18 +31,18 @@
                     }
                     <div class="media-left pr-1">
                         <a asp-controller="Colleague" asp-action="Details" asp-route-id="@item.ColleagueID">
-                            <span class="avatar avatar-md">
-                                <img style="width: 40px; height: 40px;" class="media-object rounded-circle" src="~/images/Profiles/@profile" alt="Generic placeholder image">
+                            <span>
+                                <img class="media-object rounded-circle media-list-Mehr" src="~/images/Profiles/@profile" alt="Generic placeholder image">
                                 <i></i>
                             </span>
                         </a>
                     </div>
-                    <div style="width: 5px; height:40px; border-radius: 3px; background-color: @color; margin-right: 10px"></div>
-                    <div class="media-body w-100">
+                    <div class="ColleagueColor" style="background-color: @color;"></div>
+                    <div class="media-body w-100 prperty-Colleague">
                         <a asp-controller="Colleague" asp-action="Details" asp-route-id="@item.ColleagueID">
                             <span class="list-group-item-heading">@item.Name</span>
                         </a>
-                        <ul class="list-unstyled users-list m-0 float-right" style="right: 10px;">
+                        <ul class="list-unstyled users-list m-0 float-right">
                             <li class="avatar avatar-sm pull-up">
                                 <div onclick="deleteColleague(@item.ColleagueID)">
                                     <i class="la la-trash-o media-object rounded-circle no-border-top-radius no-border-bottom-radius"></i>

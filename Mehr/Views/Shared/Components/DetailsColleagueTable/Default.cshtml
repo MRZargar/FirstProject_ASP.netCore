@@ -24,22 +24,22 @@
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label for="buttomGroup" class="control-label">Filter By Date:</label>
-                                    <div class="btn-group" id="buttomGroup" role="group" aria-label="Basic example" style="padding: 2px;">
+                                    <div class="btn-group dateGroup" id="buttomGroup" role="group" aria-label="Basic example">
                                         <button type="button" class="btn btn-secondary">From</button>
-                                        <input type="date" name="FromDate" class="form-control btn-sm" style="border-radius: 0;" />
+                                        <input type="date" name="FromDate" class="form-control btn-sm dateInput" />
                                         <button type="button" class="btn btn-secondary">To</button>
-                                        <input type="date" name="ToDate" class="form-control btn-sm" style="border-radius: 0;" />
+                                        <input type="date" name="ToDate" class="form-control btn-sm dateInput" />
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group col-sm-10">
                                     <label for="amount" class="control-label">Filter By Amount:</label>
-                                    <input type="text" id="amount" readonly style="border:0; color:#000; font-weight:bold;">
+                                    <input type="text" id="amount" class="AmountInput" readonly >
                                     <div id="slider-range"></div>
                                 </div>
                                 <div class="form-group col-sm-2">
-                                    <button type="submit" class="btn btn-light btn-sm" style="position:relative; float: right;">
+                                    <button type="submit" class="btn btn-light btn-sm btnFilter">
                                         <i class="la la-filter"></i>Filter
                                     </button>
                                 </div>
@@ -100,7 +100,7 @@
 </div>
 <!-- Table head options end -->
 
-<div class="form-group" style="float: right; right:25px; position:relative;">
+<div class="form-group importExportform">
     <p id="btnImport" class="btn btn-light btn-sm"><i class="la la-cloud-upload"></i> Import</p>
     <p id="btnExport" class="btn btn-light btn-sm"><i class="la la-cloud-download"></i> Export</p>
 </div>

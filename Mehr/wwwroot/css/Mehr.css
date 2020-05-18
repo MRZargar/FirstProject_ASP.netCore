@@ -1,0 +1,80 @@
+﻿
+#ImgUpload {
+    border: solid #69245f 1px;
+    display:block;
+    margin:auto;
+    width: 150px;
+    height: 150px;
+    cursor: pointer;
+}
+
+#btnColor {
+    border-radius: 50%;
+    height: 43px;
+    width: 50%;
+    background-color: #34e5eb;
+}
+
+.AmountValue > ul {
+    right: 10px;
+}
+
+
+.AmountValue > ul > li {
+    border-radius: 8px
+}
+
+.prperty-Colleague > ul {
+    right: 10px;
+}
+
+.ColleagueColor {
+    width: 5px;
+    height: 40px;
+    border-radius: 3px;
+    margin-right: 10px
+}
+
+.media-list-Mehr {
+    width: 40px !important;
+    height: 40px !important;
+}
+
+.importExportform {
+    float: right;
+    right: 25px;
+    position: relative;
+}
+
+.btnFilter {
+    position: relative;
+    float: right;
+}
+
+.AmountInput {
+    border: 0;
+    color: #000;
+    font-weight: bold;
+}
+
+.dateInput {
+    border-radius: 0;
+}
+
+
+.dateGroup {
+    padding: 2px;
+}
+
+#newColor {
+    border-radius: 20px 0 0 20px;
+}
+
+#oldColor {
+    border-radius: 0 20px 20px 0;
+}
+
+.counter {
+    text-align: center;
+    padding: 20px
+}
