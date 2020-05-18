@@ -23,9 +23,9 @@
                         </div>
                         <div class="col-4">
                             <div class="form-group">
-                                <input id="FileUpload" name="profile" type="file" style="display: none;" />
+                                <input id="FileUpload" onchange="fileUpChange(this)" name="profile" type="file" style="display: none;" />
                                 <span class="avatar avatar-lg">
-                                    <img id="ImgUpload" class="media-object rounded-circle" src="~/images/Profiles/Female.jpg">
+                                    <img id="ImgUpload" onclick="imgUpClick()" class="media-object rounded-circle" src="~/images/Profiles/Female.jpg">
                                     <i></i>
                                 </span>
                             </div>
@@ -69,7 +69,7 @@
                                         <label asp-for="isMale" class="control-label"></label>
                                         <input type="hidden" id="hideIsMale" name="isMale" value="false"/>
                                         <div class="pretty p-icon p-toggle">
-                                            <input id="Gender" type="checkbox" />
+                                            <input id="Gender" onchange="changeGender()" type="checkbox" />
                                             <div class="state p-on fonticon-container">
                                                 <div class="fonticon-wrap icon-shadow">
                                                     <i class="la la-male"></i>

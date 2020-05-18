@@ -92,10 +92,10 @@
 <form id="ImportForm" asp-controller="SponsorTransaction" asp-action="Import" method="POST" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" name="ColleagueID" value="@Model.ColleagueID">
-    
-    <input id="btnImportForm" type="file" name="XLSXfile" >
 
-    <input type="submit" value="Import" class="btn btn-success"  />
+    <input id="btnImportForm" type="file" name="XLSXfile">
+
+    <input type="submit" value="Import" class="btn btn-success" />
 </form>
 
 <!--  hidden form   -->
@@ -108,18 +108,10 @@
 
 
 @section Script{
-    <script>
-        function deleteColleague(id) {
-            $.get("/Colleague/Delete/" + id, function (result) {
-                $(".modal").modal('show');
-                $(".modal-title").html("Delete Colleague");
-                $(".modal-body").html(result);
-            });
-        };
-    </script>
-
     <script src="~/lib/slider/jquery-1.12.4.js"></script>
     <script src="~/lib/slider/jquery-ui.js"></script>
+    <script src="~/js/pages/app.js"></script>
+
     <script>
         $(function () {
             $("#slider-range").slider({
@@ -134,44 +126,5 @@
             $("#amount").val("$" + $("#slider-range").slider("values", 0) +
                 " - $" + $("#slider-range").slider("values", 1));
         });
-
-
-        function SeaechBySponsorName() {
-            var input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("SponsorSearch");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("MyTable");
-            tr = table.getElementsByTagName("tr");
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByClassName("sponsor")[0];
-                if (td) {
-                    txtValue = td.textContent || td.innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
-                }
-            }
-        };
-
-        //$(document).ready(function () {
-        //    var btnImport = document.getElementById("btnImport");
-        //    var btnImportForm = document.getElementById("btnImportForm");
-        //    var ImportForm = document.getElementById("submitForm");
-        //    btnImport.onclick = function () {
-        //        btnImportForm.click();
-        //        ImportForm.click();
-        //    };
-        //});
     </script>
-
-
-
-    @*<script language="javascript" type="text/javascript" src="~/lib/TableFilter/actb.js"></script>
-        <script language="javascript" type="text/javascript" src="~/lib/TableFilter/tablefilter.js"></script>
-        <script language="javascript" type="text/javascript">
-            setFilterGrid("MyTable");
-        </script>*@
-
 }

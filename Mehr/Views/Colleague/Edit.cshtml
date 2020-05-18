@@ -48,9 +48,9 @@
                                 </div>
                                 <div class="col-2">
                                     <div class="form-group">
-                                        <input id="FileUpload" name="profile" type="file" style="display: none;" />
+                                        <input id="FileUpload" onchange="fileUpChange(this)" name="profile" type="file" style="display: none;" />
                                         <span class="avatar avatar-lg">
-                                            <img id="ImgUpload" style="border: solid #69245f 1px; display:block; margin:auto; width: 150px; height: 150px; cursor: pointer;" class="media-object rounded-circle" src="~/images/Profiles/@profile">
+                                            <img id="ImgUpload" onclick="imgUpClick()" style="border: solid #69245f 1px; display:block; margin:auto; width: 150px; height: 150px; cursor: pointer;" class="media-object rounded-circle" src="~/images/Profiles/@profile">
                                             <i></i>
                                         </span>
                                     </div>
@@ -94,7 +94,7 @@
                                                 <label asp-for="isMale" class="control-label"></label>
                                                 <input type="hidden" id="hideIsMale" name="isMale" value="false" />
                                                 <div class="pretty p-icon p-toggle">
-                                                    <input id="Gender" type="checkbox" />
+                                                    <input id="Gender" onchange="changeGender()" type="checkbox" />
                                                     <div class="state p-on fonticon-container">
                                                         <div class="fonticon-wrap icon-shadow">
                                                             <i class="la la-male"></i>
@@ -125,10 +125,9 @@
 
 @section Script{
     <script src="~/lib/colorPicker/dist/iro.js"></script>
-
+    <script src="~/js/pages/app.js"></script>
     <script>
-        /////////////////////// Change Color
-
+        // Change Color
         function GetColor() {
             $(".modal").modal('show');
             $(".modal-title").html("Select Color");
@@ -151,46 +150,5 @@
                 document.getElementById("newColor").style.backgroundColor = String(myColor);
             })
         };
-
-        ////////////////////////// Upload Image
-
-        function changeImg(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-
-                reader.onload = function (e) {
-                    $('#ImgUpload')
-                        .attr('src', e.target.result)
-                };
-
-                reader.readAsDataURL(input.files[0]);
-            }
-            else {
-                document.getElementById("ImgUpload").src = this.checked ? "/images/Profiles/Male.jpg" : "/images/Profiles/Female.jpg";
-            }
-        };
-
-        $(document).ready(function () {
-            var fileupload = document.getElementById("FileUpload");
-            var image = document.getElementById("ImgUpload");
-            image.onclick = function () {
-                fileupload.click();
-            };
-            fileupload.onchange = function () {
-                changeImg(fileupload);
-            };
-        });
-
-        ////////////////////////// Gender
-
-        $("#Gender").change(function () {
-            document.getElementById("hideIsMale").value = this.checked ? "true" : "false";
-
-            var fileupload = document.getElementById("FileUpload");
-            if (!fileupload.files || !fileupload.files[0]) {
-                document.getElementById("ImgUpload").src = this.checked ? "/images/Profiles/Male.jpg" : "/images/Profiles/Female.jpg";
-            }
-        });
-
     </script>
 }

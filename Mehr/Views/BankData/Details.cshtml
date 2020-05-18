@@ -196,24 +196,14 @@
 @section Script{
     <script src="~/lib/slider/jquery-1.12.4.js"></script>
     <script src="~/lib/slider/jquery-ui.js"></script>
+    <script src="~/js/pages/app.js"></script>
     <script>
-        $(function () {
-            createSlider(0, @ViewBag.maxAmount);
-            $("#amount0").val($("#slider-range").slider("values", 0));
-            $("#amount1").val($("#slider-range").slider("values", 1));
-            autoScaleSlider();
-        });
-
-        function setSumAmount(value) {
-            $("#sumAmount").html(value);
-        }
-
         function createSlider(min, max) {
             $("#slider-range").slider({
                 range: true,
                 min: 0,
                 max: @ViewBag.maxAmount,
-                values: [min, max],
+            values: [min, max],
                 slide: function (event, ui) {
                     $("#amount0").val(ui.values[0]);
                     $("#amount1").val(ui.values[1]);
@@ -221,43 +211,13 @@
                     SeaechByAmountRange();
                 }
             });
-            };
-
-        function autoScale() {
-            var x = document.getElementById("amount0");
-            var y = document.getElementById("amount1");
-            x.style.width = ((x.value.length + 2) * 8) + 'px';
-            y.style.width = ((y.value.length + 2) * 8) + 'px';
         };
 
-        function autoScaleSlider() {
-            var min = document.getElementById("amount0").value;
-            var max = document.getElementById("amount1").value;
-            createSlider(Number(min), Number(max));
-            autoScale();
-            SeaechByAmountRange();
-        };
-
-        function SeaechByAmountRange() {
-            var val0, val1, table, tr, td, i, txtValue, sum;
-            sum = 0;
-            val0 = Number(document.getElementById("amount0").value);
-            val1 = Number(document.getElementById("amount1").value);
-            table = document.getElementById("MyTable");
-            tr = table.getElementsByTagName("tr");
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByClassName("amount")[0];
-                if (td) {
-                    txtValue = td.textContent || td.innerText;
-                    if (Number(txtValue) <= val0 || Number(txtValue) >= val1) {
-                        tr[i].style.display = "none";
-                    } else {
-                        tr[i].style.display = "";
-                        sum = sum + parseFloat(txtValue);
-                    }
-                }
-            }
-            setSumAmount(sum);
-        };
+        $(function () {
+            createSlider(0, @ViewBag.maxAmount);
+            $("#amount0").val($("#slider-range").slider("values", 0));
+            $("#amount1").val($("#slider-range").slider("values", 1));
+            autoScaleSlider();
+        });
     </script>
 }

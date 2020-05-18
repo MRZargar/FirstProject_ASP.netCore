@@ -17,10 +17,6 @@
     <ProjectReference Include="..\DataLayer\DataLayer.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\js\pages\" />
-  </ItemGroup>
-
 
 
 </Project>
