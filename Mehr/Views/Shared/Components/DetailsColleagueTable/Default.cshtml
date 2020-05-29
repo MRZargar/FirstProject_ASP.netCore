@@ -1,4 +1,4 @@
-@model IEnumerable<DataLayer.SponsorTransaction>
+﻿@model IEnumerable<DataLayer.SponsorTransaction>
 <!-- Table head options start -->
 
 <div class="card">
@@ -6,6 +6,7 @@
         <h4 class="card-title">Transactions</h4>
         <div class="heading-elements">
             <ul class="list-inline mb-0">
+                <li><input type="button" class="btn btn-sm btn-lighten-2" value="Filter" /></li>
                 <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
                 <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
             </ul>
@@ -18,33 +19,40 @@
                     <tr class="thead-light">
                         <td>
                             <div class="row">
-                                <div class="form-group col-sm-6">
-                                    <label for="MySponsor" class="control-label">Seaech By Sponsor Name:</label>
-                                    <input id="SponsorSearch" onkeyup="SeaechBySponsorName()" type="text" class="form-control" placeholder="Enter Sponsor Name">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="MySponsor" class="control-label">Seaech By Sponsor Name:</label>
+                                        <input id="SponsorSearch" onkeyup="SeaechBySponsorName()" type="text" class="form-control" placeholder="Enter Sponsor Name">
+                                    </div>
+                                    <div class="form-group ">
+                                        <label for="amount" class="control-label">Filter By Amount:</label>
+                                        <label for="amount" class="control-label">ریال</label>
+                                        <input type="text" id="amount0" onkeyup="autoScaleSlider()" style="border:0; color:#000; font-weight:bold;">
+                                        <label for="amount" class="control-label"> - ریال</label>
+                                        <input type="text" onkeyup="autoScaleSlider()" id="amount1" style="border:0; color:#000; font-weight:bold;">
+                                        <div id="slider-range"></div>
+                                    </div>
                                 </div>
-                                <div class="form-group col-sm-6">
-                                    <label for="buttomGroup" class="control-label">Filter By Date:</label>
-                                    <div class="btn-group dateGroup" id="buttomGroup" role="group" aria-label="Basic example">
-                                        <button type="button" class="btn btn-secondary">From</button>
-                                        <input type="date" name="FromDate" class="form-control btn-sm dateInput" />
-                                        <button type="button" class="btn btn-secondary">To</button>
-                                        <input type="date" name="ToDate" class="form-control btn-sm dateInput" />
+                                <div class="col-sm-6">
+                                    <div class="form-group ">
+                                        <label for="buttomGroup" class="control-label">Filter By Date:</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text cursor-pointer" id="">From</span>
+                                            </div>
+                                            <input type="text" name="FromDate" class="form-control" placeholder="From ..." />
+                                        </div>
+                                    </div>
+                                    <div class="form-group ">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text cursor-pointer" id="">&nbsp&nbspTo&nbsp&nbsp</span>
+                                            </div>
+                                            <input type="text" name="ToDate" class="form-control" placeholder="To ..." />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="form-group col-sm-10">
-                                    <label for="amount" class="control-label">Filter By Amount:</label>
-                                    <input type="text" id="amount" class="AmountInput" readonly >
-                                    <div id="slider-range"></div>
-                                </div>
-                                <div class="form-group col-sm-2">
-                                    <button type="submit" class="btn btn-light btn-sm btnFilter">
-                                        <i class="la la-filter"></i>Filter
-                                    </button>
-                                </div>
-                            </div>
-                        </td>
                     </tr>
                 </thead>
                 <tbody><tr><td></td></tr></tbody>
@@ -87,11 +95,16 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.TransactionDate)
                             </td>
-                            <td>
+                            <td class="amount">
                                 @Html.DisplayFor(modelItem => item.Amount)
                             </td>
                         </tr>
                     }
+                    <tr class="thead-light">
+                        <th scope="row">Total</th>
+                        <td colspan="3"></td>
+                        <td id="sumAmount"></td>
+                    </tr>
                 </tbody>
             </table>
 

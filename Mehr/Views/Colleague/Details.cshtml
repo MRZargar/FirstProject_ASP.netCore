@@ -4,6 +4,8 @@
     ViewData["Title"] = "Details";
     Layout = "_ChartLayout";
 }
+<link rel="stylesheet" href="~/lib/slider/jquery-ui.css">
+<link href="~/css/jquery.md.bootstrap.datetimepicker.style.css" rel="stylesheet" />
 
 <div class="col-lg-12 col-md-12">
     <div class="card">
@@ -102,25 +104,33 @@
 </form>
 
 
-
-
 @section Script{
+    @*<script src="~/js/jquery.md.bootstrap.datetimepicker.js"></script>*@
     <script src="~/lib/slider/jquery-1.12.4.js"></script>
     <script src="~/lib/slider/jquery-ui.js"></script>
     <script src="~/js/pages/app.js"></script>
+
     <script>
-        $(function () {
+        function createSlider(min, max) {
             $("#slider-range").slider({
                 range: true,
                 min: 0,
-                max: 90000000,
-                values: [0, 90000000],
+                max: @TempData["maxAmount"],
+            values: [min, max],
                 slide: function (event, ui) {
-                    $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
+                    $("#amount0").val(ui.values[0]);
+                    $("#amount1").val(ui.values[1]);
+                    autoScale();
+                    SeaechByAmountRange();
                 }
             });
-            $("#amount").val("$" + $("#slider-range").slider("values", 0) +
-                " - $" + $("#slider-range").slider("values", 1));
+        };
+
+        $(function () {
+            createSlider(0, @TempData["maxAmount"]);
+            $("#amount0").val($("#slider-range").slider("values", 0));
+            $("#amount1").val($("#slider-range").slider("values", 1));
+            autoScaleSlider();
         });
     </script>
 }

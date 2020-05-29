@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using DataLayer;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System;
+using System.Linq;
 
 namespace Mehr.ViewComponents
 {
@@ -29,9 +31,16 @@ namespace Mehr.ViewComponents
                 var sponsorTransactions = await transactions.GetAllBySponsorIdAsync(sponsor.SponsorID);
                 colleagusTransactios.AddRange(sponsorTransactions);
                 sumAmounts += sumAmountsTransactions(sponsorTransactions);
-            } 
+            }
 
-            ViewBag.sumAmounts = sumAmounts;
+            TempData["maxAmount"] = 50000;
+            if (colleagusTransactios.Count() > 0)
+            {
+                double max = Convert.ToDouble(colleagusTransactios.Select(x => x.Amount).Max());
+                double div = Math.Pow(10, max.ToString().Count() - 1);
+                double round = Math.Ceiling(max / div) * div;
+                TempData["maxAmount"] = round;
+            }
 
             return View(colleagusTransactios);
         }

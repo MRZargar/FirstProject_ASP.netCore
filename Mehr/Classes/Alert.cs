@@ -5,23 +5,24 @@ using System.Threading.Tasks;
 
 namespace Mehr.Classes
 {
-    public class Alert
+    public enum WebMessageType
     {
-        public bool Type { get; }
-        public string Message { get; }
-
-        public Alert(bool type, string message)
+        Success, Danger, Warning, Info, Default, Primary
+    }
+    public static class WebMessage
+    {
+        public static string Get(string message, WebMessageType type, bool WithCloseBtn = false)
         {
-            Type = type;
-
-            if (type)
+            string cssclass = $"alert alert-{type.ToString().ToLower()}";
+            if (WithCloseBtn)
             {
-                Message = "<strong>Success: </strong>" + message;
+                cssclass += " alert-dismissible";
             }
-            else
-            {
-                Message = "<strong>Fail: </strong>" + message;
-            }
+            string closeBtn =
+                "<button type='button' class='close' data-dismiss='alert' aria-label='بستن'><span aria-hidden='true'>&times;</span></button>";
+            string messageStr = $@"<div class='{cssclass}' role='alert'>{(!WithCloseBtn ? "" : closeBtn)}{message}</div>";
+            return messageStr;
         }
+
     }
 }

@@ -64,17 +64,18 @@ namespace Mehr.Controllers
                 try
                 {
                     await colleagues.InsertAsync(colleague);
-                    await colleagues.saveAsync();
+                    await colleagues.saveAsync();  
+                   this.SetViewMessage("New Colleague Created successfully." ,WebMessageType.Success);
+           
                 }
                 catch (Exception ex)
                 {
-                    ViewBag.alert = new Alert(false, ex.Message);
+                    this.SetViewMessage( ex.Message , WebMessageType.Danger);
                 }
-                ViewBag.alert = new Alert(true, "New Colleague Created successfully.");
-            }
+             }
             else
             {
-                ViewBag.alert = new Alert(false, "Please Complete fields ...");
+                this.SetViewMessage("Please Complete fields ..." , WebMessageType.Warning);
             }
             return RedirectToAction("Colleagues", "Home");
         }

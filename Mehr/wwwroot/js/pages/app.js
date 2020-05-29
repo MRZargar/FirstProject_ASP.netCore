@@ -11,14 +11,24 @@ function deleteColleague(id) {
 // search Colleague in List
 function ColleagueSearch() {
     var value = $("#input-search").val().toLowerCase();
-    $("#recent-buyers *").filter(function () {
-        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-    });
+    var items = $('.colleagueItem');
+    items.each((h) => {
+        console.log(items[h]);
+        var isShow = items[h].innerText.toLowerCase().indexOf(value) > -1
+        if (isShow) {
+            items[h].style.display = "";
+        } else {
+            items[h].style.display = "none";
+        }
+    }
+    );
+   
 };
 
 // Search Transactions By Sponsor Name
 function SeaechBySponsorName() {
-    var input, filter, table, tr, td, i, txtValue;
+    var input, filter, table, tr, td, i, txtValue, sum, tdAmount, amountValue ;
+    sum = 0;
     input = document.getElementById("SponsorSearch");
     filter = input.value.toUpperCase();
     table = document.getElementById("MyTable");
@@ -26,14 +36,18 @@ function SeaechBySponsorName() {
     for (i = 0; i < tr.length; i++) {
         td = tr[i].getElementsByClassName("sponsor")[0];
         if (td) {
+            tdAmount = tr[i].getElementsByClassName("amount")[0];
+            amountValue = tdAmount.textContent || tdAmount.innerText;
             txtValue = td.textContent || td.innerText;
             if (txtValue.toUpperCase().indexOf(filter) > -1) {
                 tr[i].style.display = "";
+                sum = sum + parseFloat(amountValue);
             } else {
                 tr[i].style.display = "none";
             }
         }
     }
+    setSumAmount(sum);
 };
 
 function btnImportClick() {
