@@ -24,6 +24,32 @@
                                         <label for="MySponsor" class="control-label">Seaech By Sponsor Name:</label>
                                         <input id="SponsorSearch" onkeyup="SeaechBySponsorName()" type="text" class="form-control" placeholder="Enter Sponsor Name">
                                     </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group ">
+                                        <label for="buttomGroup" class="control-label">Filter By Date:</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text cursor-pointer" id="FromDate">From</span>
+                                            </div>
+                                            <input disabled type="text" name="FromDate" class="form-control" id="inputFromDate" placeholder="From ..." />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="buttomGroup" class="control-label">.</label>
+                                    <div class="form-group ">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text cursor-pointer" id="ToDate">&nbsp&nbspTo&nbsp&nbsp</span>
+                                            </div>
+                                            <input disabled type="text" name="ToDate" class="form-control" id="inputToDate" placeholder="To ..." />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
                                     <div class="form-group ">
                                         <label for="amount" class="control-label">Filter By Amount:</label>
                                         <label for="amount" class="control-label">ریال</label>
@@ -33,28 +59,9 @@
                                         <div id="slider-range"></div>
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group ">
-                                        <label for="buttomGroup" class="control-label">Filter By Date:</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text cursor-pointer" id="">From</span>
-                                            </div>
-                                            <input type="text" name="FromDate" class="form-control" placeholder="From ..." />
-                                        </div>
-                                    </div>
-                                    <div class="form-group ">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text cursor-pointer" id="">&nbsp&nbspTo&nbsp&nbsp</span>
-                                            </div>
-                                            <input type="text" name="ToDate" class="form-control" placeholder="To ..." />
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
-                    </tr>
-                </thead>
+                        </tr>
+                    </thead>
                 <tbody><tr><td></td></tr></tbody>
             </table>
 
