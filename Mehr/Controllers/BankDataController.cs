@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DataLayer;
 using static DataLayer.BankDataRepository;
+using Mehr.Classes;
 
 namespace Mehr.Controllers
 {
@@ -26,11 +27,50 @@ namespace Mehr.Controllers
         }
 
         // GET: App/BankData/Details/5
-        public async Task<IActionResult> Details(string? id)
+        public async Task<IActionResult> Details(string? id, string FromDate = "", string ToDate = "")
         {
             if (id == null)
             {
                 return NotFound();
+            }
+
+            DateTime From = new DateTime();
+            DateTime To = new DateTime();
+
+            if (FromDate == "")
+            {
+                string temp = DateTime.Today.ToSolar();
+                temp = temp.Substring(0, temp.Length - 2) + "01";
+                From = Convert.ToDateTime(temp.ToAD());
+            }
+            else
+            {
+                try
+                {
+                    From = Convert.ToDateTime(FromDate.ToAD());
+                }
+                catch (Exception)
+                {
+                    ViewBag.err = new Exception("Invalid persian time format ...");
+                    return View("Error");
+                }
+            }
+
+            if (ToDate == "")
+            {
+                To = DateTime.Today;
+            }
+            else
+            {
+                try
+                {
+                    To = Convert.ToDateTime(ToDate.ToAD());
+                }
+                catch (Exception)
+                {
+                    ViewBag.err = new Exception("Invalid persian time format ...");
+                    return View("Error");
+                }
             }
 
             BankName bank = BankName.FindBankName(id);
@@ -50,6 +90,8 @@ namespace Mehr.Controllers
                 ViewBag.maxAmount = round;
             }
             ViewBag.BankName = bank;
+            ViewBag.FromDate = From.ToShortDateString();
+            ViewBag.ToDate = To.ToShortDateString();
             ViewBag.ChartData = "[125, 200, 125, 225, 125, 200, 125, 225, 175, 275, 220]";
             return View(bankData);
         }

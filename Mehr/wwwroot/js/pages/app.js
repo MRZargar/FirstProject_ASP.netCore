@@ -50,6 +50,56 @@ function SeaechBySponsorName() {
     setSumAmount(sum);
 };
 
+// Search Transactions By Tracking Number
+function SeaechByTrackingNumber() {
+    var input, filter, table, tr, td, i, txtValue, sum, tdAmount, amountValue;
+    sum = 0;
+    input = document.getElementById("TrackingNumber");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("MyTable");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByClassName("track")[0];
+        if (td) {
+            tdAmount = tr[i].getElementsByClassName("amount")[0];
+            amountValue = tdAmount.textContent || tdAmount.innerText;
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+                sum = sum + parseFloat(amountValue);
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
+    setSumAmount(sum);
+};
+
+// Search Transactions By Card Number
+function SeaechByCardNumber() {
+    var input, filter, table, tr, td, i, txtValue, sum, tdAmount, amountValue;
+    sum = 0;
+    input = document.getElementById("LastFourNumbersOfBankCard");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("MyTable");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByClassName("cardNumber")[0];
+        if (td) {
+            tdAmount = tr[i].getElementsByClassName("amount")[0];
+            amountValue = tdAmount.textContent || tdAmount.innerText;
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+                sum = sum + parseFloat(amountValue);
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
+    setSumAmount(sum);
+};
+
 function btnImportClick() {
     var btnImportForm = document.getElementById("btnImportForm");
     btnImportForm.click();
