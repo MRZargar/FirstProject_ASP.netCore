@@ -27,64 +27,29 @@ function ColleagueSearch() {
 
 // Search Transactions By Sponsor Name
 function SeaechBySponsorName() {
-    var input, filter, table, tr, td, i, txtValue, sum, tdAmount, amountValue ;
-    sum = 0;
-    input = document.getElementById("SponsorSearch");
-    filter = input.value.toUpperCase();
-    table = document.getElementById("MyTable");
-    tr = table.getElementsByTagName("tr");
-    for (i = 0; i < tr.length; i++) {
-        td = tr[i].getElementsByClassName("sponsor")[0];
-        if (td) {
-            tdAmount = tr[i].getElementsByClassName("amount")[0];
-            amountValue = tdAmount.textContent || tdAmount.innerText;
-            txtValue = td.textContent || td.innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                tr[i].style.display = "";
-                sum = sum + parseFloat(amountValue);
-            } else {
-                tr[i].style.display = "none";
-            }
-        }
-    }
-    setSumAmount(sum);
+    SeaechInTable("SponsorSearch", "sponsor")
 };
 
 // Search Transactions By Tracking Number
 function SeaechByTrackingNumber() {
-    var input, filter, table, tr, td, i, txtValue, sum, tdAmount, amountValue;
-    sum = 0;
-    input = document.getElementById("TrackingNumber");
-    filter = input.value.toUpperCase();
-    table = document.getElementById("MyTable");
-    tr = table.getElementsByTagName("tr");
-    for (i = 0; i < tr.length; i++) {
-        td = tr[i].getElementsByClassName("track")[0];
-        if (td) {
-            tdAmount = tr[i].getElementsByClassName("amount")[0];
-            amountValue = tdAmount.textContent || tdAmount.innerText;
-            txtValue = td.textContent || td.innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                tr[i].style.display = "";
-                sum = sum + parseFloat(amountValue);
-            } else {
-                tr[i].style.display = "none";
-            }
-        }
-    }
-    setSumAmount(sum);
+    SeaechInTable("TrackingNumber", "track")
 };
 
 // Search Transactions By Card Number
 function SeaechByCardNumber() {
+    SeaechInTable("LastFourNumbersOfBankCard", "cardNumber")
+};
+
+// Search Transactions in Table
+function SeaechInTable(inputId, attrClass) {
     var input, filter, table, tr, td, i, txtValue, sum, tdAmount, amountValue;
     sum = 0;
-    input = document.getElementById("LastFourNumbersOfBankCard");
+    input = document.getElementById(inputId);
     filter = input.value.toUpperCase();
     table = document.getElementById("MyTable");
     tr = table.getElementsByTagName("tr");
     for (i = 0; i < tr.length; i++) {
-        td = tr[i].getElementsByClassName("cardNumber")[0];
+        td = tr[i].getElementsByClassName(attrClass)[0];
         if (td) {
             tdAmount = tr[i].getElementsByClassName("amount")[0];
             amountValue = tdAmount.textContent || tdAmount.innerText;
