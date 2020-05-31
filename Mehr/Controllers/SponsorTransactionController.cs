@@ -132,7 +132,6 @@ namespace Mehr.Controllers
 
                     try
                     {
-                        st.isValid = false;
                         st.Amount = Convert.ToDecimal(row["Amount"]);
                         st.LastFourNumbersOfBankCard = Convert.ToInt16(row["CardNumber"]);
                         st.TrackingNumber = row["TrackingNumber"].ToString();

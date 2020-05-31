@@ -14,6 +14,7 @@ namespace DataLayer
         public DbSet<Sponsor> Sponsors { get; set; }
         public DbSet<BankData> BankDatas { get; set; }
         public DbSet<SponsorTransaction> SponsorTransactions { get; set; }
+        public DbSet<Bank> Banks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

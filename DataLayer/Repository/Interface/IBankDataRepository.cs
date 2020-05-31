@@ -10,7 +10,7 @@ namespace DataLayer
         Task<IEnumerable<BankData>> GetAllAsync();
         Task<BankData> GetByIdAsync(int bankDataID);
         Task<BankData> GetAsync(BankData bankData);
-        IEnumerable<BankData> GetAllByBankName(BankName bankname);
+        IEnumerable<BankData> GetAllByBankName(Bank bank);
         Task<bool> InsertAsync(BankData bankData);
         Task<bool> UpdateAsync(BankData bankData);
         Task<bool> DeleteAsync(BankData bankData);

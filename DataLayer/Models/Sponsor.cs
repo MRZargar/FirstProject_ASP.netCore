@@ -37,6 +37,8 @@ namespace DataLayer
         [MaxLength(500)]
         public string picName { get; set; }
 
+        public bool isActive { get; set; }
+
         public virtual Colleague MyColleague { get; set; }
 
         public virtual List<SponsorTransaction> MyTransactions { get; set;}

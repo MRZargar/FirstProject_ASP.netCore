@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20200511030251_addIndexAgain")]
-    partial class addIndexAgain
+    [Migration("20200531123559_init3")]
+    partial class init3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,41 @@ namespace DataLayer.Migrations
                 .HasAnnotation("ProductVersion", "3.1.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("DataLayer.Bank", b =>
+                {
+                    b.Property<int>("BankID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<long>("AccountNumber")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("BankName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<long>("CardNumber")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Owner")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<long>("ShebaNumber")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("pic")
+                        .HasColumnType("nvarchar(500)")
+                        .HasMaxLength(500);
+
+                    b.HasKey("BankID");
+
+                    b.ToTable("Bank");
+                });
 
             modelBuilder.Entity("DataLayer.BankData", b =>
                 {
@@ -31,10 +66,8 @@ namespace DataLayer.Migrations
                     b.Property<double>("Amount")
                         .HasColumnType("float");
 
-                    b.Property<string>("BankName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
+                    b.Property<int>("BankID")
+                        .HasColumnType("int");
 
                     b.Property<int>("LastFourNumbersOfBankCard")
                         .HasColumnType("int");
@@ -48,6 +81,8 @@ namespace DataLayer.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("BankDataID");
+
+                    b.HasIndex("BankID");
 
                     b.HasIndex("TransactionDate");
 
@@ -81,6 +116,9 @@ namespace DataLayer.Migrations
                     b.Property<string>("color")
                         .HasColumnType("nvarchar(7)")
                         .HasMaxLength(7);
+
+                    b.Property<bool>("isActive")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("isMale")
                         .HasColumnType("bit");
@@ -123,6 +161,9 @@ namespace DataLayer.Migrations
                     b.Property<long>("PhoneNumber")
                         .HasColumnType("bigint");
 
+                    b.Property<bool>("isActive")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("isMale")
                         .HasColumnType("bit");
 
@@ -150,8 +191,16 @@ namespace DataLayer.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("CauseOfSupport")
+                        .HasColumnType("nvarchar(500)")
+                        .HasMaxLength(500);
+
                     b.Property<int>("LastFourNumbersOfBankCard")
                         .HasColumnType("int");
+
+                    b.Property<string>("OtherSupport")
+                        .HasColumnType("nvarchar(500)")
+                        .HasMaxLength(500);
 
                     b.Property<int>("SponsorID")
                         .HasColumnType("int");
@@ -163,8 +212,8 @@ namespace DataLayer.Migrations
                     b.Property<DateTime>("TransactionDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("isValid")
-                        .HasColumnType("bit");
+                    b.Property<int>("isValid")
+                        .HasColumnType("int");
 
                     b.HasKey("SponsorTransactionsID");
 
@@ -173,6 +222,15 @@ namespace DataLayer.Migrations
                     b.HasIndex("TransactionDate");
 
                     b.ToTable("SponsorTransactions");
+                });
+
+            modelBuilder.Entity("DataLayer.BankData", b =>
+                {
+                    b.HasOne("DataLayer.Bank", "MyBank")
+                        .WithMany("Transactions")
+                        .HasForeignKey("BankID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DataLayer.Sponsor", b =>

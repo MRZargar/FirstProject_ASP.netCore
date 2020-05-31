@@ -9,9 +9,7 @@ namespace DataLayer
         public int BankDataID { get; set; }
 
         [Required]
-        [MaxLength(50)]
-        [Display(Name = "Bank Name")]
-        public string BankName { get; set; }
+        public int BankID { get; set; }
 
         [Required]
         [Display(Name = "Date")]
@@ -28,7 +26,9 @@ namespace DataLayer
         [Required]
         [Display(Name = "Amount")]
         public Double Amount { get; set; }
-        
+
+        public virtual Bank MyBank { get; set; }
+
         public BankData()
         {
 

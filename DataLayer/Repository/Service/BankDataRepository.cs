@@ -10,36 +10,6 @@ namespace DataLayer
 {
     public class BankDataRepository : IBankDataRepository
     {
-        public class BankName
-        {
-            public string Name { get ; }
-            public string Image { get; }
-
-            public static readonly BankName MELLI = new BankName("Melli", "Melli.png");
-            public static readonly BankName MELLAT = new BankName("Mellat", "Mellat.png");
-            public static readonly BankName SADERAT = new BankName("Saderat", "Saderat.png");
-
-            private BankName(string name, string image)
-            {
-                Name = name;
-                Image = image;
-            }
-
-            public static BankName FindBankName(string input)
-            {
-                BankName bankName = null;
-
-                if (input.ToLower() == MELLI.Name.ToLower())
-                    bankName = MELLI;
-                else if (input.ToLower() == MELLAT.Name.ToLower())
-                    bankName = MELLAT;
-                else if (input.ToLower() == SADERAT.Name.ToLower())
-                    bankName = SADERAT;
-
-                return bankName;
-            }
-        }
-
         private MyContext db;
 
         public BankDataRepository(MyContext context)
@@ -77,7 +47,7 @@ namespace DataLayer
             try
             {
                 return await db.BankDatas
-                    .FirstAsync(x => x.BankName == bankData.BankName
+                    .FirstAsync(x => x.BankID == bankData.BankID
                                   && x.TransactionDate == bankData.TransactionDate
                                   && x.TrackingNumber == bankData.TrackingNumber);
             }
@@ -87,12 +57,12 @@ namespace DataLayer
             }
         }
 
-        public IEnumerable<BankData> GetAllByBankName(BankName bankname)
+        public IEnumerable<BankData> GetAllByBankName(Bank bank)
         {
             try
             {
                 return db.BankDatas
-                       .Where(x => x.BankName == bankname.Name);
+                       .Where(x => x.MyBank == bank);
             }
             catch (System.Exception)
             {

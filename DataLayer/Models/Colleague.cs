@@ -42,6 +42,8 @@ namespace DataLayer
         [Display(Name = "Profile Picture")]
         public string picName { get; set; }
 
+        public bool isActive { get; set; }
+
         public List<Sponsor> Sponsors { get; set; }
 
         public Colleague()
