@@ -8,6 +8,15 @@ function deleteColleague(id) {
     });
 };
 
+// new bank
+function newBank() {
+    $.get("/Bank/Create/", function (result) {
+        $(".modal").modal('show');
+        $(".modal-title").html("New bank");
+        $(".modal-body").html(result);
+    });
+};
+
 // search Colleague in List
 function ColleagueSearch() {
     var value = $("#input-search").val().toLowerCase();
@@ -159,3 +168,33 @@ function SeaechByAmountRange() {
     }
     setSumAmount(sum);
 };
+
+// move focus
+function moveFocus(from, to) {
+    var length = from.value.length;
+    var maxLength = from.getAttribute("maxLength");
+    if (length == maxLength) {
+        document.getElementById(to).focus();
+    }
+};  
+
+function FillCardNumber() {
+    var n1 = document.getElementById('CardNumber1').value;
+    var n2 = document.getElementById('CardNumber2').value;
+    var n3 = document.getElementById('CardNumber3').value;
+    var n4 = document.getElementById('CardNumber4').value;
+
+    document.getElementById("CardNumber").value = n1+n2+n3+n4;
+} 
+
+function FillShebaNumber() {
+    var n1 = document.getElementById('ShebaNumber1').value;
+    var n2 = document.getElementById('ShebaNumber2').value;
+    var n3 = document.getElementById('ShebaNumber3').value;
+    var n4 = document.getElementById('ShebaNumber4').value;
+    var n5 = document.getElementById('ShebaNumber5').value;
+    var n6 = document.getElementById('ShebaNumber6').value;
+    var n7 = document.getElementById('ShebaNumber7').value;
+
+    document.getElementById("ShebaNumber").value = 'IR' + n1 + n2 + n3 + n4 + n5 + n6 + n7;
+}

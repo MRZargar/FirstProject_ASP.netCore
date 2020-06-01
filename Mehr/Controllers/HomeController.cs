@@ -15,11 +15,13 @@ namespace Mehr.Controllers
         private readonly ILogger<HomeController> _logger;
         private ISponsorRepository sponsors;
         private IColleageRepository colleagues;
+        private IBankRepository banks;
 
         public HomeController(ILogger<HomeController> logger, MyContext context)
         {
             sponsors = new SponsorRepository(context);
             colleagues = new ColleagueRepository(context);
+            banks = new BankRepository(context);
             _logger = logger;
         }
 
@@ -44,9 +46,10 @@ namespace Mehr.Controllers
         }
 
         [Route("Banks")]
-        public IActionResult Banks()
+        public async Task<IActionResult> Banks()
         {
-            return View();
+            var all = await banks.GetAllAsync();
+            return View(all);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

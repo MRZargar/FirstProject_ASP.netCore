@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using DataLayer;
+using Mehr.Classes;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,11 +13,88 @@ namespace Mehr.Controllers
 {
     public class BankController : Controller
     {
-        // GET: Bank/Details/5
-        public ActionResult Details(int id)
+        public IBankRepository banks;
+        private readonly IHostingEnvironment _hostingEnvironment;
+
+        public BankController(IHostingEnvironment hostingEnvironment, MyContext context)
         {
-            return View();
+            _hostingEnvironment = hostingEnvironment;
+            banks = new BankRepository(context);
         }
+
+
+        // GET: App/Bank/Details/5
+        public async Task<IActionResult> Details(int? id, string FromDate = "", string ToDate = "")
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            DateTime From = new DateTime();
+            DateTime To = new DateTime();
+
+            if (FromDate == "")
+            {
+                string temp = DateTime.Today.ToSolar();
+                temp = temp.Substring(0, temp.Length - 2) + "01";
+                From = Convert.ToDateTime(temp.ToAD());
+            }
+            else
+            {
+                try
+                {
+                    From = Convert.ToDateTime(FromDate.ToAD());
+                }
+                catch (Exception)
+                {
+                    ViewBag.err = new Exception("Invalid persian time format ...");
+                    return View("Error");
+                }
+            }
+
+            if (ToDate == "")
+            {
+                To = DateTime.Today;
+            }
+            else
+            {
+                try
+                {
+                    To = Convert.ToDateTime(ToDate.ToAD());
+                }
+                catch (Exception)
+                {
+                    ViewBag.err = new Exception("Invalid persian time format ...");
+                    return View("Error");
+                }
+            }
+
+            Bank bank;
+            try
+            {
+                bank = await banks.GetByIdAsync(id.Value);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.err = ex;
+                return View("Error");
+            }
+
+            ViewBag.maxAmount = 50000;
+            if (bank.Transactions.Count() > 0)
+            {
+                double max = bank.Transactions.Select(x => x.Amount).Max();
+                double div = Math.Pow(10, max.ToString().Count() - 1);
+                double round = Math.Ceiling(max / div) * div;
+                ViewBag.maxAmount = round;
+            }
+            ViewBag.FromDate = From.ToShortDateString();
+            ViewBag.ToDate = To.ToShortDateString();
+            ViewBag.ChartData = "[125, 200, 125, 225, 125, 200, 125, 225, 175, 275, 220]";
+            return View(bank);
+        }
+
 
         // GET: Bank/Create
         public ActionResult Create()
@@ -24,18 +105,29 @@ namespace Mehr.Controllers
         // POST: Bank/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> CreateAsync([Bind("BankID,BankName,Owner,AccountNumber,CardNumber,ShebaNumber")] Bank bank, IFormFile img)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add insert logic here
+                saveImgBank(ref bank, img);
 
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    await banks.InsertAsync(bank);
+                    await banks.saveAsync();
+                    this.SetViewMessage("New Bank Created successfully.", WebMessageType.Success);
+
+                }
+                catch (Exception ex)
+                {
+                    this.SetViewMessage(ex.Message, WebMessageType.Danger);
+                }
             }
-            catch
+            else
             {
-                return View();
+                this.SetViewMessage("Please Complete fields ...", WebMessageType.Warning);
             }
+            return RedirectToAction("Banks", "Home");
         }
 
         // GET: Bank/Edit/5
@@ -83,5 +175,22 @@ namespace Mehr.Controllers
                 return View();
             }
         }
+
+        private void saveImgBank(ref Bank bank, IFormFile img)
+        {
+            if (img != null)
+            {
+                bank.pic = Guid.NewGuid() + Path.GetExtension(img.FileName);
+                string picPath = _hostingEnvironment.WebRootPath
+                                + @"\images\Banks\"
+                                + bank.pic;
+
+                using (var stream = new FileStream(picPath, FileMode.Create))
+                {
+                    img.CopyTo(stream);
+                }
+            }
+        }
+
     }
 }

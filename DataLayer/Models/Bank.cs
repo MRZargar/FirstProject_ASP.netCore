@@ -29,10 +29,12 @@ namespace DataLayer
         public long CardNumber { get; set; }
 
         [Required]
+        [MaxLength(26)]
         [Display(Name = "Sheba Number")]
-        public long ShebaNumber { get; set; }
+        public string ShebaNumber { get; set; }
 
         [MaxLength(500)]
+
         [Display(Name = "Bank Picture")]
         public string pic { get; set; }
 

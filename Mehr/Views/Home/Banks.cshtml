@@ -1,41 +1,42 @@
+@model IEnumerable<DataLayer.Bank>
 @{
     ViewData["Title"] = "Banks";
 }
+@{
+    int counter = 0;
+    int col = 3;
+}
+<section id="header-footer">
+    <div class="row match-height">
+        @foreach (var bank in Model)
+        {
+            var BankPicture = bank.pic == null ? "Bank.jpg" : bank.pic;
 
-    <section id="header-footer">
-        <div class="row match-height">
             <div class="col-lg-4 col-md-12">
+
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Mallat Bank</h4>
+                        <h4 class="card-title">@bank.BankName Bank</h4>
                     </div>
-                    <img class="" src="~/images/Banks/mellat.png" alt="Card image cap">
+                    <img class="" src="~/images/Banks/@BankPicture" alt="Bank image">
                     <div class="card-body">
-                        <a asp-controller="BankData" asp-action="Details" asp-route-id="mellat" class="card-link">More...</a>
+                        <a asp-controller="Bank" asp-action="Details" asp-route-id="@bank.BankID" class="card-link">More...</a>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title">Melli Banks</h4>
-                    </div>
-                    <img class="" src="~/images/Banks/Melli.png" alt="Card image cap">
-                    <div class="card-body">
-                        <a asp-controller="BankData" asp-action="Details" asp-route-id="melli" class="card-link">More...</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title">Saderat Banks</h4>
-                    </div>
-                    <img class="" src="~/images/Banks/Saderat.png" alt="Card image cap">
-                    <div class="card-body">
-                        <a asp-controller="BankData" asp-action="Details" asp-route-id="saderat" class="card-link">More...</a>
-                    </div>
-                </div>
-            </div>
+
+        }
+
+        <div class="card">
+            <div class="card-body"></div>
+            <a onclick="newBank()">
+                <p class="counter display-1">+</p>
+            </a>
+            <div class="card-body"></div>
         </div>
-    </section>
+    </div>
+</section>
+
+@section Script{
+    <script src="~/js/pages/app.js"></script>
+}

@@ -110,7 +110,7 @@ namespace DataLayer
             return true;
         }
 
-        public async Task<bool> IsExistAsync(long shebaNumber)
+        public async Task<bool> IsExistAsync(string shebaNumber)
         {
             try
             {
@@ -128,7 +128,7 @@ namespace DataLayer
             return await IsExistAsync(bank.ShebaNumber) || await IsExistAsync(bank.BankID);
         }
 
-        public async Task<Bank> GetByShebaNumberAsync(long shebaNmber)
+        public async Task<Bank> GetByShebaNumberAsync(string shebaNmber)
         {
             try
             {

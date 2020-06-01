@@ -1,11 +1,19 @@
-﻿
-#ImgUpload {
-    border: solid #69245f 1px;
+﻿.ccenter {
+    display: block !important;
+    margin: auto !important;
+}
+
+#ImgUpload{
     display:block;
     margin:auto;
     width: 150px;
     height: 150px;
     cursor: pointer;
+}
+
+.bankImgUpload {
+    width: 200px !important;
+    height: auto !important;
 }
 
 #btnColor {
@@ -77,4 +85,31 @@
 .counter {
     text-align: center;
     padding: 20px
+}
+
+.ShebaNumber, .cardNumber {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+    text-align: center;
+    margin-right: 2px;
+    margin-left: 2px;
+}
+.cardNumber {
+    width: 80px !important;
+}
+
+.ShebaNumber {
+    width: 70px !important;
+}
+
+.list-number {
+    display: flex;
+}
+
+.form-control-label {
+    border: none !important;
+    margin: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    width: 200px !important;
 }
