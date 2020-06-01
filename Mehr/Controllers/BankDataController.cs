@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using DataLayer;
 using static DataLayer.BankDataRepository;
 using Mehr.Classes;
+using DataLayer.Exceptions;
 
 namespace Mehr.Controllers
 {
@@ -27,8 +28,15 @@ namespace Mehr.Controllers
         }
 
 
-        public IActionResult Create()
+        public IActionResult Create(int? id)
         {
+            if (id == null)
+            {
+                ViewBag.err = new NotFoundException();
+                return View("Error");
+            }
+
+            ViewBag.BankID = id;
             return View();
         }
 
@@ -37,15 +45,27 @@ namespace Mehr.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BankDataID,BankName,TransactionDate,TrackingNumber,LateFourNumbersOfBankCard,Amount")] BankData bankData)
+        public async Task<IActionResult> Create([Bind("BankDataID,BankID,TransactionDate,TrackingNumber,LastFourNumbersOfBankCard,Amount")] BankData bankData)
         {
             if (ModelState.IsValid)
             {
-                await bankDatas.InsertAsync(bankData);
-                await bankDatas.saveAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    await bankDatas.InsertAsync(bankData);
+                    await bankDatas.saveAsync();
+                    this.SetViewMessage("A new transaction was registered successfully.", WebMessageType.Success);
+
+                }
+                catch (Exception ex)
+                {
+                    this.SetViewMessage(ex.Message, WebMessageType.Danger);
+                }
             }
-            return View(bankData);
+            else
+            {
+                this.SetViewMessage("Please Complete fields ...", WebMessageType.Warning);
+            }
+            return RedirectToAction("Details", "Bank", new { id = bankData.BankID });
         }
 
         // GET: App/BankData/Edit/5
@@ -53,14 +73,21 @@ namespace Mehr.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                ViewBag.err = new NotFoundException();
+                return View("Error");
             }
 
-            var bankData = await bankDatas.GetByIdAsync(id.Value);
-            if (bankData == null)
+            BankData bankData;
+            try
             {
-                return NotFound();
+                bankData = await bankDatas.GetByIdAsync(id.Value);
             }
+            catch (Exception ex)
+            {
+                ViewBag.err = ex;
+                return View("Error");
+            }
+            
             return View(bankData);
         }
 

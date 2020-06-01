@@ -4,60 +4,64 @@
     Layout = null;
 }
 
-    <form asp-action="Create" enctype="multipart/form-data">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group">
-            <div class="list-number">
-                <label asp-for="BankName" class="form-control form-control-label"></label>
-                <input asp-for="BankName" class="form-control" placeholder="Write in English" />
-            </div>
-            <span asp-validation-for="BankName" class="text-danger"></span>
+<form asp-action="Create" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <div class="list-number">
+            <label asp-for="BankName" class="form-control form-control-label"></label>
+            <input asp-for="BankName" class="form-control" placeholder="Write in English" />
         </div>
-        <div class="form-group">
-            <div class="list-number">
-                <label asp-for="Owner" class="form-control form-control-label"></label>
-                <input asp-for="Owner" class="form-control" />
-            </div>
-            <span asp-validation-for="Owner" class="text-danger"></span>
+        <span asp-validation-for="BankName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <div class="list-number">
+            <label asp-for="Owner" class="form-control form-control-label"></label>
+            <input asp-for="Owner" class="form-control" />
         </div>
-        <div class="form-group">
-            <div class="list-number">
-                <label asp-for="AccountNumber" class="form-control form-control-label"></label>
-                <input asp-for="AccountNumber" type="text" class="form-control" />
-            </div>
-            <span asp-validation-for="AccountNumber" class="text-danger"></span>
+        <span asp-validation-for="Owner" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <div class="list-number">
+            <label asp-for="AccountNumber" class="form-control form-control-label"></label>
+            <input asp-for="AccountNumber" type="text" class="form-control" />
         </div>
-        <div class="form-group">
-            <div class="list-number">
-                <label asp-for="CardNumber" class="form-control form-control-label"></label>
-                <input id="CardNumber" asp-for="CardNumber" class="form-control" style="visibility: hidden; position:absolute;"  />
-                <input class="form-control cardNumber" ID="CardNumber1" maxlength="4" onkeyup="moveFocus(this,'CardNumber2')" onchange="FillCardNumber()" />
-                <input class="form-control cardNumber" ID="CardNumber2" maxlength="4" onkeyup="moveFocus(this,'CardNumber3')" onchange="FillCardNumber()" />
-                <input class="form-control cardNumber" ID="CardNumber3" maxlength="4" onkeyup="moveFocus(this,'CardNumber4')" onchange="FillCardNumber()" />
-                <input class="form-control cardNumber" ID="CardNumber4" maxlength="4" onchange="FillCardNumber()" />
-            </div>
-            <span asp-validation-for="CardNumber" class="text-danger"></span>
+        <span asp-validation-for="AccountNumber" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <div class="list-number">
+            <label asp-for="CardNumber" class="form-control form-control-label"></label>
+            <input id="CardNumber" asp-for="CardNumber" class="form-control" style="visibility: hidden; position:absolute;" />
+            <input class="form-control cardNumber" ID="CardNumber1" maxlength="4" onkeyup="moveFocus(this,'CardNumber2')" onchange="FillCardNumber()" />
+            <input class="form-control cardNumber" ID="CardNumber2" maxlength="4" onkeyup="moveFocus(this,'CardNumber3')" onchange="FillCardNumber()" />
+            <input class="form-control cardNumber" ID="CardNumber3" maxlength="4" onkeyup="moveFocus(this,'CardNumber4')" onchange="FillCardNumber()" />
+            <input class="form-control cardNumber" ID="CardNumber4" maxlength="4" onchange="FillCardNumber()" />
         </div>
-        <div class="form-group">
-            <label asp-for="ShebaNumber" class="control-label"></label>
-            <div class="list-number">
-                <input id="ShebaNumber" asp-for="ShebaNumber" class="form-control" style="visibility: hidden; position:absolute;" />
-                <label class="form-control form-control-label">IR</label>
-                <input class="form-control ShebaNumber" ID="ShebaNumber1" maxlength="2" onkeyup="moveFocus(this,'ShebaNumber2')" onchange="FillShebaNumber()" style="width: 40px !important" />
-                <input class="form-control ShebaNumber" ID="ShebaNumber2" maxlength="4" onkeyup="moveFocus(this,'ShebaNumber3')" onchange="FillShebaNumber()" />
-                <input class="form-control ShebaNumber" ID="ShebaNumber3" maxlength="4" onkeyup="moveFocus(this,'ShebaNumber4')" onchange="FillShebaNumber()" />
-                <input class="form-control ShebaNumber" ID="ShebaNumber4" maxlength="4" onkeyup="moveFocus(this,'ShebaNumber5')" onchange="FillShebaNumber()" />
-                <input class="form-control ShebaNumber" ID="ShebaNumber5" maxlength="4" onkeyup="moveFocus(this,'ShebaNumber6')" onchange="FillShebaNumber()" />
-                <input class="form-control ShebaNumber" ID="ShebaNumber6" maxlength="4" onkeyup="moveFocus(this,'ShebaNumber7')" onchange="FillShebaNumber()" />
-                <input class="form-control ShebaNumber" ID="ShebaNumber7" maxlength="2" onchange="FillShebaNumber()" style="width: 40px !important" />
-            </div>
-            <span asp-validation-for="ShebaNumber" class="text-danger"></span>
+        <span asp-validation-for="CardNumber" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ShebaNumber" class="control-label"></label>
+        <div class="list-number">
+            <input id="ShebaNumber" asp-for="ShebaNumber" class="form-control" style="visibility: hidden; position:absolute;" />
+            <label class="form-control form-control-label">IR</label>
+            <input class="form-control ShebaNumber" ID="ShebaNumber1" maxlength="2" onkeyup="moveFocus(this,'ShebaNumber2')" onchange="FillShebaNumber()" style="width: 40px !important" />
+            <input class="form-control ShebaNumber" ID="ShebaNumber2" maxlength="4" onkeyup="moveFocus(this,'ShebaNumber3')" onchange="FillShebaNumber()" />
+            <input class="form-control ShebaNumber" ID="ShebaNumber3" maxlength="4" onkeyup="moveFocus(this,'ShebaNumber4')" onchange="FillShebaNumber()" />
+            <input class="form-control ShebaNumber" ID="ShebaNumber4" maxlength="4" onkeyup="moveFocus(this,'ShebaNumber5')" onchange="FillShebaNumber()" />
+            <input class="form-control ShebaNumber" ID="ShebaNumber5" maxlength="4" onkeyup="moveFocus(this,'ShebaNumber6')" onchange="FillShebaNumber()" />
+            <input class="form-control ShebaNumber" ID="ShebaNumber6" maxlength="4" onkeyup="moveFocus(this,'ShebaNumber7')" onchange="FillShebaNumber()" />
+            <input class="form-control ShebaNumber" ID="ShebaNumber7" maxlength="2" onchange="FillShebaNumber()" style="width: 40px !important" />
         </div>
-        <div class="form-group">
-            <input id="FileUpload" onchange="fileUpChange(this)" name="img" type="file" style="display: none;" />
-            <img id="ImgUpload" onclick="imgUpClick()" class="media-object bankImgUpload ccenter" src="~/images/Banks/Bank.jpg">
-        </div>
-        <div class="form-group">
-            <input type="submit" value="Create" class="btn btn-primary" style="position: relative; float: right;" />
-        </div>
-    </form>
+        <span asp-validation-for="ShebaNumber" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input id="FileUpload" onchange="fileUpChange(this)" name="img" type="file" style="display: none;" />
+        <img id="ImgUpload" onclick="imgUpClick()" class="media-object bankImgUpload ccenter" src="~/images/Banks/Bank.jpg">
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" style="position: relative; float: right;" />
+    </div>
+</form>
+
+@section Script {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
