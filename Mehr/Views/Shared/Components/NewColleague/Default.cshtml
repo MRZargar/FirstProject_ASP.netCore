@@ -33,10 +33,15 @@
                     </div>
                     <div class="row">
                         <div class="col-8">
-                            <div class="form-group">
-                                <label asp-for="BirthDay" class="control-label"></label>
-                                <input asp-for="BirthDay" id="Date1" class="form-control" />
-                                <span asp-validation-for="BirthDay" class="text-danger"></span>
+                            <div class="form-group ">
+                                <label for="buttomGroup" class="control-label">Birth Day</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text cursor-pointer" id="BirthDay"><i class="la la-calendar"></i></span>
+                                    </div>
+                                    <input readonly type="text" name="BirthDay" class="form-control" id="inputBirthDay" placeholder="Birth Day" />
+                                    <span asp-validation-for="BirthDay" class="text-danger"></span>
+                                </div>
                             </div>
                         </div>
                         <div class="col-4">
@@ -49,12 +54,17 @@
                     </div>
                     <div class="row">
                         <div class="col-8">
-                            <div class="form-group">
-                                <label asp-for="StartActivity" class="control-label"></label>
-                                <input asp-for="StartActivity" id="Date2" class="form-control" />
-                                <span asp-validation-for="StartActivity" class="text-danger"></span>
+                            <div class="form-group ">
+                                <label for="buttomGroup" class="control-label">Birth Day</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text cursor-pointer" id="StartActivity"><i class="la la-calendar"></i></span>
+                                    </div>
+                                    <input readonly type="text" name="StartActivity" class="form-control" id="inputStartActivity" placeholder="StartActivity" />
+                                    <span asp-validation-for="StartActivity" class="text-danger"></span>
+                                </div>
                             </div>
-                            </div>
+                        </div>
                         <div class="col-4">
                             <div class="row">
                                 <div class="col-6">

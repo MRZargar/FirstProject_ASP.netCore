@@ -96,18 +96,29 @@ namespace Mehr.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ColleagueID,Name,PhoneNumber,BirthDay,StartActivity,code,color,isMale")] Colleague colleague, IFormFile profile)
+        public async Task<IActionResult> Create([Bind("ColleagueID,Name,PhoneNumber,code,color,isMale")] Colleague colleague,
+                                                IFormFile profile, string BirthDay, string StartActivity)
         {
             if (ModelState.IsValid)
             {
+                try
+                {
+                    colleague.BirthDay = Convert.ToDateTime(BirthDay.ToAD());
+                    colleague.StartActivity = Convert.ToDateTime(StartActivity.ToAD());
+                }
+                catch (Exception)
+                {
+                    this.SetViewMessage("Please Complete fields ...", WebMessageType.Warning);
+                    return RedirectToAction("Colleagues", "Home");
+                }
+
                 saveProfile(ref colleague, profile);
 
                 try
                 {
                     await colleagues.InsertAsync(colleague);
                     await colleagues.saveAsync();  
-                   this.SetViewMessage("New Colleague Created successfully." ,WebMessageType.Success);
-           
+                    this.SetViewMessage("New Colleague Created successfully." ,WebMessageType.Success);
                 }
                 catch (Exception ex)
                 {

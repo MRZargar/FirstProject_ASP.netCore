@@ -3,6 +3,7 @@
 }
 
 @section StyleSheets{
+    <link href="~/css/jquery.md.bootstrap.datetimepicker.style.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="~/lib/prettyCheck/pretty-checkbox.min.css">
 }
 
@@ -18,6 +19,7 @@
 </section>
 
 @section Script{
+    <script src="~/js/jquery.md.bootstrap.datetimepicker.js"></script>
     <script src="~/lib/colorPicker/dist/iro.js"></script>
     <script src="~/js/pages/app.js"></script>
     <script>
@@ -43,6 +45,19 @@
             colorBtn.style.backgroundColor = String(myColor);
             document.getElementById("newColor").style.backgroundColor = String(myColor);
         })
-    };
+        };
+
+        $('#StartActivity').MdPersianDateTimePicker({
+            targetTextSelector: '#inputStartActivity',
+            selectedDate: new Date(),
+            dateFormat: 'yyyy/MM/dd',
+            textFormat: 'yyyy/MM/dd',
+        });
+
+        $('#BirthDay').MdPersianDateTimePicker({
+            targetTextSelector: '#inputBirthDay',
+            dateFormat: 'yyyy/MM/dd',
+            textFormat: 'yyyy/MM/dd',
+        });
     </script>
 }
