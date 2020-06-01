@@ -41,8 +41,8 @@
                 <h2 class="card-title">@Model.BankName Bank</h2>
                 <div class="heading-elements">
                     <ul class="list-inline mb-0">
-                        <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
-                        <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                        <li><a class="btn btn-warning" onclick="editBank(@Model.BankID)">Edit</a></li>
+                        <li><a class="btn btn-danger" onclick="deleteBank(@Model.BankID)">Delete</a></li>
                     </ul>
                 </div>
             </div>

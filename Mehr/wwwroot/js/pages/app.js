@@ -8,7 +8,6 @@ function deleteColleague(id) {
     });
 };
 
-
 // delete Bank
 function deleteBank(id) {
     $.get("/Bank/Delete/" + id, function (result) {
