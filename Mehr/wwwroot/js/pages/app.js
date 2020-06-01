@@ -8,6 +8,25 @@ function deleteColleague(id) {
     });
 };
 
+
+// delete Bank
+function deleteBank(id) {
+    $.get("/Bank/Delete/" + id, function (result) {
+        $(".modal").modal('show');
+        $(".modal-title").html("Delete Bank");
+        $(".modal-body").html(result);
+    });
+};
+
+// edit Bank
+function editBank(id) {
+    $.get("/Bank/Edit/" + id, function (result) {
+        $(".modal").modal('show');
+        $(".modal-title").html("Edit Bank");
+        $(".modal-body").html(result);
+    });
+};
+
 // new bank
 function newBank() {
     $.get("/Bank/Create/", function (result) {

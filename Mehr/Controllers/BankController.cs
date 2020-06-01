@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using DataLayer;
+using DataLayer.Exceptions;
 using Mehr.Classes;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -131,49 +132,109 @@ namespace Mehr.Controllers
         }
 
         // GET: Bank/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                ViewBag.err = new NotFoundException();
+                return View("Error");
+            }
+
+            Bank bank;
+            try
+            {
+                bank = await banks.GetByIdAsync(id.Value);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.err = ex;
+                return View("Error");
+            }
+
+            return View(bank);
         }
 
         // POST: Bank/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(int id, [Bind("BankID,BankName,Owner,AccountNumber,CardNumber,ShebaNumber")] Bank bank, IFormFile img)
         {
-            try
+            if (id != bank.BankID)
             {
-                // TODO: Add update logic here
+                ViewBag.err = new NotFoundException();
+                return View("Error");
+            }
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
+            if (ModelState.IsValid)
             {
-                return View();
+                try
+                {
+                    Bank Edited = await banks.GetByIdAsync(id);
+                    Edited.BankName = bank.BankName;
+                    Edited.CardNumber = bank.CardNumber;
+                    Edited.Owner = bank.Owner;
+                    Edited.ShebaNumber = bank.ShebaNumber;
+                    Edited.AccountNumber = bank.AccountNumber;
+
+                    if (img != null)
+                    {
+                        deleteImgBank(id);
+                        saveImgBank(ref Edited, img);
+                    }
+
+                    await banks.UpdateAsync(Edited);
+                    await banks.saveAsync();
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.err = ex;
+                    return View("Error");
+                }
+                return RedirectToAction("Details", new { id = bank.BankID });
             }
+            return View(bank);
         }
 
         // GET: Bank/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                ViewBag.err = new NotFoundException();
+                return View("Error");
+            }
+
+            Bank bank;
+            try
+            {
+                bank = await banks.GetByIdAsync(id.Value);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.err = ex;
+                return View("Error");
+            }
+
+            return View(bank);
         }
 
         // POST: Bank/Delete/5
-        [HttpPost]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> DeleteAsync(int id)
         {
             try
             {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
+                deleteImgBank(id);
+                await banks.DeleteAsync(id);
+                await banks.saveAsync();
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                ViewBag.err = ex;
+                return View("Error");
             }
+            return RedirectToAction("Banks", "Home");
         }
 
         private void saveImgBank(ref Bank bank, IFormFile img)
@@ -192,5 +253,21 @@ namespace Mehr.Controllers
             }
         }
 
+        private async void deleteImgBank(int id)
+        {
+            var bank = await banks.GetByIdAsync(id);
+
+            if (bank.pic != null)
+            {
+                string picPath = _hostingEnvironment.WebRootPath
+                                + @"\images\Banks\"
+                                + bank.pic;
+
+                if (System.IO.File.Exists(picPath))
+                {
+                    System.IO.File.Delete(picPath);
+                }
+            }
+        }
     }
 }

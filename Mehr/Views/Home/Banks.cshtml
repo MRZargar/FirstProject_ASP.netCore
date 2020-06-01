@@ -15,8 +15,26 @@
             <div class="col-lg-4 col-md-12">
 
                 <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title">@bank.BankName Bank</h4>
+                    <div class="card-header">
+                        <div class="media-body w-100 prperty-Colleague">
+                            <h4 class="card-title">@bank.BankName Bank</h4>
+                            <div class="heading-elements">
+                                <ul class="list-unstyled users-list m-0 float-right">
+                                    <li class="avatar avatar-sm pull-up">
+                                        <div onclick="deleteBank(@bank.BankID)">
+                                            <i class="la la-trash-o media-object rounded-circle no-border-top-radius no-border-bottom-radius"></i>
+                                        </div>
+                                    </li>
+                                    <li class="avatar avatar-sm pull-up">
+                                        <div onclick="editBank(@bank.BankID)">
+                                            <i class="la la-edit media-object rounded-circle no-border-top-radius no-border-bottom-radius"></i>
+                                        </div>
+                                    </li>
+                                    <li class="avatar avatar-sm pull-up">
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                     <img class="" src="~/images/Banks/@BankPicture" alt="Bank image">
                     <div class="card-body">
@@ -26,13 +44,12 @@
             </div>
 
         }
-
-        <div class="card">
-            <div class="card-body"></div>
-            <a onclick="newBank()">
-                <p class="counter display-1">+</p>
-            </a>
-            <div class="card-body"></div>
+        <div class="col-lg-4 col-md-12">
+            <div class="card">
+                <a onclick="newBank()">
+                    <p class="counter display-1">+</p>
+                </a>
+            </div>
         </div>
     </div>
 </section>

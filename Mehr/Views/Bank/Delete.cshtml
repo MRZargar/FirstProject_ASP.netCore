@@ -1,0 +1,18 @@
+@model DataLayer.Bank
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = null;
+}
+
+
+<p><strong>Are you sure you want to delete @Model.BankName Bank?</strong></p>
+<p class="text-danger">Note that by deleting each Bank, <strong>all</strong> related transactions will be deleted.</p>
+<p class="text-warning">It is recommended that you export transactions...</p>
+<form asp-action="Delete" method="post">
+    <input type="checkbox" onchange="document.getElementById('btn-delete').disabled = !this.checked;" />
+    <label>I'm sure</label>
+    
+    <input type="hidden" asp-for="BankID" name="id" />
+    <input type="submit" id="btn-delete" class="btn btn-danger" value="Delete" style="position: relative; float: right;" disabled />
+</form>

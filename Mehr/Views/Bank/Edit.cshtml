@@ -1,0 +1,85 @@
+﻿@model DataLayer.Bank
+
+@{ 
+    Layout = null;
+    string BankPicture = Model.pic == null ? "Bank.jpg" : Model.pic;
+}
+
+<form asp-action="Edit">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="BankID" />
+    <div class="form-group">
+        <div class="list-number">
+            <label asp-for="BankName" class="form-control form-control-label"></label>
+            <input asp-for="BankName" class="form-control" placeholder="Write in English" />
+        </div>
+        <span asp-validation-for="BankName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <div class="list-number">
+            <label asp-for="Owner" class="form-control form-control-label"></label>
+            <input asp-for="Owner" class="form-control" />
+        </div>
+        <span asp-validation-for="Owner" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <div class="list-number">
+            <label asp-for="AccountNumber" class="form-control form-control-label"></label>
+            <input asp-for="AccountNumber" type="text" class="form-control" />
+        </div>
+        <span asp-validation-for="AccountNumber" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <div class="list-number">
+            <label asp-for="CardNumber" class="form-control form-control-label"></label>
+            <input id="CardNumber" asp-for="CardNumber" class="form-control" style="visibility: hidden; position:absolute;" />
+            <input class="form-control cardNumber" ID="CardNumber1" maxlength="4" onkeyup="moveFocus(this,'CardNumber2')" onchange="FillCardNumber()" />
+            <input class="form-control cardNumber" ID="CardNumber2" maxlength="4" onkeyup="moveFocus(this,'CardNumber3')" onchange="FillCardNumber()" />
+            <input class="form-control cardNumber" ID="CardNumber3" maxlength="4" onkeyup="moveFocus(this,'CardNumber4')" onchange="FillCardNumber()" />
+            <input class="form-control cardNumber" ID="CardNumber4" maxlength="4" onchange="FillCardNumber()" />
+        </div>
+        <span asp-validation-for="CardNumber" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ShebaNumber" class="control-label"></label>
+        <div class="list-number">
+            <input id="ShebaNumber" asp-for="ShebaNumber" class="form-control" style="visibility: hidden; position:absolute;" />
+            <label class="form-control form-control-label">IR</label>
+            <input class="form-control ShebaNumber" ID="ShebaNumber1" maxlength="2" onkeyup="moveFocus(this,'ShebaNumber2')" onchange="FillShebaNumber()" style="width: 40px !important" />
+            <input class="form-control ShebaNumber" ID="ShebaNumber2" maxlength="4" onkeyup="moveFocus(this,'ShebaNumber3')" onchange="FillShebaNumber()" />
+            <input class="form-control ShebaNumber" ID="ShebaNumber3" maxlength="4" onkeyup="moveFocus(this,'ShebaNumber4')" onchange="FillShebaNumber()" />
+            <input class="form-control ShebaNumber" ID="ShebaNumber4" maxlength="4" onkeyup="moveFocus(this,'ShebaNumber5')" onchange="FillShebaNumber()" />
+            <input class="form-control ShebaNumber" ID="ShebaNumber5" maxlength="4" onkeyup="moveFocus(this,'ShebaNumber6')" onchange="FillShebaNumber()" />
+            <input class="form-control ShebaNumber" ID="ShebaNumber6" maxlength="4" onkeyup="moveFocus(this,'ShebaNumber7')" onchange="FillShebaNumber()" />
+            <input class="form-control ShebaNumber" ID="ShebaNumber7" maxlength="2" onchange="FillShebaNumber()" style="width: 40px !important" />
+        </div>
+        <span asp-validation-for="ShebaNumber" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input id="FileUpload" onchange="fileUpChange(this)" name="img" type="file" style="display: none;" />
+        <img id="ImgUpload" onclick="imgUpClick()" class="media-object bankImgUpload ccenter" src="~/images/Banks/@BankPicture">
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</form>
+
+<script>
+    $(document).ready(function () {
+        var card = document.getElementById('CardNumber').value.toString();
+        var sheba = document.getElementById('ShebaNumber').value.toString();
+
+        document.getElementById('CardNumber1').value = card.substr(0, 4);
+        document.getElementById('CardNumber2').value = card.substr(4, 4);
+        document.getElementById('CardNumber3').value = card.substr(8, 4);
+        document.getElementById('CardNumber4').value = card.substr(12, 4);
+
+        document.getElementById('ShebaNumber1').value = sheba.substr(2, 2);
+        document.getElementById('ShebaNumber2').value = sheba.substr(4, 4);
+        document.getElementById('ShebaNumber3').value = sheba.substr(8, 4);
+        document.getElementById('ShebaNumber4').value = sheba.substr(12, 4);
+        document.getElementById('ShebaNumber5').value = sheba.substr(16, 4);
+        document.getElementById('ShebaNumber6').value = sheba.substr(20, 4);
+        document.getElementById('ShebaNumber7').value = sheba.substr(24, 2);
+    });
+</script>

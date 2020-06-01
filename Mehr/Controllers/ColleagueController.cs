@@ -182,8 +182,8 @@ namespace Mehr.Controllers
 
                     if (profile != null)
                     {
-                        saveProfile(ref colleague, profile);
-                        Edited.picName = colleague.picName;
+                        deleteProfile(id);
+                        saveProfile(ref Edited, profile);
                     }
 
                     await colleagues.UpdateAsync(Edited);
