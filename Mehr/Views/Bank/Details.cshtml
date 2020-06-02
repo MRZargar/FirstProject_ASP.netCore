@@ -1,4 +1,5 @@
 ﻿@model DataLayer.Bank
+@using Mehr.Classes
 
 @{
     ViewData["Title"] = Model.BankName + " Bank";
@@ -191,7 +192,13 @@
                                 <tr>
                                     <th scope="row">@(i++)</th>
                                     <td>
-                                        @item.TransactionDate
+                                        @{
+                                            string date, time;
+                                            DateTime dateTime = Convert.ToDateTime(item.TransactionDate);
+                                            date = dateTime.ToSolar();
+                                            time = dateTime.TimeOfDay.ToString();
+                                        }
+                                        @(date + " " + time)
                                     </td>
                                     <td class="track">
                                         @item.TrackingNumber

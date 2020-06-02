@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<DataLayer.SponsorTransaction>
+@using Mehr.Classes
 <!-- Table head options start -->
 
 <div class="card">
@@ -73,10 +74,13 @@
                             @Html.DisplayNameFor(model => model.MySponsor)
                         </th>
                         <th scope="col">
-                            @Html.DisplayNameFor(model => model.MySponsor.CauseOfSupport)
+                            @Html.DisplayNameFor(model => model.TransactionDate)
                         </th>
                         <th scope="col">
-                            @Html.DisplayNameFor(model => model.TransactionDate)
+                            @Html.DisplayNameFor(model => model.CauseOfSupport)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.OtherSupport)
                         </th>
                         <th scope="col">
                             @Html.DisplayNameFor(model => model.Amount)
@@ -89,27 +93,36 @@
                     }
                     @foreach (var item in Model)
                     {
-                        <tr>
-                            <th scope="row">@(i++)</th>
-                            <td class="sponsor">
-                                <a asp-controller="Sponsor" asp-action="Details" asp-route-id="@item.MySponsor.SponsorID">
-                                    @Html.DisplayFor(modelItem => item.MySponsor.Name)
-                                </a>
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.MySponsor.CauseOfSupport)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TransactionDate)
-                            </td>
-                            <td class="amount">
-                                @Html.DisplayFor(modelItem => item.Amount)
-                            </td>
-                        </tr>
+                    <tr>
+                        <th scope="row">@(i++)</th>
+                        <td class="sponsor">
+                            <a asp-controller="Sponsor" asp-action="Details" asp-route-id="@item.MySponsor.SponsorID">
+                                @Html.DisplayFor(modelItem => item.MySponsor.Name)
+                            </a>
+                        </td>
+                        <td>
+                            @{ 
+                                string date, time;
+                                DateTime dateTime = Convert.ToDateTime(item.TransactionDate);
+                                date = dateTime.ToSolar();
+                                time = dateTime.TimeOfDay.ToString();
+                            }
+                            @(date + " " + time)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CauseOfSupport)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OtherSupport)
+                        </td>
+                        <td class="amount">
+                            @Html.DisplayFor(modelItem => item.Amount)
+                        </td>
+                    </tr>
                     }
                     <tr class="thead-light">
                         <th scope="row">Total</th>
-                        <td colspan="3"></td>
+                        <td colspan="4"></td>
                         <td id="sumAmount"></td>
                     </tr>
                 </tbody>
