@@ -1,4 +1,12 @@
-﻿
+﻿// filter colleague
+function FilterColleagueDetails(id) {
+    var fromDate = document.getElementById('inputFromDate').value;
+    var toDate = document.getElementById('inputToDate').value;
+    var url = id + '?FromDate=' + fromDate + '&ToDate=' + toDate;
+
+    window.location.replace(url);
+}
+
 // delete Colleague
 function deleteColleague(id) {
     $.get("/Colleague/Delete/" + id, function (result) {
@@ -44,6 +52,7 @@ function newBankData(id) {
     });
 }
 
+// new Sponsor Transaction
 function newSponsorTransaction(id) {
     $.get("/SponsorTransaction/Create/" + id, function (result) {
         $(".modal").modal('show');

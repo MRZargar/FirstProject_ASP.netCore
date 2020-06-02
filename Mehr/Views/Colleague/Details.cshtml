@@ -91,7 +91,10 @@
 </div>
 
 <div class="col-12">
-    @await Component.InvokeAsync("DetailsColleagueTable", new { id = Model.ColleagueID })
+    @{ 
+        TempData["ColleagueID"] = Model.ColleagueID;
+    }
+    @await Component.InvokeAsync("DetailsColleagueTable", new { id = Model.ColleagueID, FromDate = ViewBag.FromDate, ToDate = ViewBag.ToDate })
 </div>
 
 <!--  hidden form   -->
@@ -138,7 +141,7 @@
             $('#FromDate').MdPersianDateTimePicker({
                 targetTextSelector: '#inputFromDate',
                 fromDate: true,
-                selectedDate: new Date('@ViewBag.FromDate'),
+                selectedDate: new Date('@TempData["FromDate"]'),
                 groupId: 'rangeSelector1',
                 dateFormat: 'yyyy/MM/dd',
                 textFormat: 'yyyy/MM/dd',
@@ -147,7 +150,7 @@
             $('#ToDate').MdPersianDateTimePicker({
                 targetTextSelector: '#inputToDate',
                 toDate: true,
-                selectedDate: new Date('@ViewBag.ToDate'),
+                selectedDate: new Date('@TempData["ToDate"]'),
                 groupId: 'rangeSelector1',
                 dateFormat: 'yyyy/MM/dd',
                 textFormat: 'yyyy/MM/dd',

@@ -35,45 +35,6 @@ namespace Mehr.Controllers
                 return View("Error");
             }
 
-            DateTime From = new DateTime();
-            DateTime To = new DateTime();
-
-            if (FromDate == "")
-            {
-                string temp = DateTime.Today.ToSolar();
-                temp = temp.Substring(0, temp.Length - 2) + "01";
-                From = Convert.ToDateTime(temp.ToAD());
-            }
-            else
-            {
-                try
-                {
-                    From = Convert.ToDateTime(FromDate.ToAD());
-                }
-                catch (Exception)
-                {
-                    ViewBag.err = new Exception("Invalid persian time format ...");
-                    return View("Error");
-                }
-            }
-
-            if (ToDate == "")
-            {
-                To = DateTime.Today;
-            }
-            else
-            {
-                try
-                {
-                    To = Convert.ToDateTime(ToDate.ToAD());
-                }
-                catch (Exception)
-                {
-                    ViewBag.err = new Exception("Invalid persian time format ...");
-                    return View("Error");
-                }
-            }
-
             Colleague colleague;
             try
             {
@@ -84,9 +45,9 @@ namespace Mehr.Controllers
                 ViewBag.err = ex;
                 return View("Error");
             }
-            
-            ViewBag.FromDate = From.ToShortDateString();
-            ViewBag.ToDate = To.ToShortDateString();
+
+            ViewBag.FromDate = FromDate;
+            ViewBag.ToDate = ToDate;
             ViewBag.ChartData = "[125, 200, 125, 225, 125, 200, 125, 225, 175, 275, 220]";
             return View(colleague);
         }

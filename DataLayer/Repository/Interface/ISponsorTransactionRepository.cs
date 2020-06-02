@@ -10,7 +10,8 @@ namespace DataLayer
         Task<SponsorTransaction> GetByIdAsync(int sponsorTransactionsID);
         Task<SponsorTransaction> GetAsync(SponsorTransaction sponsorTransaction);
         Task<IEnumerable<SponsorTransaction>> GetAllBySponsorIdAsync(int sponsorID);
-        Task<bool> InsertAsync(SponsorTransaction sponsorTransaction);
+        Task<IEnumerable<SponsorTransaction>> GetFromToBySponsorIdAsync(int sponsorID, DateTime From, DateTime To);
+         Task<bool> InsertAsync(SponsorTransaction sponsorTransaction);
         Task<bool> UpdateAsync(SponsorTransaction sponsorTransaction);
         Task<bool> DeleteAsync(SponsorTransaction sponsorTransaction);
         Task<bool> DeleteAsync(int sponsorTransactionsID);
