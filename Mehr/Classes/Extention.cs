@@ -30,11 +30,28 @@ namespace Mehr.Classes
         public static string ToAD(this string value)
         {
             PersianCalendar pc = new PersianCalendar();
-            var dateSplit = value.PersianToEnglish().Split('/');
-            int year = Convert.ToInt32(dateSplit[0]);
-            int month = Convert.ToInt32(dateSplit[1]);
-            int day = Convert.ToInt32(dateSplit[2]);
-            return pc.ToDateTime(year, month, day, 0, 0, 0, 0).ToShortDateString();
+            value = value.PersianToEnglish();
+            string date = value;
+            string time = string.Empty;
+            try
+            {
+                bool hasTime = value.Contains(':');
+                if (hasTime)
+                {
+                    int idx = value.IndexOf(' ');
+                    date = value.Substring(0, idx);
+                    time = value.Substring(idx);
+                }
+                var dateSplit = date.Split('/');
+                int year = Convert.ToInt32(dateSplit[0]);
+                int month = Convert.ToInt32(dateSplit[1]);
+                int day = Convert.ToInt32(dateSplit[2]);
+                return pc.ToDateTime(year, month, day, 0, 0, 0, 0).ToShortDateString() + time;
+            }
+            catch (Exception)
+            {
+                throw new Exception("not valid date pattern ...");
+            }
         }
 
         public static string PersianToEnglish(this string persianStr)

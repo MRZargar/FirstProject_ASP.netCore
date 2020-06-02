@@ -1,52 +1,63 @@
 @model DataLayer.SponsorTransaction
-
-@{
-    ViewData["Title"] = "Create";
+@{ 
+    Layout = null;
 }
 
-<h1>Create</h1>
-
-<h4>SponsorTransaction</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="SponsorID" class="control-label"></label>
-                <select asp-for="SponsorID" class ="form-control" asp-items="ViewBag.SponsorID"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="TransactionDate" class="control-label"></label>
-                <input asp-for="TransactionDate" class="form-control" />
+    <form asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="SponsorID" class="control-label"></label>
+            <select asp-for="SponsorID" class="form-control" asp-items="ViewBag.SponsorID"></select>
+        </div>
+        <div class="form-group ">
+            <label for="buttomGroup" class="control-label">Transaction Date</label>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text cursor-pointer" id="TransactionDate"><i class="la la-calendar"></i></span>
+                </div>
+                <input readonly type="text" name="TransactionDate" class="form-control" id="inputTransactionDate" placeholder="Transaction Date" />
                 <span asp-validation-for="TransactionDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="TrackingNumber" class="control-label"></label>
-                <input asp-for="TrackingNumber" class="form-control" />
-                <span asp-validation-for="TrackingNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastFourNumbersOfBankCard" class="control-label"></label>
-                <input asp-for="LastFourNumbersOfBankCard" class="form-control" />
-                <span asp-validation-for="LastFourNumbersOfBankCard" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Amount" class="control-label"></label>
-                <input asp-for="Amount" class="form-control" />
-                <span asp-validation-for="Amount" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+        </div>
+        <div class="form-group">
+            <label asp-for="TrackingNumber" class="control-label"></label>
+            <input asp-for="TrackingNumber" class="form-control" />
+            <span asp-validation-for="TrackingNumber" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="LastFourNumbersOfBankCard" class="control-label"></label>
+            <input asp-for="LastFourNumbersOfBankCard" class="form-control" />
+            <span asp-validation-for="LastFourNumbersOfBankCard" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Amount" class="control-label"></label>
+            <input asp-for="Amount" class="form-control" />
+            <span asp-validation-for="Amount" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="CauseOfSupport" class="control-label"></label>
+            <input asp-for="CauseOfSupport" class="form-control" />
+            <span asp-validation-for="CauseOfSupport" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="OtherSupport" class="control-label"></label>
+            <input asp-for="OtherSupport" class="form-control" />
+            <span asp-validation-for="OtherSupport" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </form>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <script>
+        $('#TransactionDate').MdPersianDateTimePicker({
+            targetTextSelector: '#inputTransactionDate',
+            selectedDate: new Date(),
+            enableTimePicker: true,
+            placement: 'top',
+            dateFormat: 'yyyy/MM/dd HH:mm:ss',
+            textFormat: 'yyyy/MM/dd HH:mm:ss',
+        });
+    </script>
 
-@section Script {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

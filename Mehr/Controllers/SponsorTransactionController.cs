@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using DataLayer.Exceptions;
+using System.Transactions;
 
 namespace Mehr.Controllers
 {
@@ -66,16 +67,53 @@ namespace Mehr.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SponsorTransactionsID,SponsorID,BankName,TransactionDate,TrackingNumber,LateFourNumbersOfBankCard,Amount")] SponsorTransaction sponsorTransaction)
+        public async Task<IActionResult> Create(string id, [Bind("SponsorTransactionsID,SponsorID,TrackingNumber,LastFourNumbersOfBankCard,Amount,CauseOfSupport,OtherSupport")] SponsorTransaction sponsorTransaction,
+                                                string TransactionDate)
         {
+            RedirectToActionResult view;
+            if (id == "Colleague")
+            {
+                Sponsor s = await sponsors.GetByIdAsync(sponsorTransaction.SponsorID);
+                view = RedirectToAction("Details", "Colleague", new { id = s.ColleagueID });
+            }
+            else if (id == "Sponsor")
+            {
+                view = RedirectToAction("Details", "Sponsor", new { id = sponsorTransaction.SponsorID });
+            }
+            else
+            {
+                ViewBag.err = new NotFoundException();
+                return View("Error");
+            }
+
             if (ModelState.IsValid)
             {
-                await transactions.InsertAsync(sponsorTransaction);
-                await transactions.saveAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    sponsorTransaction.TransactionDate = Convert.ToDateTime(TransactionDate.ToAD());
+                }
+                catch (Exception)
+                {
+                    this.SetViewMessage("Please Complete fields ...", WebMessageType.Warning);
+                    return view;
+                }
+
+                try
+                {
+                    await transactions.InsertAsync(sponsorTransaction);
+                    await transactions.saveAsync();
+                    this.SetViewMessage("A new transaction was registered successfully.", WebMessageType.Success);
+                }
+                catch (Exception ex)
+                {
+                    this.SetViewMessage(ex.Message, WebMessageType.Danger);
+                }
             }
-            ViewData["SponsorID"] = new SelectList(await sponsors.GetAllAsync(), "SponsorID", "Name", sponsorTransaction.SponsorID);
-            return View(sponsorTransaction);
+            else
+            {
+                this.SetViewMessage("Please Complete fields ...", WebMessageType.Warning);
+            }
+            return view;
         }
 
         [HttpPost]
@@ -91,7 +129,13 @@ namespace Mehr.Controllers
 
             using (DataTable dt = Excel.Read(path))
             {
-
+                // Phone
+                // SponsorName
+                // Amount
+                // CardNumber
+                // TrackingNumber
+                // Date
+                // Time
                 foreach (DataRow row in dt.Rows)
                 {
                     if (row["Phone"].ToString() == string.Empty)

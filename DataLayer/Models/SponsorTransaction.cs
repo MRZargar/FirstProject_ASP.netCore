@@ -29,7 +29,7 @@ namespace DataLayer
         [Display(Name = "Tracking Naumber")]
         public string TrackingNumber { get; set; }
 
-        [Display(Name = "Caed Number")]
+        [Display(Name = "Card Number")]
         public int LastFourNumbersOfBankCard { get; set; }
 
         [Required]

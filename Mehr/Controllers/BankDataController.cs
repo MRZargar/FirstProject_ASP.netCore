@@ -45,10 +45,20 @@ namespace Mehr.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BankDataID,BankID,TransactionDate,TrackingNumber,LastFourNumbersOfBankCard,Amount")] BankData bankData)
+        public async Task<IActionResult> Create([Bind("BankDataID,BankID,TrackingNumber,LastFourNumbersOfBankCard,Amount")] BankData bankData, string TransactionDate)
         {
             if (ModelState.IsValid)
             {
+                try
+                {
+                    bankData.TransactionDate = Convert.ToDateTime(TransactionDate.ToAD());
+                }
+                catch (Exception ex)
+                {
+                    this.SetViewMessage("Please Complete fields ...", WebMessageType.Warning);
+                    return RedirectToAction("Details", "Bank", new { id = bankData.BankID });
+                }
+
                 try
                 {
                     await bankDatas.InsertAsync(bankData);

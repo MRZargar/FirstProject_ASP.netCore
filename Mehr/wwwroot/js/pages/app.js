@@ -44,6 +44,14 @@ function newBankData(id) {
     });
 }
 
+function newSponsorTransaction(id) {
+    $.get("/SponsorTransaction/Create/" + id, function (result) {
+        $(".modal").modal('show');
+        $(".modal-title").html("New Transaction");
+        $(".modal-body").html(result);
+    });
+}
+
 // search Colleague in List
 function ColleagueSearch() {
     var value = $("#input-search").val().toLowerCase();
