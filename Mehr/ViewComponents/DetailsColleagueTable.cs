@@ -27,9 +27,7 @@ namespace Mehr.ViewComponents
 
             if (FromDate == "")
             {
-                string temp = DateTime.Today.ToSolar();
-                temp = temp.Substring(0, temp.Length - 2) + "01";
-                From = Convert.ToDateTime(temp.ToAD());
+                From = Convert.ToDateTime(new DateTime().getFirstSolarMonth().ToAD());
             }
             else
             {

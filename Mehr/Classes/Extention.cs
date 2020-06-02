@@ -15,6 +15,22 @@ namespace Mehr.Classes
             controller.TempData["Message"] = WebMessage.Get(message, type, WithCloseBtn);
         }
 
+        public static string getFirstSolarMonth(this DateTime value, int moveMonth = 0)
+        {
+            string today = DateTime.Today.ToSolar();
+            string toMonth = today.Substring(0, today.Length - 2) + "01";
+
+            if (moveMonth == 0)
+            {
+                return toMonth;
+            }
+
+            DateTime toMonthAD = Convert.ToDateTime(toMonth.ToAD());
+
+            PersianCalendar pc = new PersianCalendar();
+            return pc.AddMonths(toMonthAD, moveMonth).ToSolar();
+        }
+
         public static string ToSolar(this DateTime value)
         {
             PersianCalendar pc = new PersianCalendar();
