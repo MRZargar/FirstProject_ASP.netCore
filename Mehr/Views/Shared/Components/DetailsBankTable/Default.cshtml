@@ -1,0 +1,144 @@
+﻿@model IEnumerable<DataLayer.BankData>
+@using Mehr.Classes
+
+<!-- Table head options start -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Bills</h4>
+                <div class="heading-elements">
+                    <ul class="list-inline mb-0">
+                        <li><input onclick="FilterFromTo(@ViewBag.BankID)" type="button" class="btn btn-sm btn-lighten-2" value="Filter" /></li>
+                        <li><a onclick="newBankData(@ViewBag.BankID)"><i class="la la-plus-circle success"></i></a></li>
+                        <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                        <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-content collapse show">
+                <div class="table-responsive">
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr class="thead-light">
+                                <td>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label for="TrackingNumber" class="control-label">Seaech By Tracking Number:</label>
+                                                <input id="TrackingNumber" onkeyup="SeaechByTrackingNumber()" type="text" class="form-control" placeholder="Enter Tracking Number">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label for="LastFourNumbersOfBankCard" class="control-label">Search By Card Number:</label>
+                                                <input id="LastFourNumbersOfBankCard" onkeyup="SeaechByCardNumber()" type="text" class="form-control" placeholder="Enter Card Number">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group ">
+                                                <label for="buttomGroup" class="control-label">Filter By Date:</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text cursor-pointer" id="FromDate">From</span>
+                                                    </div>
+                                                    <input disabled type="text" name="FromDate" class="form-control" id="inputFromDate" placeholder="From ..." />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <label for="buttomGroup" class="control-label">.</label>
+                                            <div class="form-group ">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text cursor-pointer" id="ToDate">&nbsp&nbspTo&nbsp&nbsp</span>
+                                                    </div>
+                                                    <input disabled type="text" name="ToDate" class="form-control" id="inputToDate" placeholder="To ..." />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group ">
+                                                <label for="amount" class="control-label">Filter By Amount:</label>
+                                                <label for="amount" class="control-label">ریال</label>
+                                                <input type="text" id="amount0" onkeyup="autoScaleSlider()" style="border:0; color:#000; font-weight:bold;">
+                                                <label for="amount" class="control-label"> - ریال</label>
+                                                <input type="text" onkeyup="autoScaleSlider()" id="amount1" style="border:0; color:#000; font-weight:bold;">
+                                                <div id="slider-range"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody><tr><td></td></tr></tbody>
+                    </table>
+
+                    <table class="table" id="MyTable">
+                        <thead>
+                            <tr class="thead-dark">
+                                <th scope="col">#</th>
+                                <th scope="col">
+                                    @Html.DisplayNameFor(model => model.TransactionDate)
+                                </th>
+                                <th scope="col">
+                                    @Html.DisplayNameFor(model => model.TrackingNumber)
+                                </th>
+                                <th scope="col">
+                                    @Html.DisplayNameFor(model => model.LastFourNumbersOfBankCard)
+                                </th>
+                                <th scope="col">
+                                    @Html.DisplayNameFor(model => model.Amount)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int i = 1;
+                            }
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <th scope="row">@(i++)</th>
+                                    <td>
+                                        @{
+                                            string date, time;
+                                            DateTime dateTime = Convert.ToDateTime(item.TransactionDate);
+                                            date = dateTime.ToSolar();
+                                            time = dateTime.TimeOfDay.ToString();
+                                        }
+                                        @(date + " " + time)
+                                    </td>
+                                    <td class="track">
+                                        @item.TrackingNumber
+                                    </td>
+                                    <td class="cardNumber">
+                                        @item.LastFourNumbersOfBankCard
+                                    </td>
+                                    <td class="amount">
+                                        @item.Amount
+                                    </td>
+                                </tr>
+                            }
+                            <tr class="thead-light">
+                                <th scope="row">Total</th>
+                                <td colspan="3"></td>
+                                <td id="sumAmount"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Table head options end -->
+
+<div class="form-group" style="float: right; right:25px; position:relative;">
+    <p class="btn btn-light btn-sm"><i class="la la-cloud-upload"></i> Import</p>
+    <p class="btn btn-light btn-sm"><i class="la la-cloud-download"></i> Export</p>
+</div>

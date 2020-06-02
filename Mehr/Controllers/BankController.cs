@@ -32,45 +32,6 @@ namespace Mehr.Controllers
                 return NotFound();
             }
 
-            DateTime From = new DateTime();
-            DateTime To = new DateTime();
-
-            if (FromDate == "")
-            {
-                string temp = DateTime.Today.ToSolar();
-                temp = temp.Substring(0, temp.Length - 2) + "01";
-                From = Convert.ToDateTime(temp.ToAD());
-            }
-            else
-            {
-                try
-                {
-                    From = Convert.ToDateTime(FromDate.ToAD());
-                }
-                catch (Exception)
-                {
-                    ViewBag.err = new Exception("Invalid persian time format ...");
-                    return View("Error");
-                }
-            }
-
-            if (ToDate == "")
-            {
-                To = DateTime.Today;
-            }
-            else
-            {
-                try
-                {
-                    To = Convert.ToDateTime(ToDate.ToAD());
-                }
-                catch (Exception)
-                {
-                    ViewBag.err = new Exception("Invalid persian time format ...");
-                    return View("Error");
-                }
-            }
-
             Bank bank;
             try
             {
@@ -82,16 +43,8 @@ namespace Mehr.Controllers
                 return View("Error");
             }
 
-            ViewBag.maxAmount = 50000;
-            if (bank.Transactions.Count() > 0)
-            {
-                double max = bank.Transactions.Select(x => x.Amount).Max();
-                double div = Math.Pow(10, max.ToString().Count() - 1);
-                double round = Math.Ceiling(max / div) * div;
-                ViewBag.maxAmount = round;
-            }
-            ViewBag.FromDate = From.ToShortDateString();
-            ViewBag.ToDate = To.ToShortDateString();
+            ViewBag.FromDate = FromDate;
+            ViewBag.ToDate = ToDate;
             ViewBag.ChartData = "[125, 200, 125, 225, 125, 200, 125, 225, 175, 275, 220]";
             return View(bank);
         }

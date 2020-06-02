@@ -1,5 +1,5 @@
-﻿// filter colleague
-function FilterColleagueDetails(id) {
+﻿// filter colleague and bank
+function FilterFromTo(id) {
     var fromDate = document.getElementById('inputFromDate').value;
     var toDate = document.getElementById('inputToDate').value;
     var url = id + '?FromDate=' + fromDate + '&ToDate=' + toDate;
