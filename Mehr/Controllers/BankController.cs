@@ -43,9 +43,24 @@ namespace Mehr.Controllers
                 return View("Error");
             }
 
+
+            List<DateTime> months = this.GetFirstOfAllSolarMonth();
+            string ChartData = "[";
+            for (int i = 0; i < months.Count - 1; i++)
+            {
+                ChartData += bank.Transactions
+                    .Where(x => x.TransactionDate >= months[i]
+                            && x.TransactionDate <= months[i+1])
+                    .Select(x => x.Amount)
+                    .Sum()
+                    .ToString();
+                ChartData += ", ";
+            }
+            ChartData = ChartData.Substring(0, ChartData.Length - 1) + "]";
+            ViewBag.ChartData = ChartData;
+
             ViewBag.FromDate = FromDate;
             ViewBag.ToDate = ToDate;
-            ViewBag.ChartData = "[125, 200, 125, 225, 125, 200, 125, 225, 175, 275, 220]";
             return View(bank);
         }
 

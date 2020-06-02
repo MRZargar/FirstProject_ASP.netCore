@@ -15,6 +15,23 @@ namespace Mehr.Classes
             controller.TempData["Message"] = WebMessage.Get(message, type, WithCloseBtn);
         }
 
+        public static List<DateTime> GetFirstOfAllSolarMonth(this Controller controller)
+        {
+            List<DateTime> firstMinths = new List<DateTime>();
+
+            string toMonth = new DateTime().getFirstSolarMonth();
+            string year = toMonth.Substring(0, toMonth.IndexOf('/'));
+            for (int i = 1; i <= 12; i++)
+            {
+                firstMinths.Add(Convert.ToDateTime((year + "/" + i.ToString("00") + "/01").ToAD()));
+            }
+
+            int comingYear = Convert.ToInt32(year) + 1;
+            firstMinths.Add(Convert.ToDateTime((comingYear.ToString() + "/01/01").ToAD()));
+
+            return firstMinths;
+        }
+
         public static string getFirstSolarMonth(this DateTime value, int moveMonth = 0)
         {
             string today = DateTime.Today.ToSolar();
