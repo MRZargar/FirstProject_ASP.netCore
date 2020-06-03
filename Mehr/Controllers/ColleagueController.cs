@@ -18,12 +18,14 @@ namespace Mehr.Controllers
     public class ColleagueController : Controller
     {
         public IColleageRepository colleagues;
+        public ISponsorTransactionRepository sponsorTransactions;
         private readonly IHostingEnvironment _hostingEnvironment;
 
         public ColleagueController(IHostingEnvironment hostingEnvironment, MyContext context)
         {
             _hostingEnvironment = hostingEnvironment;
             this.colleagues = new ColleagueRepository(context);
+            this.sponsorTransactions = new SponsorTransactionRepository(context);
         }
 
         // GET: App/Colleague/Details/5
@@ -46,9 +48,24 @@ namespace Mehr.Controllers
                 return View("Error");
             }
 
+            List<DateTime> months = this.GetFirstOfAllSolarMonth();
+            string ChartData = "[";
+            for (int i = 0; i < months.Count - 1; i++)
+            {
+                decimal sum = 0;
+                foreach (Sponsor sponsor in colleague.Sponsors)
+                {
+                    var transactions = await sponsorTransactions.GetFromToBySponsorIdAsync(sponsor.SponsorID, months[i], months[i + 1]);
+                    sum += transactions.Select(x => x.Amount).Sum();
+                }
+                ChartData += sum.ToString();
+                ChartData += ", ";
+            }
+            ChartData = ChartData.Substring(0, ChartData.Length - 1) + "]";
+            ViewBag.ChartData = ChartData;
+
             ViewBag.FromDate = FromDate;
             ViewBag.ToDate = ToDate;
-            ViewBag.ChartData = "[125, 200, 125, 225, 125, 200, 125, 225, 175, 275, 220]";
             return View(colleague);
         }
 
