@@ -67,7 +67,7 @@ namespace Mehr.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(string id, [Bind("SponsorTransactionsID,SponsorID,TrackingNumber,LastFourNumbersOfBankCard,Amount,CauseOfSupport,OtherSupport")] SponsorTransaction sponsorTransaction,
+        public async Task<IActionResult> Create(string id, [Bind("SponsorTransactionsID,SponsorID,ColleagueID,CauseOfSupport,OtherSupport,MyTransaction")] SponsorTransaction sponsorTransaction,
                                                 string TransactionDate)
         {
             RedirectToActionResult view;
@@ -90,7 +90,7 @@ namespace Mehr.Controllers
             {
                 try
                 {
-                    sponsorTransaction.TransactionDate = Convert.ToDateTime(TransactionDate.ToAD());
+                    sponsorTransaction.MyTransaction.TransactionDate = Convert.ToDateTime(TransactionDate.ToAD());
                 }
                 catch (Exception)
                 {
@@ -176,9 +176,9 @@ namespace Mehr.Controllers
 
                     try
                     {
-                        st.Amount = Convert.ToDecimal(row["Amount"]);
-                        st.LastFourNumbersOfBankCard = Convert.ToInt16(row["CardNumber"]);
-                        st.TrackingNumber = row["TrackingNumber"].ToString();
+                        st.MyTransaction.Amount = Convert.ToDouble(row["Amount"]);
+                        st.MyTransaction.LastFourNumbersOfBankCard = Convert.ToInt16(row["CardNumber"]);
+                        st.MyTransaction.TrackingNumber = row["TrackingNumber"].ToString();
                         DateTime date = Convert.ToDateTime(row["Date"].ToString()).Date;
                         TimeSpan time;
                         try
@@ -189,7 +189,7 @@ namespace Mehr.Controllers
                         {
                             time = Convert.ToDateTime(row["Time"].ToString()).TimeOfDay;
                         }
-                        st.TransactionDate = date + time;
+                        st.MyTransaction.TransactionDate = date + time;
                         st.SponsorID = mySponsor.SponsorID;
                     }
                     catch (Exception)

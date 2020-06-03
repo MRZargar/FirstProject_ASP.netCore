@@ -23,14 +23,14 @@ namespace Mehr.ViewComponents
 
             if (Mode == "Tops")
             {
-                var temp = new List<Tuple<Sponsor, decimal>>();
+                var temp = new List<Tuple<Sponsor, double>>();
                 foreach (Sponsor spnsr in spnsrs)
                 {
-                    decimal sumAmounts = await sponsors.GetSumOfAmountsAsync(spnsr);
-                    temp.Add(new Tuple<Sponsor, decimal>(spnsr, sumAmounts));
+                    double sumAmounts = await sponsors.GetSumOfAmountsAsync(spnsr);
+                    temp.Add(new Tuple<Sponsor, double>(spnsr, sumAmounts));
                 }
 
-                temp.Sort(delegate (Tuple<Sponsor, decimal> x, Tuple<Sponsor, decimal> y)
+                temp.Sort(delegate (Tuple<Sponsor, double> x, Tuple<Sponsor, double> y)
                 {
                     return x.Item2 > y.Item2 ? -1 : 1;
                 });

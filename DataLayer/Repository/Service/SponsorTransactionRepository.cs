@@ -61,9 +61,9 @@ namespace DataLayer
             try
             {
                 return await db.SponsorTransactions
-                    .FirstAsync(x => x.TransactionDate == sponsorTransaction.TransactionDate
-                                  && x.TrackingNumber == sponsorTransaction.TrackingNumber
-                                  && x.MySponsor == sponsorTransaction.MySponsor);
+                    .FirstAsync(x => (x.MyTransaction == sponsorTransaction.MyTransaction
+                                   || x.MyReceipt == sponsorTransaction.MyReceipt)
+                                       && x.MySponsor == sponsorTransaction.MySponsor);
             }
             catch (System.Exception)
             {
@@ -177,8 +177,13 @@ namespace DataLayer
                 return db.SponsorTransactions
                     .Include(s => s.MySponsor)
                     .Where(m => m.SponsorID == sponsorID 
-                            && m.TransactionDate >= From
-                            && m.TransactionDate <= To);
+                            && 
+                            ((m.MyTransaction.TransactionDate >= From
+                                && m.MyTransaction.TransactionDate <= To)
+                            ||
+                            (m.MyReceipt.TransactionDate >= From
+                                && m.MyReceipt.TransactionDate <= To))
+                    );
             }
             catch (System.Exception)
             {

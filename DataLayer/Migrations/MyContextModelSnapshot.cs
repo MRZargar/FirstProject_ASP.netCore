@@ -84,9 +84,24 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("BankID");
 
-                    b.HasIndex("TransactionDate");
+                    b.ToTable("BankData");
+                });
 
-                    b.ToTable("BankDatas");
+            modelBuilder.Entity("DataLayer.BankTransaction", b =>
+                {
+                    b.Property<int>("BankTransactionID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("TransactionBankDataID")
+                        .HasColumnType("int");
+
+                    b.HasKey("BankTransactionID");
+
+                    b.HasIndex("TransactionBankDataID");
+
+                    b.ToTable("BankTransactions");
                 });
 
             modelBuilder.Entity("DataLayer.Colleague", b =>
@@ -133,6 +148,27 @@ namespace DataLayer.Migrations
                         .IsUnique();
 
                     b.ToTable("Colleagues");
+                });
+
+            modelBuilder.Entity("DataLayer.Models.ReceiptData", b =>
+                {
+                    b.Property<int>("ReceiptDataID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<long>("ReceiptNumber")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("TransactionDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ReceiptDataID");
+
+                    b.ToTable("ReceiptData");
                 });
 
             modelBuilder.Entity("DataLayer.Sponsor", b =>
@@ -188,14 +224,17 @@ namespace DataLayer.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<string>("CauseOfSupport")
                         .HasColumnType("nvarchar(500)")
                         .HasMaxLength(500);
 
-                    b.Property<int>("LastFourNumbersOfBankCard")
+                    b.Property<int>("ColleagueID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MyReceiptReceiptDataID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MyTransactionBankDataID")
                         .HasColumnType("int");
 
                     b.Property<string>("OtherSupport")
@@ -205,21 +244,16 @@ namespace DataLayer.Migrations
                     b.Property<int>("SponsorID")
                         .HasColumnType("int");
 
-                    b.Property<string>("TrackingNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("TransactionDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("isValid")
                         .HasColumnType("int");
 
                     b.HasKey("SponsorTransactionsID");
 
-                    b.HasIndex("SponsorID");
+                    b.HasIndex("MyReceiptReceiptDataID");
 
-                    b.HasIndex("TransactionDate");
+                    b.HasIndex("MyTransactionBankDataID");
+
+                    b.HasIndex("SponsorID");
 
                     b.ToTable("SponsorTransactions");
                 });
@@ -233,6 +267,13 @@ namespace DataLayer.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("DataLayer.BankTransaction", b =>
+                {
+                    b.HasOne("DataLayer.BankData", "Transaction")
+                        .WithMany()
+                        .HasForeignKey("TransactionBankDataID");
+                });
+
             modelBuilder.Entity("DataLayer.Sponsor", b =>
                 {
                     b.HasOne("DataLayer.Colleague", "MyColleague")
@@ -244,6 +285,14 @@ namespace DataLayer.Migrations
 
             modelBuilder.Entity("DataLayer.SponsorTransaction", b =>
                 {
+                    b.HasOne("DataLayer.Models.ReceiptData", "MyReceipt")
+                        .WithMany()
+                        .HasForeignKey("MyReceiptReceiptDataID");
+
+                    b.HasOne("DataLayer.BankData", "MyTransaction")
+                        .WithMany()
+                        .HasForeignKey("MyTransactionBankDataID");
+
                     b.HasOne("DataLayer.Sponsor", "MySponsor")
                         .WithMany("MyTransactions")
                         .HasForeignKey("SponsorID")

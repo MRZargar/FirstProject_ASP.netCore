@@ -3,12 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataLayer.Migrations
 {
-    public partial class init3 : Migration
+    public partial class init4 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Bank",
+                name: "Banks",
                 columns: table => new
                 {
                     BankID = table.Column<int>(nullable: false)
@@ -17,12 +17,12 @@ namespace DataLayer.Migrations
                     Owner = table.Column<string>(maxLength: 100, nullable: false),
                     AccountNumber = table.Column<long>(nullable: false),
                     CardNumber = table.Column<long>(nullable: false),
-                    ShebaNumber = table.Column<long>(nullable: false),
+                    ShebaNumber = table.Column<string>(maxLength: 26, nullable: false),
                     pic = table.Column<string>(maxLength: 500, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Bank", x => x.BankID);
+                    table.PrimaryKey("PK_Banks", x => x.BankID);
                 });
 
             migrationBuilder.CreateTable(
@@ -47,7 +47,22 @@ namespace DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BankDatas",
+                name: "ReceiptData",
+                columns: table => new
+                {
+                    ReceiptDataID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TransactionDate = table.Column<DateTime>(nullable: false),
+                    ReceiptNumber = table.Column<long>(nullable: false),
+                    Amount = table.Column<double>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReceiptData", x => x.ReceiptDataID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BankData",
                 columns: table => new
                 {
                     BankDataID = table.Column<int>(nullable: false)
@@ -60,11 +75,11 @@ namespace DataLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BankDatas", x => x.BankDataID);
+                    table.PrimaryKey("PK_BankData", x => x.BankDataID);
                     table.ForeignKey(
-                        name: "FK_BankDatas_Bank_BankID",
+                        name: "FK_BankData_Banks_BankID",
                         column: x => x.BankID,
-                        principalTable: "Bank",
+                        principalTable: "Banks",
                         principalColumn: "BankID",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -96,23 +111,53 @@ namespace DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "BankTransactions",
+                columns: table => new
+                {
+                    BankTransactionID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TransactionBankDataID = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BankTransactions", x => x.BankTransactionID);
+                    table.ForeignKey(
+                        name: "FK_BankTransactions_BankData_TransactionBankDataID",
+                        column: x => x.TransactionBankDataID,
+                        principalTable: "BankData",
+                        principalColumn: "BankDataID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SponsorTransactions",
                 columns: table => new
                 {
                     SponsorTransactionsID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SponsorID = table.Column<int>(nullable: false),
+                    ColleagueID = table.Column<int>(nullable: false),
                     CauseOfSupport = table.Column<string>(maxLength: 500, nullable: true),
                     OtherSupport = table.Column<string>(maxLength: 500, nullable: true),
-                    TransactionDate = table.Column<DateTime>(nullable: false),
-                    TrackingNumber = table.Column<string>(nullable: false),
-                    LastFourNumbersOfBankCard = table.Column<int>(nullable: false),
-                    Amount = table.Column<decimal>(nullable: false),
+                    MyTransactionBankDataID = table.Column<int>(nullable: true),
+                    MyReceiptReceiptDataID = table.Column<int>(nullable: true),
                     isValid = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SponsorTransactions", x => x.SponsorTransactionsID);
+                    table.ForeignKey(
+                        name: "FK_SponsorTransactions_ReceiptData_MyReceiptReceiptDataID",
+                        column: x => x.MyReceiptReceiptDataID,
+                        principalTable: "ReceiptData",
+                        principalColumn: "ReceiptDataID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SponsorTransactions_BankData_MyTransactionBankDataID",
+                        column: x => x.MyTransactionBankDataID,
+                        principalTable: "BankData",
+                        principalColumn: "BankDataID",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_SponsorTransactions_Sponsors_SponsorID",
                         column: x => x.SponsorID,
@@ -122,14 +167,14 @@ namespace DataLayer.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_BankDatas_BankID",
-                table: "BankDatas",
+                name: "IX_BankData_BankID",
+                table: "BankData",
                 column: "BankID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BankDatas_TransactionDate",
-                table: "BankDatas",
-                column: "TransactionDate");
+                name: "IX_BankTransactions_TransactionBankDataID",
+                table: "BankTransactions",
+                column: "TransactionBankDataID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Colleagues_PhoneNumber",
@@ -149,29 +194,40 @@ namespace DataLayer.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_SponsorTransactions_MyReceiptReceiptDataID",
+                table: "SponsorTransactions",
+                column: "MyReceiptReceiptDataID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SponsorTransactions_MyTransactionBankDataID",
+                table: "SponsorTransactions",
+                column: "MyTransactionBankDataID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SponsorTransactions_SponsorID",
                 table: "SponsorTransactions",
                 column: "SponsorID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SponsorTransactions_TransactionDate",
-                table: "SponsorTransactions",
-                column: "TransactionDate");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "BankDatas");
+                name: "BankTransactions");
 
             migrationBuilder.DropTable(
                 name: "SponsorTransactions");
 
             migrationBuilder.DropTable(
-                name: "Bank");
+                name: "ReceiptData");
+
+            migrationBuilder.DropTable(
+                name: "BankData");
 
             migrationBuilder.DropTable(
                 name: "Sponsors");
+
+            migrationBuilder.DropTable(
+                name: "Banks");
 
             migrationBuilder.DropTable(
                 name: "Colleagues");

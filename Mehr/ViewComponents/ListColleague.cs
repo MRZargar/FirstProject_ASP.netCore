@@ -23,14 +23,14 @@ namespace Mehr.ViewComponents
 
             if (Mode == "Tops")
             {
-                var temp = new List<Tuple<Colleague, decimal>>();
+                var temp = new List<Tuple<Colleague, double>>();
                 foreach (Colleague cllg in cllgs)
                 {
-                    decimal sumAmounts = await colleages.GetSumOfAmountsAsync(cllg);
-                    temp.Add(new Tuple<Colleague, decimal>(cllg, sumAmounts));
+                    double sumAmounts = await colleages.GetSumOfAmountsAsync(cllg);
+                    temp.Add(new Tuple<Colleague, double>(cllg, sumAmounts));
                 }
                 
-                temp.Sort(delegate (Tuple<Colleague, decimal> x, Tuple<Colleague, decimal> y)
+                temp.Sort(delegate (Tuple<Colleague, double> x, Tuple<Colleague, double> y)
                 {
                     return x.Item2 > y.Item2 ? -1 : 1;
                 });

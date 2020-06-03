@@ -178,12 +178,13 @@ namespace DataLayer
             return db.Colleagues.Count();
         }
 
-        public async Task<decimal> GetSumOfAmountsAsync(int colleagueID)
+        public async Task<double> GetSumOfAmountsAsync(int colleagueID)
         {
             try
             {
-                Colleague c = await GetByIdAsync(colleagueID);
-                return await GetSumOfAmountsAsync(c);
+                return await db.SponsorTransactions
+                        .Where(x => x.ColleagueID == colleagueID)
+                        .SumAsync(x => x.MyTransaction.Amount + x.MyReceipt.Amount);
             }
             catch (Exception)
             {
@@ -191,23 +192,16 @@ namespace DataLayer
             }
         }
 
-        public async Task<decimal> GetSumOfAmountsAsync(Colleague colleague)
+        public async Task<double> GetSumOfAmountsAsync(Colleague colleague)
         {
             if (!await IsExistAsync(colleague))
             {
                 throw new NotFoundException();
             }
 
-            if (colleague.Sponsors == null)
-            {
-                colleague = await GetByIdAsync(colleague.ColleagueID);
-            }
-
             try
             {
-                return await db.SponsorTransactions
-                    .Where(x => colleague.Sponsors.Contains(x.MySponsor))
-                    .SumAsync(x => x.Amount);
+                return await GetSumOfAmountsAsync(colleague.ColleagueID);
             }
             catch (Exception)
             {

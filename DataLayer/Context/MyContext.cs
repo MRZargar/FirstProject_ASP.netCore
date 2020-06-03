@@ -1,4 +1,5 @@
 
+using DataLayer.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataLayer
@@ -12,9 +13,11 @@ namespace DataLayer
 
         public DbSet<Colleague> Colleagues { get; set; }
         public DbSet<Sponsor> Sponsors { get; set; }
-        public DbSet<BankData> BankDatas { get; set; }
+        //public DbSet<BankData> BankDatas { get; set; }
         public DbSet<SponsorTransaction> SponsorTransactions { get; set; }
+        public DbSet<BankTransaction> BankTransactions { get; set; }
         public DbSet<Bank> Banks { get; set; }
+        //public DbSet<ReceiptData> ReceiptDatas { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -26,11 +29,8 @@ namespace DataLayer
                 .HasIndex(u => u.PhoneNumber)
                 .IsUnique();
 
-            builder.Entity<BankData>()
-                .HasIndex(u => u.TransactionDate);
-
-            builder.Entity<SponsorTransaction>()
-                .HasIndex(u => u.TransactionDate);
+            //builder.Entity<BankData>()
+            //    .HasIndex(u => u.TransactionDate);
         }
     }
 }

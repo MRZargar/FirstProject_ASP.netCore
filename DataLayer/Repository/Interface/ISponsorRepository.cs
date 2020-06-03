@@ -10,8 +10,8 @@ namespace DataLayer
         Task<Sponsor> GetByIdAsync(int sponsorID);
         int Count();
         Task<Sponsor> GetByPhoneNumberAsync(long phoneNumber);
-        Task<decimal> GetSumOfAmountsAsync(int sponsorID);
-        Task<decimal> GetSumOfAmountsAsync(Sponsor sponsor);
+        Task<double> GetSumOfAmountsAsync(int sponsorID);
+        Task<double> GetSumOfAmountsAsync(Sponsor sponsor);
         Task<bool> InsertAsync(Sponsor sponsor);
         Task<bool> UpdateAsync(Sponsor sponsor);
         Task<bool> DeleteAsync(Sponsor sponsor);

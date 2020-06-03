@@ -75,7 +75,7 @@
                             @Html.DisplayNameFor(model => model.MySponsor)
                         </th>
                         <th scope="col">
-                            @Html.DisplayNameFor(model => model.TransactionDate)
+                            @Html.DisplayNameFor(model => model.MyTransaction.TransactionDate)
                         </th>
                         <th scope="col">
                             @Html.DisplayNameFor(model => model.CauseOfSupport)
@@ -84,7 +84,7 @@
                             @Html.DisplayNameFor(model => model.OtherSupport)
                         </th>
                         <th scope="col">
-                            @Html.DisplayNameFor(model => model.Amount)
+                            @Html.DisplayNameFor(model => model.MyTransaction.Amount)
                         </th>
                     </tr>
                 </thead>
@@ -104,7 +104,7 @@
                         <td>
                             @{ 
                                 string date, time;
-                                DateTime dateTime = Convert.ToDateTime(item.TransactionDate);
+                                DateTime dateTime = Convert.ToDateTime(item.MyTransaction.TransactionDate);
                                 date = dateTime.ToSolar();
                                 time = dateTime.TimeOfDay.ToString();
                             }
@@ -117,7 +117,7 @@
                             @Html.DisplayFor(modelItem => item.OtherSupport)
                         </td>
                         <td class="amount">
-                            @Html.DisplayFor(modelItem => item.Amount)
+                            @Html.DisplayFor(modelItem => item.MyTransaction.Amount)
                         </td>
                     </tr>
                     }
