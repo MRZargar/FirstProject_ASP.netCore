@@ -18,14 +18,14 @@ namespace Mehr.Controllers
     public class ColleagueController : Controller
     {
         public IColleageRepository colleagues;
-        public ISponsorTransactionRepository sponsorTransactions;
+        public ISponsorRepository sponsors;
         private readonly IHostingEnvironment _hostingEnvironment;
 
         public ColleagueController(IHostingEnvironment hostingEnvironment, MyContext context)
         {
             _hostingEnvironment = hostingEnvironment;
             this.colleagues = new ColleagueRepository(context);
-            this.sponsorTransactions = new SponsorTransactionRepository(context);
+            this.sponsors = new SponsorRepository(context);
         }
 
         // GET: App/Colleague/Details/5
@@ -55,7 +55,7 @@ namespace Mehr.Controllers
                 double sum = 0;
                 foreach (Sponsor sponsor in colleague.Sponsors)
                 {
-                    var transactions = await sponsorTransactions.GetFromToBySponsorIdAsync(sponsor.SponsorID, months[i], months[i + 1]);
+                    var transactions = await sponsors.GetFromToTransactionBySponsorIdAsync(sponsor.SponsorID, months[i], months[i + 1]);
                     sum += transactions.Select(x => (x.MyTransaction?.Amount ?? 0) + (x.MyReceipt?.Amount ?? 0)).Sum();
                 }
                 ChartData += sum.ToString();

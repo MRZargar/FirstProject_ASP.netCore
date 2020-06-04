@@ -57,7 +57,7 @@ namespace DataLayer
         {
             try
             {
-                return await db.Banks.ToListAsync();
+                return await db.Banks.Include(x => x.Transactions).ToListAsync();
             }
             catch (System.Exception)
             {
@@ -168,6 +168,19 @@ namespace DataLayer
                 return true;
             }
             catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<BankTransaction>> GetAllTransactionsAsync(int BankID)
+        {
+            try
+            {
+                return await db.BankTransactions
+                    .Where(x => x.BankID == BankID).ToListAsync();
+            }
+            catch (System.Exception)
             {
                 throw;
             }

@@ -19,7 +19,6 @@ namespace Mehr.Controllers
 {
     public class SponsorTransactionController : Controller
     {
-        private ISponsorTransactionRepository transactions;
         private ISponsorRepository sponsors;
         private IColleageRepository colleages;
         private readonly IHostingEnvironment _hostingEnvironment;
@@ -27,7 +26,6 @@ namespace Mehr.Controllers
 
         public SponsorTransactionController(IHostingEnvironment hostingEnvironment, MyContext context)
         {
-            transactions = new SponsorTransactionRepository(context);
             sponsors = new SponsorRepository(context);
             colleages = new ColleagueRepository(context);
             _hostingEnvironment = hostingEnvironment;
@@ -36,7 +34,7 @@ namespace Mehr.Controllers
         // GET: App/SponsorTransaction
         public async Task<IActionResult> Index()
         {
-            return View(await transactions.GetAllAsync());
+            return View(await sponsors.GetAllTransactionAsync());
         }
 
         // GET: App/SponsorTransaction/Details/5
@@ -47,7 +45,7 @@ namespace Mehr.Controllers
                 return NotFound();
             }
 
-            var sponsorTransaction = await transactions.GetByIdAsync(id.Value);
+            var sponsorTransaction = await sponsors.GetTransactionByIdAsync(id.Value);
             if (sponsorTransaction == null)
             {
                 return NotFound();
@@ -140,8 +138,8 @@ namespace Mehr.Controllers
 
                 try
                 {
-                    await transactions.InsertAsync(sponsorTransaction);
-                    await transactions.saveAsync();
+                    await sponsors.InsertTransactionAsync(sponsorTransaction);
+                    await sponsors.saveAsync();
                     this.SetViewMessage("A new transaction was registered successfully.", WebMessageType.Success);
                 }
                 catch (Exception ex)
@@ -237,10 +235,10 @@ namespace Mehr.Controllers
                         throw;
                     }
                     
-                    await transactions.InsertAsync(st);
+                    await sponsors.InsertTransactionAsync(st);
                 }
 
-                await transactions.saveAsync();
+                await sponsors.saveAsync();
             }
             deleteFile(path);
 
@@ -262,7 +260,7 @@ namespace Mehr.Controllers
                 return NotFound();
             }
 
-            var sponsorTransaction = await transactions.GetByIdAsync(id.Value);
+            var sponsorTransaction = await sponsors.GetTransactionByIdAsync(id.Value);
             if (sponsorTransaction == null)
             {
                 return NotFound();
@@ -287,8 +285,8 @@ namespace Mehr.Controllers
             {
                 try
                 {
-                    await transactions.UpdateAsync(sponsorTransaction);
-                    await transactions.saveAsync();
+                    await sponsors.UpdateTransactionAsync(sponsorTransaction);
+                    await sponsors.saveAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -315,7 +313,7 @@ namespace Mehr.Controllers
                 return NotFound();
             }
 
-            var sponsorTransaction = await transactions.GetByIdAsync(id.Value);
+            var sponsorTransaction = await sponsors.GetTransactionByIdAsync(id.Value);
             if (sponsorTransaction == null)
             {
                 return NotFound();
@@ -329,14 +327,14 @@ namespace Mehr.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await transactions.DeleteAsync(id);
-            await transactions.saveAsync();
+            await sponsors.DeleteTransactionAsync(id);
+            await sponsors.saveAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool SponsorTransactionExists(int id)
         {
-            return transactions.GetByIdAsync(id) != null;
+            return sponsors.GetTransactionByIdAsync(id) != null;
         }
 
         private string saveFile(IFormFile file)

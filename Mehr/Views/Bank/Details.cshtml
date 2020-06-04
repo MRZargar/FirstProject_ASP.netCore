@@ -93,7 +93,7 @@
 @{
     ViewBag.BankID = Model.BankID;
 }
-@await Component.InvokeAsync("DetailsBankTable", new { bankDatas = Model.Transactions, FromDate = ViewBag.FromDate, ToDate = ViewBag.ToDate })
+@await Component.InvokeAsync("DetailsBankTable", new { id = Model.BankID , FromDate = ViewBag.FromDate, ToDate = ViewBag.ToDate })
 
 
 @section Script{

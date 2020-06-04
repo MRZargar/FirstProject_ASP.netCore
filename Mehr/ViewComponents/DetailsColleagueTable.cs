@@ -11,12 +11,12 @@ namespace Mehr.ViewComponents
     [ViewComponent]
     public class DetailsColleagueTable : ViewComponent
     {
-        private ISponsorTransactionRepository transactions;
+        private ISponsorRepository sponsors;
         private IColleageRepository colleages;
 
         public DetailsColleagueTable(MyContext context)
         {
-            transactions = new SponsorTransactionRepository(context);
+            sponsors = new SponsorRepository(context);
             colleages = new ColleagueRepository(context);
         }
 
@@ -66,7 +66,7 @@ namespace Mehr.ViewComponents
 
             foreach (Sponsor sponsor in colleague.Sponsors)
             {   
-                var sponsorTransactions = await transactions.GetFromToBySponsorIdAsync(sponsor.SponsorID, From, To.AddDays(1));
+                var sponsorTransactions = await sponsors.GetFromToTransactionBySponsorIdAsync(sponsor.SponsorID, From, To.AddDays(1));
                 colleagusTransactios.AddRange(sponsorTransactions);
                 sumAmounts += sponsorTransactions.Select(x => (x.MyTransaction?.Amount ?? 0) + (x.MyReceipt?.Amount ?? 0)).Sum();
             }

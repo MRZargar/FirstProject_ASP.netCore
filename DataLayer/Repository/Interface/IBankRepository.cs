@@ -15,5 +15,7 @@ namespace DataLayer
         Task<bool> IsExistAsync(Bank bank);
         Task<bool> saveAsync();
         void Dispose();
+
+        Task<IEnumerable<BankTransaction>> GetAllTransactionsAsync(int BankID);
     }
 }

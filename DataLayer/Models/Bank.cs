@@ -38,7 +38,7 @@ namespace DataLayer
         [Display(Name = "Bank Picture")]
         public string pic { get; set; }
 
-        public virtual List<BankTransaction> Transactions { get; set; }
+        public virtual IEnumerable<BankTransaction> Transactions { get; set; }
 
         public Bank()
         {

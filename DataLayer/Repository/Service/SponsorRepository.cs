@@ -211,5 +211,170 @@ namespace DataLayer
                 throw;
             }
         }
+
+        public async Task<IEnumerable<SponsorTransaction>> GetAllTransactionAsync()
+        {
+            try
+            {
+                return await db.SponsorTransactions
+                    .Include(s => s.MySponsor)
+                    .Include(s => s.MyReceipt)
+                    .Include(s => s.MyTransaction).ToListAsync();
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<SponsorTransaction>> GetAllTransactionBySponsorIdAsync(int sponsorID)
+        {
+            try
+            {
+                return db.SponsorTransactions
+                    .Include(s => s.MySponsor)
+                    .Include(s => s.MyReceipt)
+                    .Include(s => s.MyTransaction)
+                    .Where(m => m.SponsorID == sponsorID);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<SponsorTransaction> GetTransactionByIdAsync(int sponsorTransactionID)
+        {
+            try
+            {
+                return await db.SponsorTransactions
+                    .Include(s => s.MySponsor)
+                    .FirstAsync(m => m.SponsorTransactionsID == sponsorTransactionID);
+            }
+            catch (System.Exception)
+            {
+                throw new NotFoundException();
+            }
+        }
+
+        public async Task<SponsorTransaction> GetTransactionAsync(SponsorTransaction sponsorTransaction)
+        {
+            try
+            {
+                return await db.SponsorTransactions
+                    .FirstAsync(x => (x.MyTransaction == sponsorTransaction.MyTransaction
+                                   || x.MyReceipt == sponsorTransaction.MyReceipt)
+                                       && x.MySponsor == sponsorTransaction.MySponsor);
+            }
+            catch (System.Exception)
+            {
+                throw new NotFoundException();
+            }
+        }
+
+        public async Task<bool> InsertTransactionAsync(SponsorTransaction sponsorTransaction)
+        {
+            if (await IsExistTransactionAsync(sponsorTransaction))
+            {
+                throw new DuplicateTransactionException();
+            }
+
+            try
+            {
+                await db.SponsorTransactions.AddAsync(sponsorTransaction);
+                return true;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<bool> UpdateTransactionAsync(SponsorTransaction sponsorTransaction)
+        {
+            if (!(await IsExistTransactionAsync(sponsorTransaction)))
+            {
+                throw new NotFoundException();
+            }
+
+            try
+            {
+                db.SponsorTransactions.Update(sponsorTransaction);
+                return true;
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<bool> DeleteTransactionAsync(SponsorTransaction sponsorTransaction)
+        {
+            if (!(await IsExistTransactionAsync(sponsorTransaction)))
+            {
+                throw new NotFoundException();
+            }
+
+            try
+            {
+                db.SponsorTransactions.Remove(sponsorTransaction);
+
+                return true;
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<bool> DeleteTransactionAsync(int sponsorTransactionID)
+        {
+            try
+            {
+                var sponsorTransaction = await GetTransactionByIdAsync(sponsorTransactionID);
+                return await DeleteTransactionAsync(sponsorTransaction);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<bool> IsExistTransactionAsync(SponsorTransaction sponsorTransaction)
+        {
+            try
+            {
+                SponsorTransaction b = await GetTransactionAsync(sponsorTransaction);
+            }
+            catch (NotFoundException)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public async Task<IEnumerable<SponsorTransaction>> GetFromToTransactionBySponsorIdAsync(int sponsorID, DateTime From, DateTime To)
+        {
+            try
+            {
+                return db.SponsorTransactions
+                    .Include(s => s.MySponsor)
+                    .Include(s => s.MyReceipt)
+                    .Include(s => s.MyTransaction)
+                    .Where(m => m.SponsorID == sponsorID
+                            &&
+                            ((m.MyTransaction.TransactionDate >= From
+                                && m.MyTransaction.TransactionDate <= To)
+                            ||
+                            (m.MyReceipt.TransactionDate >= From
+                                && m.MyReceipt.TransactionDate <= To))
+                    );
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+
     }
 }

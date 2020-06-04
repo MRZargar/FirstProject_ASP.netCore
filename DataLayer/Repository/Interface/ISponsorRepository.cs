@@ -21,5 +21,16 @@ namespace DataLayer
         Task<bool> IsExistAsync(int sponsorID);
         Task<bool> IsExistAsync(Sponsor sponsor);
         Task<bool> IsExistAsync(long phoneNumber);
+
+        Task<IEnumerable<SponsorTransaction>> GetAllTransactionAsync();
+        Task<SponsorTransaction> GetTransactionByIdAsync(int sponsorTransactionsID);
+        Task<SponsorTransaction> GetTransactionAsync(SponsorTransaction sponsorTransaction);
+        Task<IEnumerable<SponsorTransaction>> GetAllTransactionBySponsorIdAsync(int sponsorID);
+        Task<IEnumerable<SponsorTransaction>> GetFromToTransactionBySponsorIdAsync(int sponsorID, DateTime From, DateTime To);
+        Task<bool> InsertTransactionAsync(SponsorTransaction sponsorTransaction);
+        Task<bool> UpdateTransactionAsync(SponsorTransaction sponsorTransaction);
+        Task<bool> DeleteTransactionAsync(SponsorTransaction sponsorTransaction);
+        Task<bool> DeleteTransactionAsync(int sponsorTransactionsID);
+        Task<bool> IsExistTransactionAsync(SponsorTransaction sponsorTransaction);
     }
 }
