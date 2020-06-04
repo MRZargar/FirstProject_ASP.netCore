@@ -6,3 +6,12 @@
 /home/zargar/Desktop/Mehr/DataLayer/obj/Debug/netstandard2.0/DataLayer.AssemblyInfo.cs
 /home/zargar/Desktop/Mehr/DataLayer/obj/Debug/netstandard2.0/DataLayer.dll
 /home/zargar/Desktop/Mehr/DataLayer/obj/Debug/netstandard2.0/DataLayer.pdb
+D:\__________M.R.Zargar\Mehr - Razieh\Mehr\DataLayer\bin\Debug\netstandard2.0\DataLayer.deps.json
+D:\__________M.R.Zargar\Mehr - Razieh\Mehr\DataLayer\bin\Debug\netstandard2.0\DataLayer.dll
+D:\__________M.R.Zargar\Mehr - Razieh\Mehr\DataLayer\bin\Debug\netstandard2.0\DataLayer.pdb
+D:\__________M.R.Zargar\Mehr - Razieh\Mehr\DataLayer\obj\Debug\netstandard2.0\DataLayer.csprojAssemblyReference.cache
+D:\__________M.R.Zargar\Mehr - Razieh\Mehr\DataLayer\obj\Debug\netstandard2.0\DataLayer.csproj.CoreCompileInputs.cache
+D:\__________M.R.Zargar\Mehr - Razieh\Mehr\DataLayer\obj\Debug\netstandard2.0\DataLayer.AssemblyInfoInputs.cache
+D:\__________M.R.Zargar\Mehr - Razieh\Mehr\DataLayer\obj\Debug\netstandard2.0\DataLayer.AssemblyInfo.cs
+D:\__________M.R.Zargar\Mehr - Razieh\Mehr\DataLayer\obj\Debug\netstandard2.0\DataLayer.dll
+D:\__________M.R.Zargar\Mehr - Razieh\Mehr\DataLayer\obj\Debug\netstandard2.0\DataLayer.pdb

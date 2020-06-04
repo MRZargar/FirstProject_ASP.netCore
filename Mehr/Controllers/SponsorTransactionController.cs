@@ -31,29 +31,6 @@ namespace Mehr.Controllers
             _hostingEnvironment = hostingEnvironment;
         }
 
-        // GET: App/SponsorTransaction
-        public async Task<IActionResult> Index()
-        {
-            return View(await sponsors.GetAllTransactionAsync());
-        }
-
-        // GET: App/SponsorTransaction/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var sponsorTransaction = await sponsors.GetTransactionByIdAsync(id.Value);
-            if (sponsorTransaction == null)
-            {
-                return NotFound();
-            }
-
-            return View(sponsorTransaction);
-        }
-
         // GET: App/SponsorTransaction/Create
         public async Task<IActionResult> CreateAsync(int? id, string RedirectTo)
         {

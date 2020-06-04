@@ -18,6 +18,10 @@
     <ProjectReference Include="..\DataLayer\DataLayer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\BankTransaction\" />
+  </ItemGroup>
+
 
 
 </Project>
