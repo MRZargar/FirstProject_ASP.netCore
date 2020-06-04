@@ -56,7 +56,7 @@ namespace Mehr.Controllers
                 foreach (Sponsor sponsor in colleague.Sponsors)
                 {
                     var transactions = await sponsorTransactions.GetFromToBySponsorIdAsync(sponsor.SponsorID, months[i], months[i + 1]);
-                    sum += transactions.Select(x => x.MyTransaction.Amount + x.MyReceipt.Amount).Sum();
+                    sum += transactions.Select(x => (x.MyTransaction?.Amount ?? 0) + (x.MyReceipt?.Amount ?? 0)).Sum();
                 }
                 ChartData += sum.ToString();
                 ChartData += ", ";

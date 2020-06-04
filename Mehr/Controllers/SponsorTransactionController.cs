@@ -13,6 +13,7 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using DataLayer.Exceptions;
 using System.Transactions;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Mehr.Controllers
 {
@@ -56,9 +57,27 @@ namespace Mehr.Controllers
         }
 
         // GET: App/SponsorTransaction/Create
-        public async Task<IActionResult> CreateAsync()
+        public async Task<IActionResult> CreateAsync(int? id, string RedirectTo)
         {
-            ViewData["SponsorID"] = new SelectList(await sponsors.GetAllAsync(), "SponsorID", "Name");
+            if (id == null)
+            {
+                return View();
+            }
+
+            Colleague c;
+            try
+            {
+                c = await colleages.GetByIdAsync(id.Value);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.err = ex;
+                return View("Error");
+            }
+
+            ViewBag.ColleagueID = id.Value;
+            ViewBag.RedirectTo = RedirectTo;
+            ViewData["SponsorID"] = new SelectList(c.Sponsors, "SponsorID", "Name");
             return View();
         }
 
@@ -67,14 +86,13 @@ namespace Mehr.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(string id, [Bind("SponsorTransactionsID,SponsorID,ColleagueID,CauseOfSupport,OtherSupport,MyTransaction")] SponsorTransaction sponsorTransaction,
-                                                string TransactionDate)
+        public async Task<IActionResult> Create(string id, [Bind("SponsorTransactionsID,SponsorID,ColleagueID,CauseOfSupport,OtherSupport,MyTransaction,MyReceipt")] SponsorTransaction sponsorTransaction,
+                                                string TransactionDate, bool TransactionType)
         {
             RedirectToActionResult view;
             if (id == "Colleague")
             {
-                Sponsor s = await sponsors.GetByIdAsync(sponsorTransaction.SponsorID);
-                view = RedirectToAction("Details", "Colleague", new { id = s.ColleagueID });
+                view = RedirectToAction("Details", "Colleague", new { id = sponsorTransaction.ColleagueID });
             }
             else if (id == "Sponsor")
             {
@@ -86,11 +104,35 @@ namespace Mehr.Controllers
                 return View("Error");
             }
 
+            if (TransactionType)
+            {
+                ModelState["MyTransaction.TrackingNumber"].ValidationState = ModelValidationState.Skipped;
+                ModelState["MyTransaction.Amount"].ValidationState = ModelValidationState.Skipped;
+                ModelState["MyTransaction.LastFourNumbersOfBankCard"].ValidationState = ModelValidationState.Skipped;
+                sponsorTransaction.MyTransaction = null;
+            }
+            else
+            {
+                ModelState["MyReceipt.ReceiptNumber"].ValidationState = ModelValidationState.Skipped;
+                ModelState["MyReceipt.Amount"].ValidationState = ModelValidationState.Skipped;
+                sponsorTransaction.MyReceipt = null;
+                // //////////////////////
+                sponsorTransaction.MyTransaction.BankID = 1;
+            }
+
             if (ModelState.IsValid)
             {
                 try
                 {
-                    sponsorTransaction.MyTransaction.TransactionDate = Convert.ToDateTime(TransactionDate.ToAD());
+                    DateTime date = Convert.ToDateTime(TransactionDate.ToAD());
+                    if (TransactionType)
+                    {
+                        sponsorTransaction.MyReceipt.TransactionDate = date;
+                    }
+                    else
+                    {
+                        sponsorTransaction.MyTransaction.TransactionDate = date;
+                    }
                 }
                 catch (Exception)
                 {

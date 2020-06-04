@@ -68,14 +68,14 @@ namespace Mehr.ViewComponents
             {   
                 var sponsorTransactions = await transactions.GetFromToBySponsorIdAsync(sponsor.SponsorID, From, To.AddDays(1));
                 colleagusTransactios.AddRange(sponsorTransactions);
-                sumAmounts += sponsorTransactions.Select(x => x.MyTransaction.Amount + x.MyReceipt.Amount).Sum();
+                sumAmounts += sponsorTransactions.Select(x => (x.MyTransaction?.Amount ?? 0) + (x.MyReceipt?.Amount ?? 0)).Sum();
             }
 
             TempData["maxAmount"] = 50000;
             if (colleagusTransactios.Count() > 0)
             {
-                double max1 = Convert.ToDouble(colleagusTransactios.Select(x => x.MyTransaction.Amount).Max());
-                double max2 = Convert.ToDouble(colleagusTransactios.Select(x => x.MyReceipt.Amount).Max());
+                double max1 = Convert.ToDouble(colleagusTransactios.Select(x => x.MyTransaction?.Amount ?? 0).Max());
+                double max2 = Convert.ToDouble(colleagusTransactios.Select(x => x.MyReceipt?.Amount ?? 0).Max());
                 double max = max1 > max2 ? max1 : max2;
                 double div = Math.Pow(10, max.ToString().Count() - 1);
                 double round = Math.Ceiling(max / div) * div;

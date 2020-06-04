@@ -8,7 +8,7 @@
         <div class="heading-elements">
             <ul class="list-inline mb-0">
                 <li><input onclick="FilterFromTo(@TempData["ColleagueID"])" type="button" class="btn btn-sm btn-lighten-2" value="Filter" /></li>
-                <li><a onclick="newSponsorTransaction('Colleague')"><i class="la la-plus-circle success"></i></a></li>
+                <li><a onclick="newSponsorTransaction(@TempData["ColleagueID"],'Colleague')"><i class="la la-plus-circle success"></i></a></li>
                 <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
                 <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
             </ul>
@@ -104,7 +104,7 @@
                         <td>
                             @{ 
                                 string date, time;
-                                DateTime dateTime = Convert.ToDateTime(item.MyTransaction.TransactionDate);
+                                DateTime dateTime = Convert.ToDateTime((item.MyTransaction?.TransactionDate ?? item.MyReceipt?.TransactionDate));
                                 date = dateTime.ToSolar();
                                 time = dateTime.TimeOfDay.ToString();
                             }
@@ -117,7 +117,7 @@
                             @Html.DisplayFor(modelItem => item.OtherSupport)
                         </td>
                         <td class="amount">
-                            @Html.DisplayFor(modelItem => item.MyTransaction.Amount)
+                            @(item.MyTransaction?.Amount ?? item.MyReceipt?.Amount)
                         </td>
                     </tr>
                     }

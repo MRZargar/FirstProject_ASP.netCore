@@ -20,7 +20,10 @@ namespace DataLayer
         {
             try
             {
-                return await db.SponsorTransactions.Include(s => s.MySponsor).ToListAsync(); 
+                return await db.SponsorTransactions
+                    .Include(s => s.MySponsor)
+                    .Include(s => s.MyReceipt)
+                    .Include(s => s.MyTransaction).ToListAsync(); 
             }
             catch (System.Exception)
             {                
@@ -34,6 +37,8 @@ namespace DataLayer
             {
                 return db.SponsorTransactions
                     .Include(s => s.MySponsor)
+                    .Include(s => s.MyReceipt)
+                    .Include(s => s.MyTransaction)
                     .Where(m => m.SponsorID == sponsorID);
             }
             catch (System.Exception)
@@ -176,6 +181,8 @@ namespace DataLayer
             {
                 return db.SponsorTransactions
                     .Include(s => s.MySponsor)
+                    .Include(s => s.MyReceipt)
+                    .Include(s => s.MyTransaction)
                     .Where(m => m.SponsorID == sponsorID 
                             && 
                             ((m.MyTransaction.TransactionDate >= From

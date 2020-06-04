@@ -183,7 +183,11 @@ namespace DataLayer
             {
                 return await db.SponsorTransactions
                         .Where(x => x.SponsorID == sponsorID)
-                        .SumAsync(x => x.MyTransaction.Amount + x.MyReceipt.Amount);
+                        .SumAsync(x => 
+                            (x.MyTransaction == null ? 0 : x.MyTransaction.Amount) 
+                            +
+                            (x.MyReceipt == null ? 0 : x.MyReceipt.Amount)
+                        );
             }
             catch (Exception)
             {

@@ -53,8 +53,8 @@ function newBankData(id) {
 }
 
 // new Sponsor Transaction
-function newSponsorTransaction(id) {
-    $.get("/SponsorTransaction/Create/" + id, function (result) {
+function newSponsorTransaction(id, RedirectTo) {
+    $.get("/SponsorTransaction/Create/" + id + '?RedirectTo=' + RedirectTo, function (result) {
         $(".modal").modal('show');
         $(".modal-title").html("New Transaction");
         $(".modal-body").html(result);
@@ -166,6 +166,21 @@ function changeGender() {
     var fileupload = document.getElementById("FileUpload");
     if (!fileupload.files || !fileupload.files[0]) {
         document.getElementById("ImgUpload").src = checker.checked ? "/images/Profiles/Male.jpg" : "/images/Profiles/Female.jpg";
+    }
+}
+
+function changeTransactionType() {
+    var checker = document.getElementById("TransactionType");
+
+    if (checker.checked) {
+        document.getElementById("hideTransactionType").value = "true";
+        document.getElementById("Transaction").style.display = "none";
+        document.getElementById("Receipt").style.display = "block";
+    }
+    else {
+        document.getElementById("hideTransactionType").value = "false";
+        document.getElementById("Transaction").style.display = "block";
+        document.getElementById("Receipt").style.display = "none";
     }
 }
 
