@@ -172,8 +172,51 @@ namespace DataLayer
                 throw;
             }
         }
+        
+        public async Task<IEnumerable<BankTransaction>> GetAllTransactionAsync()
+        {
+            try
+            {
+                return await db.BankTransactions
+                    .Include(s => s.MyBank)
+                    .Include(s => s.Transaction).ToListAsync();
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
 
-        public async Task<IEnumerable<BankTransaction>> GetAllTransactionsAsync(int BankID)
+        public async Task<BankTransaction> GetTransactionByIdAsync(int bankTransactionID)
+        {
+            try
+            {
+                return await db.BankTransactions
+                    .Include(s => s.MyBank)
+                    .Include(s => s.Transaction)
+                    .FirstAsync(m => m.BankTransactionID == bankTransactionID);
+            }
+            catch (System.Exception)
+            {
+                throw new NotFoundException();
+            }
+        }
+
+        public async Task<BankTransaction> GetTransactionAsync(BankTransaction bankTransaction)
+        {
+            try
+            {
+                return await db.BankTransactions
+                    .FirstAsync(x => x.BankID == bankTransaction.BankID
+                                       && x.BankTransactionID == bankTransaction.BankTransactionID);
+            }
+            catch (System.Exception)
+            {
+                throw new NotFoundException();
+            }
+        }
+
+        public async Task<IEnumerable<BankTransaction>> GetAllTransactionByBankIdAsync(int BankID)
         {
             try
             {
@@ -184,6 +227,105 @@ namespace DataLayer
             {
                 throw;
             }
+        }
+
+        public async Task<IEnumerable<BankTransaction>> GetFromToTransactionByBankIdAsync(int bankID, DateTime From, DateTime To)
+        {
+            try
+            {
+                return db.BankTransactions
+                    .Include(s => s.MyBank)
+                    .Include(s => s.Transaction)
+                    .Where(m => m.BankID == bankID
+                            &&
+                            (m.Transaction.TransactionDate >= From
+                                && m.Transaction.TransactionDate <= To));
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<bool> InsertTransactionAsync(BankTransaction bankTransaction)
+        {
+            if (await IsExistTransactionAsync(bankTransaction))
+            {
+                throw new DuplicateTransactionException();
+            }
+
+            try
+            {
+                await db.BankTransactions.AddAsync(bankTransaction);
+                return true;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<bool> UpdateTransactionAsync(BankTransaction bankTransaction)
+        {
+            if (!(await IsExistTransactionAsync(bankTransaction)))
+            {
+                throw new NotFoundException();
+            }
+
+            try
+            {
+                db.BankTransactions.Update(bankTransaction);
+                return true;
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<bool> DeleteTransactionAsync(BankTransaction bankTransaction)
+        {
+            if (!(await IsExistTransactionAsync(bankTransaction)))
+            {
+                throw new NotFoundException();
+            }
+
+            try
+            {
+                db.BankTransactions.Remove(bankTransaction);
+
+                return true;
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<bool> DeleteTransactionAsync(int bankTransactionID)
+        {
+            try
+            {
+                var bankTransaction = await GetTransactionByIdAsync(bankTransactionID);
+                return await DeleteTransactionAsync(bankTransaction);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<bool> IsExistTransactionAsync(BankTransaction bankTransaction)
+        {
+            try
+            {
+                BankTransaction b = await GetTransactionAsync(bankTransaction);
+            }
+            catch (NotFoundException)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

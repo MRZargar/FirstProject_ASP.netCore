@@ -16,6 +16,15 @@ namespace DataLayer
         Task<bool> saveAsync();
         void Dispose();
 
-        Task<IEnumerable<BankTransaction>> GetAllTransactionsAsync(int BankID);
+        Task<IEnumerable<BankTransaction>> GetAllTransactionAsync();
+        Task<BankTransaction> GetTransactionByIdAsync(int bankTransactionID);
+        Task<BankTransaction> GetTransactionAsync(BankTransaction bankTransaction);
+        Task<IEnumerable<BankTransaction>> GetAllTransactionByBankIdAsync(int bankID);
+        Task<IEnumerable<BankTransaction>> GetFromToTransactionByBankIdAsync(int bankID, DateTime From, DateTime To);
+        Task<bool> InsertTransactionAsync(BankTransaction bankTransaction);
+        Task<bool> UpdateTransactionAsync(BankTransaction bankTransaction);
+        Task<bool> DeleteTransactionAsync(BankTransaction bankTransaction);
+        Task<bool> DeleteTransactionAsync(int bankTransactionID);
+        Task<bool> IsExistTransactionAsync(BankTransaction bankTransaction);
     }
 }
