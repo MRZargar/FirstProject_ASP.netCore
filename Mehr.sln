@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mehr", "Mehr\Mehr.csproj", "{0E84DD7E-46A8-445E-8506-96A33A46E826}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mehr", "Mehr\Mehr.csproj", "{0E84DD7E-46A8-445E-8506-96A33A46E826}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLayer", "DataLayer\DataLayer.csproj", "{C243F3F8-21C4-4CE6-84D0-4F8EADA33B1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataLayer", "DataLayer\DataLayer.csproj", "{C243F3F8-21C4-4CE6-84D0-4F8EADA33B1B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0E84DD7E-46A8-445E-8506-96A33A46E826}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -44,5 +41,11 @@ Global
 		{C243F3F8-21C4-4CE6-84D0-4F8EADA33B1B}.Release|x64.Build.0 = Release|Any CPU
 		{C243F3F8-21C4-4CE6-84D0-4F8EADA33B1B}.Release|x86.ActiveCfg = Release|Any CPU
 		{C243F3F8-21C4-4CE6-84D0-4F8EADA33B1B}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {711F3099-BF1A-435A-BC78-77DCD7443594}
 	EndGlobalSection
 EndGlobal

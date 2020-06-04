@@ -9,9 +9,6 @@ namespace DataLayer
         public int BankDataID { get; set; }
 
         [Required]
-        public int BankID { get; set; }
-
-        [Required]
         [Display(Name = "Date")]
         public DateTime TransactionDate { get; set; }
 
@@ -26,8 +23,6 @@ namespace DataLayer
         [Required]
         [Display(Name = "Amount")]
         public Double Amount { get; set; }
-
-        public virtual Bank MyBank { get; set; }
 
         public BankData()
         {

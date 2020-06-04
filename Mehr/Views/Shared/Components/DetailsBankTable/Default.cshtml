@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DataLayer.BankData>
+﻿@model IEnumerable<DataLayer.BankTransaction>
 @using Mehr.Classes
 
 <!-- Table head options start -->
@@ -82,16 +82,16 @@
                             <tr class="thead-dark">
                                 <th scope="col">#</th>
                                 <th scope="col">
-                                    @Html.DisplayNameFor(model => model.TransactionDate)
+                                    @Html.DisplayNameFor(model => model.Transaction.TransactionDate)
                                 </th>
                                 <th scope="col">
-                                    @Html.DisplayNameFor(model => model.TrackingNumber)
+                                    @Html.DisplayNameFor(model => model.Transaction.TrackingNumber)
                                 </th>
                                 <th scope="col">
-                                    @Html.DisplayNameFor(model => model.LastFourNumbersOfBankCard)
+                                    @Html.DisplayNameFor(model => model.Transaction.LastFourNumbersOfBankCard)
                                 </th>
                                 <th scope="col">
-                                    @Html.DisplayNameFor(model => model.Amount)
+                                    @Html.DisplayNameFor(model => model.Transaction.Amount)
                                 </th>
                             </tr>
                         </thead>
@@ -106,20 +106,20 @@
                                     <td>
                                         @{
                                             string date, time;
-                                            DateTime dateTime = Convert.ToDateTime(item.TransactionDate);
+                                            DateTime dateTime = Convert.ToDateTime(item.Transaction.TransactionDate);
                                             date = dateTime.ToSolar();
                                             time = dateTime.TimeOfDay.ToString();
                                         }
                                         @(date + " " + time)
                                     </td>
                                     <td class="track">
-                                        @item.TrackingNumber
+                                        @item.Transaction.TrackingNumber
                                     </td>
                                     <td class="cardNumber">
-                                        @item.LastFourNumbersOfBankCard
+                                        @item.Transaction.LastFourNumbersOfBankCard
                                     </td>
                                     <td class="amount">
-                                        @item.Amount
+                                        @item.Transaction.Amount
                                     </td>
                                 </tr>
                             }

@@ -116,8 +116,6 @@ namespace Mehr.Controllers
                 ModelState["MyReceipt.ReceiptNumber"].ValidationState = ModelValidationState.Skipped;
                 ModelState["MyReceipt.Amount"].ValidationState = ModelValidationState.Skipped;
                 sponsorTransaction.MyReceipt = null;
-                // //////////////////////
-                sponsorTransaction.MyTransaction.BankID = 1;
             }
 
             if (ModelState.IsValid)

@@ -49,9 +49,9 @@ namespace Mehr.Controllers
             for (int i = 0; i < months.Count - 1; i++)
             {
                 ChartData += bank.Transactions
-                    .Where(x => x.TransactionDate >= months[i]
-                            && x.TransactionDate <= months[i+1])
-                    .Select(x => x.Amount)
+                    .Where(x => x.Transaction.TransactionDate >= months[i]
+                            && x.Transaction.TransactionDate <= months[i+1])
+                    .Select(x => x.Transaction.Amount)
                     .Sum()
                     .ToString();
                 ChartData += ", ";

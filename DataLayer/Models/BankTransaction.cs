@@ -8,7 +8,12 @@ namespace DataLayer
         [Key]
         public int BankTransactionID { get; set; }
 
+        [Required]
+        public int BankID { get; set; }
+
         public BankData Transaction { get; set; }
+
+        public virtual Bank MyBank { get; set; }
 
         public BankTransaction()
         {
