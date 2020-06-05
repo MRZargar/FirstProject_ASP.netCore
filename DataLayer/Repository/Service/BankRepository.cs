@@ -221,6 +221,7 @@ namespace DataLayer
             try
             {
                 return await db.BankTransactions
+                    .Include(x => x.Transaction)
                     .Where(x => x.BankID == BankID).ToListAsync();
             }
             catch (System.Exception)

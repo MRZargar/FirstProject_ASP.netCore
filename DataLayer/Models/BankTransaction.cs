@@ -11,7 +11,7 @@ namespace DataLayer
         [Required]
         public int BankID { get; set; }
 
-        public BankData Transaction { get; set; }
+        public virtual BankData Transaction { get; set; }
 
         public virtual Bank MyBank { get; set; }
 

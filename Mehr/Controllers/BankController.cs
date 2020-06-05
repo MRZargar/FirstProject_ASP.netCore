@@ -36,6 +36,7 @@ namespace Mehr.Controllers
             try
             {
                 bank = await banks.GetByIdAsync(id.Value);
+                bank.Transactions = await banks.GetAllTransactionByBankIdAsync(id.Value);
             }
             catch (Exception ex)
             {

@@ -57,7 +57,7 @@ namespace Mehr.ViewComponents
                 }
             }
 
-            IEnumerable<BankTransaction> transactions = await banks.GetAllTransactionByBankIdAsync(id);
+            IEnumerable<BankTransaction> transactions = await banks.GetFromToTransactionByBankIdAsync(id, From, To);
 
             TempData["maxAmount"] = 50000;
             if (transactions.Count() > 0)

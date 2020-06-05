@@ -2,92 +2,72 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DataLayer;
+using DataLayer.Exceptions;
+using Mehr.Classes;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mehr.Controllers
 {
     public class BankTransactionController : Controller
     {
-        //// GET: App/BankTransaction/Create
-        //public Task<IActionResult> Create()
-        //{
-        //    return View();
-        //}
+        public IBankRepository banks;
 
-        //// POST: App/BankTransaction/Create
-        //// To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        //// more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create(string id, [Bind("SponsorTransactionsID,SponsorID,ColleagueID,CauseOfSupport,OtherSupport,MyTransaction,MyReceipt")] SponsorTransaction sponsorTransaction,
-        //                                        string TransactionDate, bool TransactionType)
-        //{
-        //    return null;
-        //    //RedirectToActionResult view;
-        //    //if (id == "Colleague")
-        //    //{
-        //    //    view = RedirectToAction("Details", "Colleague", new { id = sponsorTransaction.ColleagueID });
-        //    //}
-        //    //else if (id == "Sponsor")
-        //    //{
-        //    //    view = RedirectToAction("Details", "Sponsor", new { id = sponsorTransaction.SponsorID });
-        //    //}
-        //    //else
-        //    //{
-        //    //    ViewBag.err = new NotFoundException();
-        //    //    return View("Error");
-        //    //}
+        public BankTransactionController(MyContext context)
+        {
+            banks = new BankRepository(context);
+        }
 
-        //    //if (TransactionType)
-        //    //{
-        //    //    ModelState["MyTransaction.TrackingNumber"].ValidationState = ModelValidationState.Skipped;
-        //    //    ModelState["MyTransaction.Amount"].ValidationState = ModelValidationState.Skipped;
-        //    //    ModelState["MyTransaction.LastFourNumbersOfBankCard"].ValidationState = ModelValidationState.Skipped;
-        //    //    sponsorTransaction.MyTransaction = null;
-        //    //}
-        //    //else
-        //    //{
-        //    //    ModelState["MyReceipt.ReceiptNumber"].ValidationState = ModelValidationState.Skipped;
-        //    //    ModelState["MyReceipt.Amount"].ValidationState = ModelValidationState.Skipped;
-        //    //    sponsorTransaction.MyReceipt = null;
-        //    //}
+        // GET: App/BankTransaction/Create
+        public IActionResult Create(int? id)
+        {
+            if (id == null)
+            {
+                ViewBag.err = new NotFoundException();
+            }
 
-        //    //if (ModelState.IsValid)
-        //    //{
-        //    //    try
-        //    //    {
-        //    //        DateTime date = Convert.ToDateTime(TransactionDate.ToAD());
-        //    //        if (TransactionType)
-        //    //        {
-        //    //            sponsorTransaction.MyReceipt.TransactionDate = date;
-        //    //        }
-        //    //        else
-        //    //        {
-        //    //            sponsorTransaction.MyTransaction.TransactionDate = date;
-        //    //        }
-        //    //    }
-        //    //    catch (Exception)
-        //    //    {
-        //    //        this.SetViewMessage("Please Complete fields ...", WebMessageType.Warning);
-        //    //        return view;
-        //    //    }
+            ViewBag.BankID = id.Value;
+            return View();
+        }
 
-        //    //    try
-        //    //    {
-        //    //        await sponsors.InsertTransactionAsync(sponsorTransaction);
-        //    //        await sponsors.saveAsync();
-        //    //        this.SetViewMessage("A new transaction was registered successfully.", WebMessageType.Success);
-        //    //    }
-        //    //    catch (Exception ex)
-        //    //    {
-        //    //        this.SetViewMessage(ex.Message, WebMessageType.Danger);
-        //    //    }
-        //    //}
-        //    //else
-        //    //{
-        //    //    this.SetViewMessage("Please Complete fields ...", WebMessageType.Warning);
-        //    //}
-        //    //return view;
-        //}
+        // POST: App/BankTransaction/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("BankTransactionID,BankID,Transaction")] BankTransaction bankTransaction,
+                                                string TransactionDate)
+        {
+            var view = RedirectToAction("Details", "Bank", new { id = bankTransaction.BankID });
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    bankTransaction.Transaction.TransactionDate = Convert.ToDateTime(TransactionDate.ToAD());
+                }
+                catch (Exception)
+                {
+                    this.SetViewMessage("Please Complete fields ...", WebMessageType.Warning);
+                    return view;
+                }
+
+                try
+                {
+                    await banks.InsertTransactionAsync(bankTransaction);
+                    await banks.saveAsync();
+                    this.SetViewMessage("A new transaction was registered successfully.", WebMessageType.Success);
+                }
+                catch (Exception ex)
+                {
+                    this.SetViewMessage(ex.Message, WebMessageType.Danger);
+                }
+            }
+            else
+            {
+                this.SetViewMessage("Please Complete fields ...", WebMessageType.Warning);
+            }
+            return view;
+        }
     }
 }
