@@ -13,11 +13,10 @@ namespace DataLayer
 
         public DbSet<Colleague> Colleagues { get; set; }
         public DbSet<Sponsor> Sponsors { get; set; }
-        //public DbSet<BankData> BankDatas { get; set; }
         public DbSet<SponsorTransaction> SponsorTransactions { get; set; }
         public DbSet<BankTransaction> BankTransactions { get; set; }
         public DbSet<Bank> Banks { get; set; }
-        //public DbSet<ReceiptData> ReceiptDatas { get; set; }
+        public DbSet<SponsorTransactionError> Errors { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -28,9 +27,6 @@ namespace DataLayer
             builder.Entity<Sponsor>()
                 .HasIndex(u => u.PhoneNumber)
                 .IsUnique();
-
-            //builder.Entity<BankData>()
-            //    .HasIndex(u => u.TransactionDate);
         }
     }
 }

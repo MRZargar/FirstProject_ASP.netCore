@@ -46,6 +46,8 @@ namespace DataLayer
 
         public List<Sponsor> Sponsors { get; set; }
 
+        public virtual List<SponsorTransactionError> Errors { get; set; }
+
         public Colleague()
         {
 

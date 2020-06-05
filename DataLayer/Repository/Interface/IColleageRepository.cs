@@ -24,5 +24,14 @@ namespace DataLayer
 
         IEnumerable<SponsorTransaction> GetAllTransactionByColleagueIdAsync(int colleagueID);
         IEnumerable<SponsorTransaction> GetFromToTransactionByColleagueIdAsync(int colleagueID, DateTime From, DateTime To);
+
+        Task<IEnumerable<SponsorTransactionError>> GetAllErrorsAsync();
+        Task<SponsorTransactionError> GetErrorByIdAsync(int errorID);
+        Task<bool> InsertErrorAsync(SponsorTransactionError error);
+        Task<bool> UpdateErrorAsync(SponsorTransactionError error);
+        Task<bool> DeleteErrorAsync(SponsorTransactionError error);
+        Task<bool> IsExistErrorAsync(int errorID);
+        Task<bool> IsExistErrorAsync(SponsorTransactionError error);
+        Task<bool> DeleteErrorAsync(int errorID);
     }
 }

@@ -146,14 +146,14 @@ namespace Mehr.Controllers
             using (DataTable dt = Excel.Read(path))
             {
                 DataTable Errors = dt.Clone();
-                var ErrorMessages = new List<string>();
+                var ErrorMessages = new List<ErrorMessage>();
 
                 foreach (DataRow row in dt.Rows)
                 {
                     if (row["Phone"].ToString() == string.Empty)
                     {
                         Errors.Rows.Add(row.ItemArray);
-                        ErrorMessages.Add("Phone Number not entered");
+                        ErrorMessages.Add(ErrorMessage.Phone_number_not_entered);
                         continue;
                     }
 
@@ -169,7 +169,7 @@ namespace Mehr.Controllers
                         if (mySponsor.ColleagueID != ColleagueID)
                         {
                             Errors.Rows.Add(row.ItemArray);
-                            ErrorMessages.Add("This sponsor is related to another colleague");
+                            ErrorMessages.Add(ErrorMessage.This_sponsor_is_related_to_another_colleague);
                             continue;
                         }
                     }
@@ -192,7 +192,7 @@ namespace Mehr.Controllers
                         if (mySponsor == null)
                         {
                             Errors.Rows.Add(row.ItemArray);
-                            ErrorMessages.Add("There is a problem when adding a new sponsor");
+                            ErrorMessages.Add(ErrorMessage.There_is_a_problem_when_adding_a_new_sponsor);
                             continue;
                         }
                     }
@@ -230,14 +230,14 @@ namespace Mehr.Controllers
                         else
                         {
                             Errors.Rows.Add(row.ItemArray);
-                            ErrorMessages.Add("No transaction information entered");
+                            ErrorMessages.Add(ErrorMessage.No_transaction_information_entered);
                             continue;
                         }   
                     }
                     catch (Exception)
                     {
                         Errors.Rows.Add(row.ItemArray);
-                        ErrorMessages.Add("Correct the type of input information");
+                        ErrorMessages.Add(ErrorMessage.Correct_the_type_of_input_information);
                         continue;
                     }
 
@@ -248,12 +248,30 @@ namespace Mehr.Controllers
                     catch (DuplicateTransactionException)
                     {
                         Errors.Rows.Add(row.ItemArray);
-                        ErrorMessages.Add("Duplicate");
+                        ErrorMessages.Add(ErrorMessage.Duplicate);
                         continue;
                     }
                 }
-
                 await sponsors.saveAsync();
+
+                for (int i = 0; i < ErrorMessages.Count; i++)
+                {
+                    var err = new SponsorTransactionError();
+                    DataRow row = dt.Rows[i];
+                    err.SponsorName = row["SponsorName"].ToString();
+                    err.Phone = row["Phone"].ToString();
+                    err.Date = row["Date"].ToString();
+                    err.Time = row["Time"].ToString();
+                    err.ReceiptNumber = row["ReceiptNumber"].ToString();
+                    err.CardNumber = row["CardNumber"].ToString();
+                    err.TrackingNumber = row["TrackingNumber"].ToString();
+                    err.Amount = row["Amount"].ToString();
+                    err.ErrorMessage = ErrorMessages[i].ToString().Replace('_', ' ');
+                    err.ColleagueID = ColleagueID;
+
+                    await colleages.InsertErrorAsync(err);
+                }
+                await colleages.saveAsync();
             }
             deleteFile(path);
 
@@ -262,7 +280,7 @@ namespace Mehr.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Export(int? ColleagueID, int? SponsorID, string FromDate, string ToDate)
+        public async Task<IActionResult> Export(int? ColleagueID, int? SponsorID, string FromDate, string ToDate)   
         {
             string path = _hostingEnvironment.WebRootPath + @"\Catch\";
             string fileName = string.Empty;

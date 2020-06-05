@@ -30,16 +30,13 @@ namespace DataLayer
         public ReceiptData MyReceipt { get; set; }
 
         [Display(Name = "Is Valid?")]
-        public int isValid { get; set; }
-        // 0 --> not valid
-        // 1 --> valid
-        // -1 --> repeated
+        public bool isValid { get; set; }
 
         public virtual Sponsor MySponsor { get; set; }
         
         public SponsorTransaction()
         {
-            isValid = 0;
+            isValid = false;
         }
     }
 }

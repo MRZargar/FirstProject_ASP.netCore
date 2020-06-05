@@ -252,5 +252,115 @@ namespace DataLayer
                 throw;
             }
         }
+
+        public async Task<IEnumerable<SponsorTransactionError>> GetAllErrorsAsync()
+        {
+            try
+            {
+                return await db.Errors.ToListAsync();
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<SponsorTransactionError> GetErrorByIdAsync(int errorID)
+        {
+            try
+            {
+                return await db.Errors
+                    .FirstAsync(m => m.ErrorID == errorID);
+            }
+            catch (System.Exception)
+            {
+                throw new NotFoundException();
+            }
+        }
+
+        public async Task<bool> InsertErrorAsync(SponsorTransactionError error)
+        {
+            if (await IsExistErrorAsync(error))
+            {
+                throw new DuplicatePhoneNumberException();
+            }
+
+            try
+            {
+                await db.Errors.AddAsync(error);
+                return true;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<bool> UpdateErrorAsync(SponsorTransactionError error)
+        {
+            if (!(await IsExistErrorAsync(error)))
+            {
+                throw new NotFoundException();
+            }
+
+            try
+            {
+                db.Errors.Update(error);
+                return true;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<bool> DeleteErrorAsync(SponsorTransactionError error)
+        {
+            if (!(await IsExistErrorAsync(error)))
+            {
+                throw new NotFoundException();
+            }
+
+            try
+            {
+                db.Errors.Remove(error);
+                return true;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<bool> IsExistErrorAsync(int errorID)
+        {
+            try
+            {
+                var e = await GetErrorByIdAsync(errorID);
+            }
+            catch (NotFoundException)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public async Task<bool> IsExistErrorAsync(SponsorTransactionError error)
+        {
+            return await IsExistErrorAsync(error.ErrorID);
+        }
+
+        public async Task<bool> DeleteErrorAsync(int errorID)
+        {
+            try
+            {
+                var error = await GetErrorByIdAsync(errorID);
+                return await DeleteErrorAsync(error);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }
