@@ -233,11 +233,7 @@ namespace DataLayer
         {
             try
             {
-                var x = db.SponsorTransactions
-                    .Include(s => s.MySponsor)
-                    .Include(s => s.MyReceipt)
-                    .Include(s => s.MyTransaction)
-                    .Where(m => m.ColleagueID == colleagueID).ToList();
+                var x = GetAllTransactionByColleagueIdAsync(colleagueID);
 
                 var xx = x.Where(m => m.MyTransaction != null).ToList();
                 xx = xx.Where(m => m.MyTransaction.TransactionDate >= From).ToList();

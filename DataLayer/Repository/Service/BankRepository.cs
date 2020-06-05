@@ -234,13 +234,11 @@ namespace DataLayer
         {
             try
             {
-                return db.BankTransactions
-                    .Include(s => s.MyBank)
-                    .Include(s => s.Transaction)
-                    .Where(m => m.BankID == bankID
-                            &&
-                            (m.Transaction.TransactionDate >= From
-                                && m.Transaction.TransactionDate <= To));
+                var x = await GetAllTransactionByBankIdAsync(bankID);
+                x = x.Where(m => m.Transaction.TransactionDate >= From).ToList();
+                x = x.Where(m => m.Transaction.TransactionDate <= To).ToList();
+                
+                return x;
             }
             catch (System.Exception)
             {

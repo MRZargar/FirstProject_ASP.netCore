@@ -357,18 +357,19 @@ namespace DataLayer
         {
             try
             {
-                return db.SponsorTransactions
-                    .Include(s => s.MySponsor)
-                    .Include(s => s.MyReceipt)
-                    .Include(s => s.MyTransaction)
-                    .Where(m => m.SponsorID == sponsorID
-                            &&
-                            ((m.MyTransaction.TransactionDate >= From
-                                && m.MyTransaction.TransactionDate <= To)
-                            ||
-                            (m.MyReceipt.TransactionDate >= From
-                                && m.MyReceipt.TransactionDate <= To))
-                    );
+                var x = await GetAllTransactionBySponsorIdAsync(sponsorID);
+
+                var xx = x.Where(m => m.MyTransaction != null).ToList();
+                xx = xx.Where(m => m.MyTransaction.TransactionDate >= From).ToList();
+                xx = xx.Where(m => m.MyTransaction.TransactionDate <= To).ToList();
+
+                var xxx = x.Where(m => m.MyReceipt != null).ToList();
+                xxx = xxx.Where(m => m.MyReceipt.TransactionDate >= From).ToList();
+                xxx = xxx.Where(m => m.MyReceipt.TransactionDate <= To).ToList();
+                
+                xx.AddRange(xxx);
+
+                return xx;
             }
             catch (System.Exception)
             {
@@ -380,17 +381,19 @@ namespace DataLayer
         {
             try
             {
-                return db.SponsorTransactions
-                    .Include(s => s.MySponsor)
-                    .Include(s => s.MyReceipt)
-                    .Include(s => s.MyTransaction)
-                    .Where(m => 
-                            (m.MyTransaction.TransactionDate >= From
-                                && m.MyTransaction.TransactionDate <= To)
-                            ||
-                            (m.MyReceipt.TransactionDate >= From
-                                && m.MyReceipt.TransactionDate <= To)
-                    );
+                var x = await GetAllTransactionAsync();
+
+                var xx = x.Where(m => m.MyTransaction != null).ToList();
+                xx = xx.Where(m => m.MyTransaction.TransactionDate >= From).ToList();
+                xx = xx.Where(m => m.MyTransaction.TransactionDate <= To).ToList();
+
+                var xxx = x.Where(m => m.MyReceipt != null).ToList();
+                xxx = xxx.Where(m => m.MyReceipt.TransactionDate >= From).ToList();
+                xxx = xxx.Where(m => m.MyReceipt.TransactionDate <= To).ToList();
+
+                xx.AddRange(xxx);
+
+                return xx;
             }
             catch (System.Exception)
             {
