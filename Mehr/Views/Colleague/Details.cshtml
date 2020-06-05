@@ -105,9 +105,11 @@
 </form>
 
 <!--  hidden form   -->
-<form id="ExportForm" asp-controller="SponsorTransaction" asp-action="Export" enctype="multipart/form-data">
+<form id="ExportForm" asp-controller="SponsorTransaction" asp-action="Export" method="POST">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" name="ColleagueID" value="@Model.ColleagueID">
+    <input type="hidden" name="FromDate" value="@TempData["FromDate"]">
+    <input type="hidden" name="ToDate" value="@TempData["ToDate"]">
 </form>
 
 

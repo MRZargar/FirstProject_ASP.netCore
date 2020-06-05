@@ -25,51 +25,17 @@ namespace Mehr.ViewComponents
             DateTime From = new DateTime();
             DateTime To = new DateTime();
 
-            if (FromDate == "")
+            try
             {
-                From = Convert.ToDateTime(new DateTime().getFirstSolarMonth().ToAD());
+                this.GetFromTo_default_FirstMonthToNow(ref From, ref To, FromDate, ToDate);
             }
-            else
+            catch (Exception ex)
             {
-                try
-                {
-                    From = Convert.ToDateTime(FromDate.ToAD());
-                }
-                catch (Exception ex)
-                {
-                    ViewBag.err = ex;
-                    return View("Error");
-                }
+                ViewBag.err = ex;
+                return View("Error");
             }
 
-            if (ToDate == "")
-            {
-                To = DateTime.Today;
-            }
-            else
-            {
-                try
-                {
-                    To = Convert.ToDateTime(ToDate.ToAD());
-                }
-                catch (Exception ex)
-                {
-                    ViewBag.err = ex;
-                    return View("Error");
-                }
-            }
-
-            var colleague = await colleages.GetByIdAsync(id);
-
-            List<SponsorTransaction> colleagusTransactios = new List<SponsorTransaction>();
-            double sumAmounts = 0;
-
-            foreach (Sponsor sponsor in colleague.Sponsors)
-            {   
-                var sponsorTransactions = await sponsors.GetFromToTransactionBySponsorIdAsync(sponsor.SponsorID, From, To.AddDays(1));
-                colleagusTransactios.AddRange(sponsorTransactions);
-                sumAmounts += sponsorTransactions.Select(x => (x.MyTransaction?.Amount ?? 0) + (x.MyReceipt?.Amount ?? 0)).Sum();
-            }
+            var colleagusTransactios = colleages.GetFromToTransactionByColleagueIdAsync(id, From, To.AddDays(1));
 
             TempData["maxAmount"] = 50000;
             if (colleagusTransactios.Count() > 0)

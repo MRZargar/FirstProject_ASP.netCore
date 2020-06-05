@@ -36,7 +36,6 @@ namespace Mehr.Controllers
             try
             {
                 bank = await banks.GetByIdAsync(id.Value);
-                bank.Transactions = await banks.GetAllTransactionByBankIdAsync(id.Value);
             }
             catch (Exception ex)
             {
@@ -49,17 +48,18 @@ namespace Mehr.Controllers
             string ChartData = "[";
             for (int i = 0; i < months.Count - 1; i++)
             {
-                ChartData += bank.Transactions
-                    .Where(x => x.Transaction.TransactionDate >= months[i]
-                            && x.Transaction.TransactionDate <= months[i+1])
+                double sum = 0;
+                var transactions = await banks.GetFromToTransactionByBankIdAsync(id.Value, months[i], months[i + 1]);
+                sum = transactions
                     .Select(x => x.Transaction.Amount)
-                    .Sum()
-                    .ToString();
+                    .Sum();
+
+                ChartData += sum.ToString();
                 ChartData += ", ";
             }
             ChartData = ChartData.Substring(0, ChartData.Length - 1) + "]";
-            ViewBag.ChartData = ChartData;
 
+            ViewBag.ChartData = ChartData;
             ViewBag.FromDate = FromDate;
             ViewBag.ToDate = ToDate;
             return View(bank);

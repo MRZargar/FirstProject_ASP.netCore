@@ -105,5 +105,52 @@ namespace Mehr.Classes
             return LettersDictionary.Aggregate(persianStr, (current, item) =>
                          current.Replace(item.Key, item.Value));
         }
+
+        public static void GetFromTo_default_FirstMonthToNow(this Controller controller,
+            ref DateTime From, ref DateTime To, string FromDate, string ToDate)
+        {
+            GetFromTo_default_FirstMonthToNow(ref From, ref To, FromDate, ToDate);
+        }
+
+        public static void GetFromTo_default_FirstMonthToNow(this ViewComponent component,
+            ref DateTime From, ref DateTime To, string FromDate, string ToDate)
+        {
+            GetFromTo_default_FirstMonthToNow(ref From, ref To, FromDate, ToDate);
+        }
+
+        private static void GetFromTo_default_FirstMonthToNow(ref DateTime From, ref DateTime To, string FromDate, string ToDate)
+        {
+            if (FromDate == "")
+            {
+                From = Convert.ToDateTime(new DateTime().getFirstSolarMonth().ToAD());
+            }
+            else
+            {
+                try
+                {
+                    From = Convert.ToDateTime(FromDate.ToAD());
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+            if (ToDate == "")
+            {
+                To = DateTime.Today;
+            }
+            else
+            {
+                try
+                {
+                    To = Convert.ToDateTime(ToDate.ToAD());
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
     }
 }

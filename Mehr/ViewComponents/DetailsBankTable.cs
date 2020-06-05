@@ -23,41 +23,17 @@ namespace Mehr.ViewComponents
             DateTime From = new DateTime();
             DateTime To = new DateTime();
 
-            if (FromDate == "")
+            try
             {
-                From = Convert.ToDateTime(new DateTime().getFirstSolarMonth().ToAD());
+                this.GetFromTo_default_FirstMonthToNow(ref From, ref To, FromDate, ToDate);
             }
-            else
+            catch (Exception ex)
             {
-                try
-                {
-                    From = Convert.ToDateTime(FromDate.ToAD());
-                }
-                catch (Exception ex)
-                {
-                    ViewBag.err = ex;
-                    return View("Error");
-                }
+                ViewBag.err = ex;
+                return View("Error");
             }
 
-            if (ToDate == "")
-            {
-                To = DateTime.Today;
-            }
-            else
-            {
-                try
-                {
-                    To = Convert.ToDateTime(ToDate.ToAD());
-                }
-                catch (Exception ex)
-                {
-                    ViewBag.err = ex;
-                    return View("Error");
-                }
-            }
-
-            IEnumerable<BankTransaction> transactions = await banks.GetFromToTransactionByBankIdAsync(id, From, To);
+            IEnumerable<BankTransaction> transactions = await banks.GetFromToTransactionByBankIdAsync(id, From, To.AddDays(1));
 
             TempData["maxAmount"] = 50000;
             if (transactions.Count() > 0)

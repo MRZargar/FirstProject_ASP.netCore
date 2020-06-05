@@ -1,10 +1,18 @@
-﻿// filter colleague and bank
-function FilterFromTo(id) {
+﻿// get From and To dates
+function GetFromTo() {
     var fromDate = document.getElementById('inputFromDate').value;
     var toDate = document.getElementById('inputToDate').value;
-    var url = id + '?FromDate=' + fromDate + '&ToDate=' + toDate;
 
-    window.location.replace(url);
+    return 'FromDate=' + fromDate + '&ToDate=' + toDate;
+}
+
+function exportColleagueTransactions(id) {
+    
+}
+
+// filter colleague and bank
+function FilterFromTo(id) {
+    window.location.replace(id + '?' + GetFromTo());
 }
 
 // delete Colleague
@@ -122,6 +130,11 @@ function btnImportClick() {
     var btnImportForm = document.getElementById("btnImportForm");
     btnImportForm.click();
 };
+
+function btnExportClick() {
+    var ExportForm = document.getElementById("ExportForm");
+    ExportForm.submit();
+}
 
 function changefileExcel() {
     var input = document.getElementById("btnImportForm");

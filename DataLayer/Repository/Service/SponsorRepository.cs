@@ -376,5 +376,26 @@ namespace DataLayer
             }
         }
 
+        public async Task<IEnumerable<SponsorTransaction>> GetFromToTransactionAsync(DateTime From, DateTime To)
+        {
+            try
+            {
+                return db.SponsorTransactions
+                    .Include(s => s.MySponsor)
+                    .Include(s => s.MyReceipt)
+                    .Include(s => s.MyTransaction)
+                    .Where(m => 
+                            (m.MyTransaction.TransactionDate >= From
+                                && m.MyTransaction.TransactionDate <= To)
+                            ||
+                            (m.MyReceipt.TransactionDate >= From
+                                && m.MyReceipt.TransactionDate <= To)
+                    );
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
     }
 }

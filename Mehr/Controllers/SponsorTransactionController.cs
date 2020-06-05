@@ -222,12 +222,73 @@ namespace Mehr.Controllers
             return RedirectToAction( "Details","Colleague", new {id = ColleagueID});
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Export()
-        //{
-        //    return;
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Export(int? ColleagueID, int? SponsorID, string FromDate, string ToDate)
+        {
+            string path = _hostingEnvironment.WebRootPath + @"\Catch\";
+            string fileName = string.Empty;
+            DateTime From = new DateTime();
+            DateTime To = new DateTime();
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add("SponsorName");
+            dt.Columns.Add("Phone");
+            dt.Columns.Add("Date");
+            dt.Columns.Add("Time");
+            dt.Columns.Add("ReceiptNumber");
+            dt.Columns.Add("CardNumber");
+            dt.Columns.Add("TrackingNumber");
+            dt.Columns.Add("Amount");
+
+            try
+            {
+                this.GetFromTo_default_FirstMonthToNow(ref From, ref To, FromDate.ToSolar(), ToDate.ToSolar());
+            }
+            catch (Exception ex)
+            {
+                ViewBag.err = ex;
+                return View("Error");
+            }
+
+            IEnumerable<SponsorTransaction> transactions;
+            if (ColleagueID != null)
+            {
+                transactions = colleages.GetFromToTransactionByColleagueIdAsync(ColleagueID.Value, From, To);
+                fileName += colleages.GetByIdAsync(ColleagueID.Value).Result.Name.ToString();
+            }
+            else if (SponsorID != null)
+            {
+                transactions = await sponsors.GetFromToTransactionBySponsorIdAsync(SponsorID.Value, From, To);
+                fileName += transactions.First().MySponsor.Name.ToString();
+            }
+            else
+            {
+                transactions = await sponsors.GetFromToTransactionAsync(From, To);
+                fileName += "_";
+            }
+
+            fileName += "_From" + From.ToSolar().Replace('/', '.') + "To" + To.ToSolar().Replace('/','.') + ".xlsx";
+
+            foreach (var trnsctn in transactions)
+            {
+                DataRow row = dt.NewRow();
+
+                row["SponsorName"] = trnsctn.MySponsor.Name.ToString();
+                row["Phone"] = trnsctn.MySponsor.PhoneNumber.ToString();
+                row["Date"] = trnsctn.MyTransaction?.TransactionDate.ToSolar() ?? trnsctn.MyReceipt.TransactionDate.ToSolar();
+                row["Time"] = trnsctn.MyTransaction?.TransactionDate.TimeOfDay.ToString() ?? trnsctn.MyReceipt.TransactionDate.TimeOfDay.ToString();
+                row["ReceiptNumber"] = trnsctn.MyReceipt?.ReceiptNumber.ToString() ?? string.Empty;
+                row["CardNumber"] = trnsctn.MyTransaction?.LastFourNumbersOfBankCard.ToString() ?? string.Empty;
+                row["TrackingNumber"] = trnsctn.MyTransaction?.TrackingNumber.ToString() ?? string.Empty;
+                row["Amount"] = trnsctn.MyTransaction?.Amount.ToString() ?? trnsctn.MyReceipt.Amount.ToString();
+
+                dt.Rows.Add(row);
+            }
+
+            Excel.Write(path + fileName, dt);
+            return null;
+        }
 
         // GET: App/SponsorTransaction/Edit/5
         public async Task<IActionResult> Edit(int? id)

@@ -21,5 +21,8 @@ namespace DataLayer
         Task<bool> DeleteAsync(int colleagueID);
         Task<bool> saveAsync();
         void Dispose();
+
+        IEnumerable<SponsorTransaction> GetAllTransactionByColleagueIdAsync(int colleagueID);
+        IEnumerable<SponsorTransaction> GetFromToTransactionByColleagueIdAsync(int colleagueID, DateTime From, DateTime To);
     }
 }

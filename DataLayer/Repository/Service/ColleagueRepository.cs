@@ -212,5 +212,49 @@ namespace DataLayer
                 throw;
             }
         }
+
+        public IEnumerable<SponsorTransaction> GetAllTransactionByColleagueIdAsync(int colleagueID)
+        {
+            try
+            {
+                return db.SponsorTransactions
+                    .Include(s => s.MySponsor)
+                    .Include(s => s.MyReceipt)
+                    .Include(s => s.MyTransaction)
+                    .Where(m => m.ColleagueID == colleagueID);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+
+        public IEnumerable<SponsorTransaction> GetFromToTransactionByColleagueIdAsync(int colleagueID, DateTime From, DateTime To)
+        {
+            try
+            {
+                var x = db.SponsorTransactions
+                    .Include(s => s.MySponsor)
+                    .Include(s => s.MyReceipt)
+                    .Include(s => s.MyTransaction)
+                    .Where(m => m.ColleagueID == colleagueID).ToList();
+
+                var xx = x.Where(m => m.MyTransaction != null).ToList();
+                xx = xx.Where(m => m.MyTransaction.TransactionDate >= From).ToList();
+                xx = xx.Where(m => m.MyTransaction.TransactionDate <= To).ToList();
+
+                var xxx = x.Where(m => m.MyReceipt != null).ToList();
+                xxx = xxx.Where(m => m.MyReceipt.TransactionDate >= From).ToList();
+                xxx = xxx.Where(m => m.MyReceipt.TransactionDate <= To).ToList();
+
+                xx.AddRange(xxx);
+
+                return xx;
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
     }
 }

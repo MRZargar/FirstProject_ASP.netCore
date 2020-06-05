@@ -14,6 +14,9 @@ namespace Mehr.Classes
     {
         public static void Write(string path, DataTable data)
         {
+            ExcelPackage.LicenseContext = LicenseContext.Commercial;
+
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             // Creating an instance 
             // of ExcelPackage
             using (ExcelPackage excel = new ExcelPackage())

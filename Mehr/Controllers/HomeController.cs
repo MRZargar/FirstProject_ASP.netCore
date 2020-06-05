@@ -33,11 +33,12 @@ namespace Mehr.Controllers
             for (int i = 0; i < months.Count - 1; i++)
             {
                 double sum = 0;
-                foreach (Sponsor sponsor in await sponsors.GetAllAsync())
-                {
-                    var transactions = await sponsors.GetFromToTransactionBySponsorIdAsync(sponsor.SponsorID, months[i], months[i + 1]);
-                    sum += transactions.Select(x => (x.MyTransaction?.Amount ?? 0) + (x.MyReceipt?.Amount ?? 0)).Sum();
-                }
+                var transactions = await sponsors.GetFromToTransactionAsync(months[i], months[i + 1]);
+                sum = transactions
+                    .Select(x => 
+                        (x.MyTransaction?.Amount ?? 0) + (x.MyReceipt?.Amount ?? 0))
+                    .Sum();
+                
                 ChartData += sum.ToString();
                 ChartData += ", ";
             }
@@ -45,7 +46,7 @@ namespace Mehr.Controllers
             
             ViewBag.ChartData = ChartData;
             ViewBag.ColleaguesCount = colleagues.Count();
-            ViewBag.SponsoqxrsCount = sponsors.Count();
+            ViewBag.SponsorsCount = sponsors.Count();
             return View();
         }
         

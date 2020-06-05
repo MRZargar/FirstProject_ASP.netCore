@@ -27,6 +27,7 @@ namespace DataLayer
         Task<SponsorTransaction> GetTransactionAsync(SponsorTransaction sponsorTransaction);
         Task<IEnumerable<SponsorTransaction>> GetAllTransactionBySponsorIdAsync(int sponsorID);
         Task<IEnumerable<SponsorTransaction>> GetFromToTransactionBySponsorIdAsync(int sponsorID, DateTime From, DateTime To);
+        Task<IEnumerable<SponsorTransaction>> GetFromToTransactionAsync(DateTime From, DateTime To);
         Task<bool> InsertTransactionAsync(SponsorTransaction sponsorTransaction);
         Task<bool> UpdateTransactionAsync(SponsorTransaction sponsorTransaction);
         Task<bool> DeleteTransactionAsync(SponsorTransaction sponsorTransaction);

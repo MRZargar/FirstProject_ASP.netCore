@@ -7,6 +7,8 @@
         <h4 class="card-title">Transactions</h4>
         <div class="heading-elements">
             <ul class="list-inline mb-0">
+                <li><input id="btnImport" onclick="btnImportClick()" type="button" class="btn btn-sm btn-lighten-2" value="Import" /></li>
+                <li><input id="btnExport" onclick="btnExportClick()" type="button" class="btn btn-sm btn-lighten-2" value="Export" /></li>
                 <li><input onclick="FilterFromTo(@TempData["ColleagueID"])" type="button" class="btn btn-sm btn-lighten-2" value="Filter" /></li>
                 <li><a onclick="newSponsorTransaction(@TempData["ColleagueID"],'Colleague')"><i class="la la-plus-circle success"></i></a></li>
                 <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
@@ -133,8 +135,3 @@
     </div>
 </div>
 <!-- Table head options end -->
-
-<div class="form-group importExportform">
-    <p id="btnImport" onclick="btnImportClick()" class="btn btn-light btn-sm"><i class="la la-cloud-upload"></i> Import</p>
-    <p id="btnExport" class="btn btn-light btn-sm"><i class="la la-cloud-download"></i> Export</p>
-</div>
