@@ -261,10 +261,34 @@ namespace DataLayer
         {
             try
             {
-                return await db.SponsorTransactions
-                    .FirstAsync(x => (x.MyTransaction == sponsorTransaction.MyTransaction
-                                   || x.MyReceipt == sponsorTransaction.MyReceipt)
-                                       && x.MySponsor == sponsorTransaction.MySponsor);
+                var x = (await GetAllTransactionBySponsorIdAsync(sponsorTransaction.SponsorID)).ToList();
+
+                if (sponsorTransaction.MyTransaction != null)
+                {
+                    x = x.Where(m => m.MyTransaction != null).ToList();
+                    x = x.Where(m => m.MyTransaction.TransactionDate == sponsorTransaction.MyTransaction.TransactionDate
+                            &&
+                            m.MyTransaction.Amount == sponsorTransaction.MyTransaction.Amount
+                            &&
+                            m.MyTransaction.LastFourNumbersOfBankCard == sponsorTransaction.MyTransaction.LastFourNumbersOfBankCard
+                            &&
+                            m.MyTransaction.TrackingNumber == sponsorTransaction.MyTransaction.TrackingNumber).ToList();
+                }
+                else if (sponsorTransaction.MyReceipt != null)
+                {
+                    x = x.Where(m => m.MyReceipt != null).ToList();
+                    x = x.Where(m => m.MyReceipt.Amount == sponsorTransaction.MyReceipt.Amount
+                            &&
+                            m.MyReceipt.ReceiptNumber == sponsorTransaction.MyReceipt.ReceiptNumber
+                            &&
+                            m.MyReceipt.TransactionDate == sponsorTransaction.MyReceipt.TransactionDate).ToList();
+                }
+                else
+                {
+                    throw new NotFoundException();
+                }
+
+                return x.First();
             }
             catch (System.Exception)
             {

@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Hosting;
 using DataLayer.Exceptions;
 using System.Transactions;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using DataLayer.Models;
 
 namespace Mehr.Controllers
 {
@@ -144,17 +145,15 @@ namespace Mehr.Controllers
 
             using (DataTable dt = Excel.Read(path))
             {
-                // Phone
-                // SponsorName
-                // Amount
-                // CardNumber
-                // TrackingNumber
-                // Date
-                // Time
+                DataTable Errors = dt.Clone();
+                var ErrorMessages = new List<string>();
+
                 foreach (DataRow row in dt.Rows)
                 {
                     if (row["Phone"].ToString() == string.Empty)
                     {
+                        Errors.Rows.Add(row.ItemArray);
+                        ErrorMessages.Add("Phone Number not entered");
                         continue;
                     }
 
@@ -166,6 +165,13 @@ namespace Mehr.Controllers
                     try
                     {
                         mySponsor = await sponsors.GetByPhoneNumberAsync(phoneNumber);
+                        
+                        if (mySponsor.ColleagueID != ColleagueID)
+                        {
+                            Errors.Rows.Add(row.ItemArray);
+                            ErrorMessages.Add("This sponsor is related to another colleague");
+                            continue;
+                        }
                     }
                     catch (NotFoundException)
                     {
@@ -185,16 +191,18 @@ namespace Mehr.Controllers
                         mySponsor = await sponsors.GetByPhoneNumberAsync(phoneNumber);
                         if (mySponsor == null)
                         {
+                            Errors.Rows.Add(row.ItemArray);
+                            ErrorMessages.Add("There is a problem when adding a new sponsor");
                             continue;
                         }
                     }
 
                     try
                     {
-                        st.MyTransaction.Amount = Convert.ToDouble(row["Amount"]);
-                        st.MyTransaction.LastFourNumbersOfBankCard = Convert.ToInt16(row["CardNumber"]);
-                        st.MyTransaction.TrackingNumber = row["TrackingNumber"].ToString();
-                        DateTime date = Convert.ToDateTime(row["Date"].ToString()).Date;
+                        st.SponsorID = mySponsor.SponsorID;
+                        st.ColleagueID = ColleagueID;
+
+                        DateTime date = Convert.ToDateTime(row["Date"].ToString().ToAD()).Date;
                         TimeSpan time;
                         try
                         {
@@ -204,15 +212,45 @@ namespace Mehr.Controllers
                         {
                             time = Convert.ToDateTime(row["Time"].ToString()).TimeOfDay;
                         }
-                        st.MyTransaction.TransactionDate = date + time;
-                        st.SponsorID = mySponsor.SponsorID;
+
+                        if (row["CardNumber"].ToString() != "" && row["TrackingNumber"].ToString() != "")
+                        {
+                            st.MyTransaction = new BankData();
+                            st.MyTransaction.Amount = Convert.ToDouble(row["Amount"]);
+                            st.MyTransaction.LastFourNumbersOfBankCard = Convert.ToInt16(row["CardNumber"]);
+                            st.MyTransaction.TrackingNumber = row["TrackingNumber"].ToString();
+                            st.MyTransaction.TransactionDate = date + time;
+                        }
+                        else if (row["ReceiptNumber"].ToString() != "")
+                        {
+                            st.MyReceipt = new ReceiptData();
+                            st.MyReceipt.Amount = Convert.ToDouble(row["Amount"]);
+                            st.MyReceipt.TransactionDate = date + time;
+                        }
+                        else
+                        {
+                            Errors.Rows.Add(row.ItemArray);
+                            ErrorMessages.Add("No transaction information entered");
+                            continue;
+                        }   
                     }
                     catch (Exception)
                     {
-                        throw;
+                        Errors.Rows.Add(row.ItemArray);
+                        ErrorMessages.Add("Correct the type of input information");
+                        continue;
                     }
-                    
-                    await sponsors.InsertTransactionAsync(st);
+
+                    try
+                    {
+                        await sponsors.InsertTransactionAsync(st);
+                    }
+                    catch (DuplicateTransactionException)
+                    {
+                        Errors.Rows.Add(row.ItemArray);
+                        ErrorMessages.Add("Duplicate");
+                        continue;
+                    }
                 }
 
                 await sponsors.saveAsync();
