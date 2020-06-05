@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Mehr.Models;
 using DataLayer;
+using Mehr.Classes;
 
 namespace Mehr.Controllers
 {
@@ -25,11 +26,26 @@ namespace Mehr.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> IndexAsync()
         {
+            List<DateTime> months = this.GetFirstOfAllSolarMonth();
+            string ChartData = "[";
+            for (int i = 0; i < months.Count - 1; i++)
+            {
+                double sum = 0;
+                foreach (Sponsor sponsor in await sponsors.GetAllAsync())
+                {
+                    var transactions = await sponsors.GetFromToTransactionBySponsorIdAsync(sponsor.SponsorID, months[i], months[i + 1]);
+                    sum += transactions.Select(x => (x.MyTransaction?.Amount ?? 0) + (x.MyReceipt?.Amount ?? 0)).Sum();
+                }
+                ChartData += sum.ToString();
+                ChartData += ", ";
+            }
+            ChartData = ChartData.Substring(0, ChartData.Length - 1) + "]";
+            
+            ViewBag.ChartData = ChartData;
             ViewBag.ColleaguesCount = colleagues.Count();
-            ViewBag.SponsorsCount = sponsors.Count();
-            ViewBag.ChartData = "[125, 200, 125, 225, 125, 200, 125, 225, 175, 275, 220]";
+            ViewBag.SponsoqxrsCount = sponsors.Count();
             return View();
         }
         
