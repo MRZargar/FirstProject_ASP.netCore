@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Threading.Tasks;
 
 namespace DataLayer
@@ -29,6 +30,7 @@ namespace DataLayer
         Task<IEnumerable<SponsorTransaction>> GetFromToTransactionBySponsorIdAsync(int sponsorID, DateTime From, DateTime To);
         Task<IEnumerable<SponsorTransaction>> GetFromToTransactionAsync(DateTime From, DateTime To);
         Task<bool> InsertTransactionAsync(SponsorTransaction sponsorTransaction);
+        Task<bool> InsertTransactionAsync(DataRow row, int ColleagueID);
         Task<bool> UpdateTransactionAsync(SponsorTransaction sponsorTransaction);
         Task<bool> DeleteTransactionAsync(SponsorTransaction sponsorTransaction);
         Task<bool> DeleteTransactionAsync(int sponsorTransactionsID);

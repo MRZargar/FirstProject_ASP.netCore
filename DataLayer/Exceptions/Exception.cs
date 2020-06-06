@@ -20,4 +20,9 @@ namespace DataLayer.Exceptions
     {
         public DuplicateTransactionException() : base("The Transaction entered is duplicate...") { }
     }
+
+    public class DoNotExistBankTransactionException : Exception
+    {
+        public DoNotExistBankTransactionException() : base("This transaction is not available in bank transactions...") { }
+    }
 }

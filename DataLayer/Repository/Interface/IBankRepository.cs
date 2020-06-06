@@ -26,5 +26,6 @@ namespace DataLayer
         Task<bool> DeleteTransactionAsync(BankTransaction bankTransaction);
         Task<bool> DeleteTransactionAsync(int bankTransactionID);
         Task<bool> IsExistTransactionAsync(BankTransaction bankTransaction);
+        Task<bool> IsExistTransactionAsync(SponsorTransaction st);
     }
 }

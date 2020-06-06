@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
@@ -361,6 +362,44 @@ namespace DataLayer
             {
                 throw;
             }
+        }
+
+        public async Task<bool> InsertErrorAsync(DataRow row, ErrorMessage Message, int ColleagueID)
+        {
+            var err = new SponsorTransactionError();
+
+            err.SponsorName = row["SponsorName"].ToString();
+            err.Phone = row["Phone"].ToString();
+            err.Date = row["Date"].ToString();
+            err.Time = row["Time"].ToString();
+            err.ReceiptNumber = row["ReceiptNumber"].ToString();
+            err.CardNumber = row["CardNumber"].ToString();
+            err.TrackingNumber = row["TrackingNumber"].ToString();
+            err.Amount = row["Amount"].ToString();
+            err.ErrorMessage = Message.ToString().Replace('_', ' ');
+            err.ColleagueID = ColleagueID;
+
+            await InsertErrorAsync(err);
+            return true;
+        }
+
+        public async Task<bool> InsertErrorAsync(SponsorTransaction st, ErrorMessage Message)
+        {
+            var err = new SponsorTransactionError();
+
+            err.SponsorName = st.MySponsor?.Name.ToString() ?? "";
+            err.Phone = st.MySponsor?.PhoneNumber.ToString() ?? "";
+            err.Date = st.MyTransaction?.TransactionDate.Date.ToString() ?? st.MyReceipt?.TransactionDate.Date.ToString() ?? "";
+            err.Time = st.MyTransaction?.TransactionDate.TimeOfDay.ToString() ?? st.MyReceipt?.TransactionDate.TimeOfDay.ToString() ?? "";
+            err.ReceiptNumber = st.MyReceipt?.ReceiptNumber.ToString() ?? "";
+            err.CardNumber = st.MyTransaction?.LastFourNumbersOfBankCard.ToString() ?? "";
+            err.TrackingNumber = st.MyTransaction?.TrackingNumber.ToString() ?? "";
+            err.Amount = st.MyTransaction?.Amount.ToString() ?? st.MyReceipt?.Amount.ToString() ?? "";
+            err.ErrorMessage = Message.ToString().Replace('_', ' ');
+            err.ColleagueID = st.ColleagueID;
+
+            await InsertErrorAsync(err);
+            return true;
         }
     }
 }

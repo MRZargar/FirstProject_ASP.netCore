@@ -145,134 +145,13 @@ namespace Mehr.Controllers
 
             using (DataTable dt = Excel.Read(path))
             {
-                DataTable Errors = dt.Clone();
-                var ErrorMessages = new List<ErrorMessage>();
-
                 foreach (DataRow row in dt.Rows)
                 {
-                    if (row["Phone"].ToString() == string.Empty)
-                    {
-                        Errors.Rows.Add(row.ItemArray);
-                        ErrorMessages.Add(ErrorMessage.Phone_number_not_entered);
-                        continue;
-                    }
-
-                    var st = new SponsorTransaction();
-
-                    long phoneNumber = long.Parse(row["Phone"].ToString());
-
-                    Sponsor mySponsor;
-                    try
-                    {
-                        mySponsor = await sponsors.GetByPhoneNumberAsync(phoneNumber);
-                        
-                        if (mySponsor.ColleagueID != ColleagueID)
-                        {
-                            Errors.Rows.Add(row.ItemArray);
-                            ErrorMessages.Add(ErrorMessage.This_sponsor_is_related_to_another_colleague);
-                            continue;
-                        }
-                    }
-                    catch (NotFoundException)
-                    {
-                        mySponsor = new Sponsor();
-                        mySponsor.ColleagueID = ColleagueID;
-                        mySponsor.PhoneNumber = phoneNumber;
-                        mySponsor.Name = row["SponsorName"].ToString();
-                        if (mySponsor.Name == string.Empty)
-                        {
-                            mySponsor.Name = "Undefine";
-                        }
-                        mySponsor.MyColleague = await colleages.GetByIdAsync(ColleagueID);
-
-                        await sponsors.InsertAsync(mySponsor);
-                        await sponsors.saveAsync();
-
-                        mySponsor = await sponsors.GetByPhoneNumberAsync(phoneNumber);
-                        if (mySponsor == null)
-                        {
-                            Errors.Rows.Add(row.ItemArray);
-                            ErrorMessages.Add(ErrorMessage.There_is_a_problem_when_adding_a_new_sponsor);
-                            continue;
-                        }
-                    }
-
-                    try
-                    {
-                        st.SponsorID = mySponsor.SponsorID;
-                        st.ColleagueID = ColleagueID;
-
-                        DateTime date = Convert.ToDateTime(row["Date"].ToString().ToAD()).Date;
-                        TimeSpan time;
-                        try
-                        {
-                            time = TimeSpan.Parse(row["Time"].ToString());
-                        }
-                        catch (Exception)
-                        {
-                            time = Convert.ToDateTime(row["Time"].ToString()).TimeOfDay;
-                        }
-
-                        if (row["CardNumber"].ToString() != "" && row["TrackingNumber"].ToString() != "")
-                        {
-                            st.MyTransaction = new BankData();
-                            st.MyTransaction.Amount = Convert.ToDouble(row["Amount"]);
-                            st.MyTransaction.LastFourNumbersOfBankCard = Convert.ToInt16(row["CardNumber"]);
-                            st.MyTransaction.TrackingNumber = row["TrackingNumber"].ToString();
-                            st.MyTransaction.TransactionDate = date + time;
-                        }
-                        else if (row["ReceiptNumber"].ToString() != "")
-                        {
-                            st.MyReceipt = new ReceiptData();
-                            st.MyReceipt.Amount = Convert.ToDouble(row["Amount"]);
-                            st.MyReceipt.TransactionDate = date + time;
-                        }
-                        else
-                        {
-                            Errors.Rows.Add(row.ItemArray);
-                            ErrorMessages.Add(ErrorMessage.No_transaction_information_entered);
-                            continue;
-                        }   
-                    }
-                    catch (Exception)
-                    {
-                        Errors.Rows.Add(row.ItemArray);
-                        ErrorMessages.Add(ErrorMessage.Correct_the_type_of_input_information);
-                        continue;
-                    }
-
-                    try
-                    {
-                        await sponsors.InsertTransactionAsync(st);
-                    }
-                    catch (DuplicateTransactionException)
-                    {
-                        Errors.Rows.Add(row.ItemArray);
-                        ErrorMessages.Add(ErrorMessage.Duplicate);
-                        continue;
-                    }
+                    await sponsors.InsertTransactionAsync(row, ColleagueID);
                 }
                 await sponsors.saveAsync();
-
-                for (int i = 0; i < ErrorMessages.Count; i++)
-                {
-                    var err = new SponsorTransactionError();
-                    DataRow row = dt.Rows[i];
-                    err.SponsorName = row["SponsorName"].ToString();
-                    err.Phone = row["Phone"].ToString();
-                    err.Date = row["Date"].ToString();
-                    err.Time = row["Time"].ToString();
-                    err.ReceiptNumber = row["ReceiptNumber"].ToString();
-                    err.CardNumber = row["CardNumber"].ToString();
-                    err.TrackingNumber = row["TrackingNumber"].ToString();
-                    err.Amount = row["Amount"].ToString();
-                    err.ErrorMessage = ErrorMessages[i].ToString().Replace('_', ' ');
-                    err.ColleagueID = ColleagueID;
-
-                    await colleages.InsertErrorAsync(err);
-                }
-                await colleages.saveAsync();
             }
+
             deleteFile(path);
 
             return RedirectToAction( "Details","Colleague", new {id = ColleagueID});
@@ -307,21 +186,25 @@ namespace Mehr.Controllers
                 return View("Error");
             }
 
+            RedirectToActionResult view;
             IEnumerable<SponsorTransaction> transactions;
             if (ColleagueID != null)
             {
                 transactions = colleages.GetFromToTransactionByColleagueIdAsync(ColleagueID.Value, From, To);
                 fileName += colleages.GetByIdAsync(ColleagueID.Value).Result.Name.ToString();
+                view = RedirectToAction("Details", "Colleague", new { id = ColleagueID.Value });
             }
             else if (SponsorID != null)
             {
                 transactions = await sponsors.GetFromToTransactionBySponsorIdAsync(SponsorID.Value, From, To);
                 fileName += transactions.First().MySponsor.Name.ToString();
+                view = RedirectToAction("Details", "Sponsor", new { id = SponsorID.Value });
             }
             else
             {
                 transactions = await sponsors.GetFromToTransactionAsync(From, To);
                 fileName += "_";
+                view = RedirectToAction("Index", "Home");
             }
 
             fileName += "_From" + From.ToSolar().Replace('/', '.') + "To" + To.ToSolar().Replace('/','.') + ".xlsx";
@@ -343,7 +226,9 @@ namespace Mehr.Controllers
             }
 
             Excel.Write(path + fileName, dt);
-            return null;
+
+            this.SetViewMessage("Exported Transactions successfully", WebMessageType.Success);
+            return view;
         }
 
         // GET: App/SponsorTransaction/Edit/5

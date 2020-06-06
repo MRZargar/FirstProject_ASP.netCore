@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DataLayer.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataLayer
@@ -319,6 +320,29 @@ namespace DataLayer
             try
             {
                 BankTransaction b = await GetTransactionAsync(bankTransaction);
+            }
+            catch (NotFoundException)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public async Task<bool> IsExistTransactionAsync(SponsorTransaction st)
+        {
+            if (st.MyTransaction == null)
+            {
+                return true;
+            }
+
+            try
+            {
+                db.BankTransactions
+                    .Include(x => x.Transaction)
+                    .Where(x => x.Transaction.Amount == st.MyTransaction.Amount
+                        && x.Transaction.LastFourNumbersOfBankCard.ToString().Contains(st.MyTransaction.LastFourNumbersOfBankCard.ToString())
+                        && x.Transaction.TrackingNumber.ToString().Contains(st.MyTransaction.TrackingNumber.ToString())
+                        && x.Transaction.TransactionDate == st.MyTransaction.TransactionDate);
             }
             catch (NotFoundException)
             {

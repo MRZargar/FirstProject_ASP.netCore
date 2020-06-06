@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Threading.Tasks;
 
 namespace DataLayer
@@ -28,6 +29,8 @@ namespace DataLayer
         Task<IEnumerable<SponsorTransactionError>> GetAllErrorsAsync();
         Task<SponsorTransactionError> GetErrorByIdAsync(int errorID);
         Task<bool> InsertErrorAsync(SponsorTransactionError error);
+        Task<bool> InsertErrorAsync(DataRow row, ErrorMessage Message, int ColleagueID);
+        Task<bool> InsertErrorAsync(SponsorTransaction st, ErrorMessage Message);
         Task<bool> UpdateErrorAsync(SponsorTransactionError error);
         Task<bool> DeleteErrorAsync(SponsorTransactionError error);
         Task<bool> IsExistErrorAsync(int errorID);

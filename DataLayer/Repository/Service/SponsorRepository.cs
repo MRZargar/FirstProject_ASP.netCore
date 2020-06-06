@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using DataLayer.Exceptions;
+using DataLayer.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DataLayer
 {
@@ -296,11 +299,16 @@ namespace DataLayer
             }
         }
 
-        public async Task<bool> InsertTransactionAsync(SponsorTransaction sponsorTransaction)
+        private async Task<bool> InsertTransactionValidateAsync(SponsorTransaction sponsorTransaction)
         {
             if (await IsExistTransactionAsync(sponsorTransaction))
             {
                 throw new DuplicateTransactionException();
+            }
+
+            if (await new BankRepository(db).IsExistTransactionAsync(sponsorTransaction))
+            {
+                throw new DoNotExistBankTransactionException();
             }
 
             try
@@ -423,6 +431,230 @@ namespace DataLayer
             {
                 throw;
             }
+        }
+
+        public async Task<bool> InsertTransactionAsync(DataRow row, int ColleagueID)
+        {
+            var st = new SponsorTransaction();
+            
+            if (row["Phone"].ToString() == string.Empty || row["Phone"].ToString().Length != 10)
+            {
+                await new ColleagueRepository(db)
+                    .InsertErrorAsync(row, ErrorMessage.Phone_number_not_entered, ColleagueID);
+            }
+
+            long phoneNumber = long.Parse(row["Phone"].ToString());
+
+            Sponsor mySponsor;
+            try
+            {
+                mySponsor = await GetByPhoneNumberAsync(phoneNumber);
+
+                if (mySponsor.ColleagueID != ColleagueID)
+                {
+                    await new ColleagueRepository(db)
+                        .InsertErrorAsync(row, ErrorMessage.This_sponsor_is_related_to_another_colleague, ColleagueID);
+                }
+            }
+            catch (NotFoundException)
+            {
+                mySponsor = new Sponsor();
+                mySponsor.ColleagueID = ColleagueID;
+                mySponsor.PhoneNumber = phoneNumber;
+                mySponsor.Name = row["SponsorName"].ToString();
+                if (mySponsor.Name == string.Empty)
+                {
+                    mySponsor.Name = "Undefine";
+                }
+
+                await InsertAsync(mySponsor);
+                await saveAsync();
+
+                mySponsor = await GetByPhoneNumberAsync(phoneNumber);
+                if (mySponsor == null)
+                {
+                    await new ColleagueRepository(db)
+                        .InsertErrorAsync(row, ErrorMessage.There_is_a_problem_when_adding_a_new_sponsor, ColleagueID);
+                }
+            }
+
+            try
+            {
+                st.SponsorID = mySponsor.SponsorID;
+                st.ColleagueID = ColleagueID;
+
+                //DateTime date = Convert.ToDateTime(row["Date"].ToString().ToAD()).Date;
+                DateTime date = Convert.ToDateTime(row["Date"].ToString()).Date;
+                TimeSpan time;
+                try
+                {
+                    time = TimeSpan.Parse(row["Time"].ToString());
+                }
+                catch (Exception)
+                {
+                    time = Convert.ToDateTime(row["Time"].ToString()).TimeOfDay;
+                }
+
+                if (row["CardNumber"].ToString() != "" && row["TrackingNumber"].ToString() != "")
+                {
+                    st.MyTransaction = new BankData();
+                    st.MyTransaction.Amount = Convert.ToDouble(row["Amount"]);
+                    st.MyTransaction.LastFourNumbersOfBankCard = Convert.ToInt16(row["CardNumber"]);
+                    st.MyTransaction.TrackingNumber = row["TrackingNumber"].ToString();
+                    st.MyTransaction.TransactionDate = date + time;
+                }
+                else if (row["ReceiptNumber"].ToString() != "")
+                {
+                    st.MyReceipt = new ReceiptData();
+                    st.MyReceipt.Amount = Convert.ToDouble(row["Amount"]);
+                    st.MyReceipt.TransactionDate = date + time;
+                }
+                else
+                {
+                    await new ColleagueRepository(db)
+                        .InsertErrorAsync(row, ErrorMessage.No_transaction_information_entered, ColleagueID);
+                }
+            }
+            catch (Exception)
+            {
+                await new ColleagueRepository(db)
+                        .InsertErrorAsync(row, ErrorMessage.Correct_the_type_of_input_information, ColleagueID);
+            }
+
+            try
+            {
+                await InsertTransactionValidateAsync(st);
+            }
+            catch (DuplicateTransactionException)
+            {
+                await new ColleagueRepository(db)
+                        .InsertErrorAsync(row, ErrorMessage.Duplicate, ColleagueID);
+
+                return false;
+            }
+            catch (DoNotExistBankTransactionException)
+            {
+                await new ColleagueRepository(db)
+                        .InsertErrorAsync(row, ErrorMessage.This_transaction_is_not_available_in_bank_transactions, ColleagueID);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        public async Task<bool> InsertTransactionAsync(SponsorTransactionError error)
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("SponsorName");
+            dt.Columns.Add("Phone");
+            dt.Columns.Add("Date");
+            dt.Columns.Add("Time");
+            dt.Columns.Add("ReceiptNumber");
+            dt.Columns.Add("CardNumber");
+            dt.Columns.Add("TrackingNumber");
+            dt.Columns.Add("Amount");
+            DataRow row = dt.NewRow();
+
+            row["SponsorName"] = error.SponsorName;
+            row["Phone"] = error.Phone;
+            row["Date"] = error.Date;
+            row["Time"] = error.Time;
+            row["ReceiptNumber"] = error.ReceiptNumber;
+            row["CardNumber"] = error.CardNumber;
+            row["TrackingNumber"] = error.TrackingNumber;
+            row["Amount"] = error.Amount;
+
+            try
+            {
+                await new ColleagueRepository(db).DeleteErrorAsync(error.ErrorID);
+            }
+            catch (Exception)
+            { }
+
+            return await InsertTransactionAsync(row, error.ColleagueID);
+        }
+
+        public async Task<bool> InsertTransactionAsync(SponsorTransaction st)
+        {
+            Sponsor mySponsor;
+            try
+            {
+                mySponsor = await GetByPhoneNumberAsync(st.SponsorID);
+
+                if (mySponsor.ColleagueID != st.ColleagueID)
+                {
+                    await new ColleagueRepository(db)
+                        .InsertErrorAsync(st, ErrorMessage.This_sponsor_is_related_to_another_colleague);
+
+                    return false;
+                }
+            }
+            catch (NotFoundException ex)
+            {
+                await new ColleagueRepository(db)
+                    .InsertErrorAsync(st, ErrorMessage.Phone_number_not_entered);
+
+                return false;
+            }
+
+            if (st.MyTransaction != null)
+            {
+                bool valid = true;
+                valid = valid && st.MyTransaction.Amount > 0;
+                valid = valid && st.MyTransaction.LastFourNumbersOfBankCard.ToString().Length >= 4;
+                valid = valid && st.MyTransaction.TrackingNumber.Length > 4;
+
+                if (!valid)
+                {
+                    await new ColleagueRepository(db)
+                        .InsertErrorAsync(st, ErrorMessage.Correct_the_type_of_input_information);
+
+                    return false;
+                }
+            }
+            else if (st.MyReceipt != null)
+            {
+                bool valid = true;
+                valid = valid && st.MyReceipt.Amount > 0;
+                valid = valid && st.MyReceipt.ReceiptNumber.ToString().Length > 2;
+
+                if (!valid)
+                {
+                    await new ColleagueRepository(db)
+                        .InsertErrorAsync(st, ErrorMessage.Correct_the_type_of_input_information);
+
+                    return false;
+                }
+            }
+            else
+            {
+                await new ColleagueRepository(db)
+                    .InsertErrorAsync(st, ErrorMessage.No_transaction_information_entered);
+
+                return false;
+            }
+            
+            try
+            {
+                await InsertTransactionValidateAsync(st);
+            }
+            catch (DuplicateTransactionException)
+            {
+                await new ColleagueRepository(db)
+                    .InsertErrorAsync(st, ErrorMessage.Duplicate);
+
+                return false;
+            }
+            catch (DoNotExistBankTransactionException)
+            {
+                await new ColleagueRepository(db)
+                    .InsertErrorAsync(st, ErrorMessage.This_transaction_is_not_available_in_bank_transactions);
+                
+                return false;
+            }
+
+            return true;
         }
     }
 }
