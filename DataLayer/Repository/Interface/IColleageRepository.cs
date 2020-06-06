@@ -26,7 +26,8 @@ namespace DataLayer
         IEnumerable<SponsorTransaction> GetAllTransactionByColleagueIdAsync(int colleagueID);
         IEnumerable<SponsorTransaction> GetFromToTransactionByColleagueIdAsync(int colleagueID, DateTime From, DateTime To);
 
-        Task<IEnumerable<SponsorTransactionError>> GetAllErrorsAsync();
+        Task<IEnumerable<SponsorTransactionError>> GetAllErrorsAsync(); 
+        Task<IEnumerable<SponsorTransactionError>> GetAllErrorsByColleagueIDAsync(int ColleagueID);
         Task<SponsorTransactionError> GetErrorByIdAsync(int errorID);
         Task<bool> InsertErrorAsync(SponsorTransactionError error);
         Task<bool> InsertErrorAsync(DataRow row, ErrorMessage Message, int ColleagueID);

@@ -120,3 +120,8 @@
     padding-right: 0 !important;
     width: 200px !important;
 }
+
+.centerCell {
+    text-align: center !important;
+    vertical-align: middle !important;
+}

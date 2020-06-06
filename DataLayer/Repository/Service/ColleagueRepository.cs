@@ -401,5 +401,19 @@ namespace DataLayer
             await InsertErrorAsync(err);
             return true;
         }
+
+        public async Task<IEnumerable<SponsorTransactionError>> GetAllErrorsByColleagueIDAsync(int ColleagueID)
+        {
+            try
+            {
+                return await db.Errors
+                    .Where(x => x.ColleagueID == ColleagueID)
+                    .ToListAsync();
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
     }
 }

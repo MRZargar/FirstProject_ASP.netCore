@@ -1,0 +1,102 @@
+﻿@model IEnumerable<DataLayer.SponsorTransactionError>
+@using Mehr.Classes
+<!-- Table head options start -->
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Transactions as error</h4>
+        <div class="heading-elements">
+            <ul class="list-inline mb-0">
+                <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="card-content collapse show">
+        <div class="table-responsive">
+            <table class="table" id="MyTable">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.ErrorMessage)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.SponsorName)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.Phone)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.Date)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.Time)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.ReceiptNumber)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.CardNumber)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.TrackingNumber)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.Amount)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <th scope="row">
+                            <ul class="list-unstyled users-list m-0 float-right">
+                                <li class="avatar avatar-sm pull-up">
+                                    <div onclick="deleteError(@item.ErrorID)">
+                                        <i class="la la-trash-o media-object rounded-circle no-border-top-radius no-border-bottom-radius"></i>
+                                    </div>
+                                </li>
+                                <li class="avatar avatar-sm pull-up">
+                                    <div onclick="editError(@item.ErrorID)">
+                                        <i class="la la-edit media-object rounded-circle no-border-top-radius no-border-bottom-radius"></i>
+                                        </a>
+</li>
+                            </ul>
+                        </th>
+                        <td class="centerCell">
+                            @Html.DisplayFor(modelItem => item.ErrorMessage)
+                        </td>
+                        <td class="centerCell">
+                            @Html.DisplayFor(modelItem => item.SponsorName)
+                        </td>
+                        <td class="centerCell">
+                            @Html.DisplayFor(modelItem => item.Phone)
+                        </td>
+                        <td class="centerCell">
+                            @item.Date.ToSolar()
+                        </td>
+                        <td class="centerCell">
+                            @Html.DisplayFor(modelItem => item.Time)
+                        </td>
+                        <td class="centerCell">
+                            @Html.DisplayFor(modelItem => item.ReceiptNumber)
+                        </td>
+                        <td class="centerCell">
+                            @Html.DisplayFor(modelItem => item.CardNumber)
+                        </td>
+                        <td class="centerCell">
+                            @Html.DisplayFor(modelItem => item.TrackingNumber)
+                        </td>
+                        <td class="centerCell">
+                            @Html.DisplayFor(modelItem => item.Amount)
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- Table head options end -->

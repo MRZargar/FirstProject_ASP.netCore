@@ -580,7 +580,7 @@ namespace DataLayer
             Sponsor mySponsor;
             try
             {
-                mySponsor = await GetByPhoneNumberAsync(st.SponsorID);
+                mySponsor = await GetByIdAsync(st.SponsorID);
 
                 if (mySponsor.ColleagueID != st.ColleagueID)
                 {

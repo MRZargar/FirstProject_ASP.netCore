@@ -6,10 +6,6 @@ function GetFromTo() {
     return 'FromDate=' + fromDate + '&ToDate=' + toDate;
 }
 
-function exportColleagueTransactions(id) {
-    
-}
-
 // filter colleague and bank
 function FilterFromTo(id) {
     window.location.replace(id + '?' + GetFromTo());
@@ -23,6 +19,14 @@ function deleteColleague(id) {
         $(".modal-body").html(result);
     });
 };
+
+function deleteError(id) {
+    $.get("/SponsorTransaction/DeleteError/" + id, function (result) {
+        $(".modal").modal('show');
+        $(".modal-title").html("Delete Colleague");
+        $(".modal-body").html(result);
+    });
+}
 
 // delete Bank
 function deleteBank(id) {
