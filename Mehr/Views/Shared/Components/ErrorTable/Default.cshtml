@@ -7,6 +7,7 @@
         <h4 class="card-title">Transactions as error</h4>
         <div class="heading-elements">
             <ul class="list-inline mb-0">
+                <li><a href="#"><i class="ft-rotate-cw"></i></a></li>
                 <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
                 <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
             </ul>
@@ -62,6 +63,11 @@
                                     <div onclick="editError(@item.ErrorID)">
                                         <i class="la la-edit media-object rounded-circle no-border-top-radius no-border-bottom-radius"></i>
                                     </div>
+                                </li>
+                                <li class="avatar avatar-sm pull-up">
+                                    <a asp-controller="SponsorTransaction" asp-action="checkError" asp-route-id="@item.ErrorID">
+                                        <i class="ft-refresh-cw media-object rounded-circle no-border-top-radius no-border-bottom-radius"></i>
+                                    </a>
                                 </li>
                             </ul>
                         </th>

@@ -419,6 +419,32 @@ namespace Mehr.Controllers
             return View(err);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> checkError(int? id)
+        {
+            if (id == null)
+            {
+                ViewBag.err = new NotFoundException();
+                return View("Error");
+            }
+
+            SponsorTransactionError err;
+            try
+            {
+                err = await colleages.GetErrorByIdAsync(id.Value);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.err = ex;
+                return View("Error");
+            }
+
+            await sponsors.InsertTransactionAsync(err);
+            await sponsors.saveAsync();
+
+            return RedirectToAction("Details", "Colleague", new { id = err.ColleagueID });
+        }
         private bool SponsorTransactionExists(int id)
         {
             return sponsors.GetTransactionByIdAsync(id) != null;
