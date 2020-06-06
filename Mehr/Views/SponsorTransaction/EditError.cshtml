@@ -1,0 +1,69 @@
+﻿@model DataLayer.SponsorTransactionError
+
+@{ 
+    Layout = null;
+}
+
+    <form asp-action="EditError">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="ErrorID" />
+        <div class="form-group">
+            <div class="list-number">
+                <label asp-for="SponsorName" class="form-control form-control-label"></label>
+                <input asp-for="SponsorName" class="form-control" />
+            </div>
+            <span asp-validation-for="SponsorName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <div class="list-number">
+                <label asp-for="Phone" class="form-control form-control-label"></label>
+                <input asp-for="Phone" class="form-control" />
+            </div>
+            <span asp-validation-for="Phone" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <div class="list-number">
+                <label asp-for="Date" class="form-control form-control-label"></label>
+                <input asp-for="Date" class="form-control" />
+            </div>
+            <span asp-validation-for="Date" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <div class="list-number">
+                <label asp-for="Time" class="form-control form-control-label"></label>
+                <input asp-for="Time" class="form-control" />
+            </div>
+            <span asp-validation-for="Time" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <div class="list-number">
+                <label asp-for="ReceiptNumber" class="form-control form-control-label"></label>
+                <input asp-for="ReceiptNumber" class="form-control" />
+            </div>
+            <span asp-validation-for="ReceiptNumber" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <div class="list-number">
+                <label asp-for="CardNumber" class="form-control form-control-label"></label>
+                <input asp-for="CardNumber" class="form-control" />
+            </div>
+            <span asp-validation-for="CardNumber" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <div class="list-number">
+                <label asp-for="TrackingNumber" class="form-control form-control-label"></label>
+                <input asp-for="TrackingNumber" class="form-control" />
+            </div>
+            <span asp-validation-for="TrackingNumber" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <div class="list-number">
+                <label asp-for="Amount" class="form-control form-control-label"></label>
+                <input asp-for="Amount" class="form-control" />
+            </div>
+            <span asp-validation-for="Amount" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-primary float-right" />
+        </div>
+    </form>

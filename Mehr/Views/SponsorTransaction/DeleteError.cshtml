@@ -8,5 +8,6 @@
 <p><strong>Are you sure you want to delete this Transaction that was registered as error?</strong></p>
 <form asp-action="DeleteError">
     <input type="hidden" asp-for="ErrorID" />
-    <input type="submit" id="btn-delete" class="btn btn-danger" value="Delete" style="position: relative; float: right;" disabled />
+    <input type="hidden" asp-for="ColleagueID" />
+    <input type="submit" id="btn-delete" class="btn btn-danger" value="Delete" style="position: relative; float: right;" />
 </form>

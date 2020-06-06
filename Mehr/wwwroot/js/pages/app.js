@@ -11,66 +11,52 @@ function FilterFromTo(id) {
     window.location.replace(id + '?' + GetFromTo());
 }
 
+function getModal(url, title) {
+    $.get(url, function (result) {
+        $(".modal").modal('show');
+        $(".modal-title").html(title);
+        $(".modal-body").html(result);
+    });
+}
+
 // delete Colleague
 function deleteColleague(id) {
-    $.get("/Colleague/Delete/" + id, function (result) {
-        $(".modal").modal('show');
-        $(".modal-title").html("Delete Colleague");
-        $(".modal-body").html(result);
-    });
+    getModal("/Colleague/Delete/" + id, "Delete Colleague");
 };
 
+// delete Error
 function deleteError(id) {
-    $.get("/SponsorTransaction/DeleteError/" + id, function (result) {
-        $(".modal").modal('show');
-        $(".modal-title").html("Delete Colleague");
-        $(".modal-body").html(result);
-    });
+    getModal("/SponsorTransaction/DeleteError/" + id, "Delete Error");
 }
 
 // delete Bank
 function deleteBank(id) {
-    $.get("/Bank/Delete/" + id, function (result) {
-        $(".modal").modal('show');
-        $(".modal-title").html("Delete Bank");
-        $(".modal-body").html(result);
-    });
-};
+    getModal("/Bank/Delete/" + id, "Delete Bank");
+};s
 
 // edit Bank
 function editBank(id) {
-    $.get("/Bank/Edit/" + id, function (result) {
-        $(".modal").modal('show');
-        $(".modal-title").html("Edit Bank");
-        $(".modal-body").html(result);
-    });
+    getModal("/Bank/Edit/" + id, "Edit Bank");
+};
+
+// edit Error
+function editError(id) {
+    getModal("/SponsorTransaction/EditError/" + id, "Edit Error");
 };
 
 // new bank
 function newBank() {
-    $.get("/Bank/Create/", function (result) {
-        $(".modal").modal('show');
-        $(".modal-title").html("New bank");
-        $(".modal-body").html(result);
-    });
+    getModal("/Bank/Create/", "New bank");
 };
 
 // new Bank data
 function newBankData(id) {
-    $.get("/BankTransaction/Create/" + id, function (result) {
-        $(".modal").modal('show');
-        $(".modal-title").html("New Bank Transaction");
-        $(".modal-body").html(result);
-    });
+    getModal("/BankTransaction/Create/" + id, "New Bank Transaction");
 }
 
 // new Sponsor Transaction
 function newSponsorTransaction(id, RedirectTo) {
-    $.get("/SponsorTransaction/Create/" + id + '?RedirectTo=' + RedirectTo, function (result) {
-        $(".modal").modal('show');
-        $(".modal-title").html("New Transaction");
-        $(".modal-body").html(result);
-    });
+    getModal("/SponsorTransaction/Create/" + id + '?RedirectTo=' + RedirectTo, "New Transaction");
 }
 
 // search Colleague in List

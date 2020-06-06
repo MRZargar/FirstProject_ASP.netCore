@@ -581,6 +581,7 @@ namespace DataLayer
             try
             {
                 mySponsor = await GetByIdAsync(st.SponsorID);
+                st.MySponsor = mySponsor;
 
                 if (mySponsor.ColleagueID != st.ColleagueID)
                 {
